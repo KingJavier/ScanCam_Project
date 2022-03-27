@@ -1,0 +1,31 @@
+//* Importamos y guardamos express, router en una variable
+const { Router } = require('express');
+const express = require('express');
+const router = express.Router();
+//* Importamos funcion del controlador 
+const {getItems, createItems, deleteItems, updateItems, getItem} = require('../controllers/registro');
+//* Importamos validacion CreateItem
+const {validatorCreateItem,validatorGetItem} = require ('../validators/registro')
+//* Importamos  authMiddleware
+const {authMiddleware} = require("../middleware/session");
+//* Importamos el validador de los roles.
+const checkRol = require('../middleware/rol');
+
+
+//? Creamos sistema de rutas mediante el metodo get
+router.get('/',authMiddleware,checkRol(['gestor', 'seguridad']), getItems);
+
+//? Creamos ruta para crear un registro a la base de datos previamente validada
+router.post('/',authMiddleware,checkRol(['aprenidz', 'funcionario', 'gestor', 'seguridad', 'invitado']), validatorCreateItem, createItems);
+
+//? Obtener un solo detalle aplicando una validación
+router.get('/:id',authMiddleware,checkRol([ 'gestor','seguridad']),validatorGetItem, getItem);
+
+//? Actualizar registro
+router.put('/:id',authMiddleware,checkRol(['gestor', 'seguridad']),validatorCreateItem, validatorGetItem,updateItems);
+
+//? Eliminar un resigtro 
+router.delete('/:id',authMiddleware,checkRol(['gestor']),validatorGetItem,deleteItems);
+
+//! exportamos rutas
+module.exports = router;
