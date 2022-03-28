@@ -60,5 +60,20 @@ const getTemplate = (name, token) => {
     `;
 }
 
+//? Contenido del correco en formato HTML para reset_pasword
+const getTemplateR = (token) => {
+    return `
+    <head>
+        <link rel="stylesheet" href="./style.css">
+    <head>
+
+    <div id="email_content">
+        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiPTda2MMSGauFT8i-tj7Hi5RSt2wHF3Ac2t0A9haWOOBU8Lq1vpmyu1CfCu3HZKCS7VIiuVsvHs8WLEKFq7uEGK9L5oweqJvTYyWfQbQuX-2Uc95hYgWERQ4rtoRugxvsjnHhqG5nZWETM1imSWUma9FXicLrDfOmNyxtp3Ks5WCFqqAutxMf1N9zMLw/s320/logo.png" alt"ScanCam">
+        
+        <p>Para recuperar tu contraseña, Ingresa al siguiente enlace</p>
+        <a href="https://apiscancam01.herokuapp.com/api/auth/forgot_password/${ token }" target="_blank">Recupera tu contraseña</a>
+    </div>
+    `;
+}
 //!Exporatciones
-module.exports = { sendEmail, getTemplate};
+module.exports = { sendEmail, getTemplate,getTemplateR};

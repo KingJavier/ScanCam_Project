@@ -34,6 +34,10 @@ const UserScheme = new mongoose.Schema(
             type: ['aprenidz', 'funcionario', 'gestor', 'seguridad', 'invitado'],
             default: 'invitado',
         },
+        resetLink:{
+            type:String,
+            default: '', 
+        },
         status: {
             type: String,
             required: true,

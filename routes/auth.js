@@ -5,7 +5,7 @@ const { matchedData } = require('express-validator');
 const router = express.Router();
 //* Importamos funcion del controlador 
 //* Importamos loginctrl
-const {loginCtrl, registerCtrl, confirmEmail} = require ("../controllers/user")
+const {loginCtrl, registerCtrl, confirmEmail, forgotPassword, resetPassword} = require ("../controllers/user")
 
 //* Importamos validacion CreateItem
 const {validatorLogueo,validatorRegister} = require ('../validators/auth');
@@ -22,9 +22,14 @@ router.post("/register", validatorRegister, registerCtrl);
 //? Ruta  Login 
 router.post("/login", validatorLogueo, loginCtrl);
 
-//? Ruta  Login 
+//? Ruta  confirmar token 
 router.get("/confirm/:token", confirmEmail);
+ 
+//? Ruta olvidar contraseña
+router.put('/forgot_password',forgotPassword);
 
+//? ruta para cambiar el password
 
+router.put('/reset_password',resetPassword);
 //! exportamos rutas
 module.exports = router;
