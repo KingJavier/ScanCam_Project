@@ -134,8 +134,8 @@ const confirmEmail = async (req, res) => {
       handleHttpError(res, "ERROR_OBTENER_DATA");
     }
 
-     //? Obtener email de la data
-     const {email} = data;
+    //? Obtener email de la data
+    const {email} = data;
 
     //? Verificar existencia del usaurio.
     
@@ -170,7 +170,6 @@ const confirmEmail = async (req, res) => {
 
 
 //? Este controlador es el encargado de enviar un email para restablecer password
-//? Este controlador es el encaragdo del enviar el email con el correo de olvido de contraseña
 const forgotPassword = async (req, res) => {
   try{
     //? traemos el emial enviado en la request
@@ -223,6 +222,15 @@ const resetPassword = async (req, res) => {
     //? Establecemos constante donde almacenara el token del usuario  y la nueva contraseña
     const {resetLink, newPass} = req.body;
 
+    //! ENCRIPTACION
+
+      //? Encriptacion de la contraseña traida del helper
+      const password = await encrypt(newPass)
+
+      console.log('contraseña', password);
+
+    //! ENCRIPTACION
+
     //? ponemos condicion en caso de que encuentre el resetLink
     if(resetLink){
 
@@ -244,7 +252,7 @@ const resetPassword = async (req, res) => {
 
           //? guardamos nueva contraseña en una variable
           const obj ={
-            password: newPass,
+            password: password,
           }
           user=_.extend(user, obj);
           user.save((err)=>{
