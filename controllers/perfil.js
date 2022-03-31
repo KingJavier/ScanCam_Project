@@ -1,15 +1,15 @@
 //* Importaciones
 const fs = require("fs");
 const { matchedData } = require("express-validator");
-const { storageModel } = require("../models");
+const { perfilModel } = require("../models");
 const { handleHttpError } = require("../utils/handleError");
 
 
 //TODO http://localhost:3001
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
-//TODO ../storage que es donde almacena los archivos enviados.
-const MEDIA_PATH = `${__dirname}/../storage`;
+//TODO ../perfil que es donde almacena los archivos enviados.
+const MEDIA_PATH = `${__dirname}/../perfil`;
 
 //? creamos funciones para creacion del crud
 /**
@@ -21,10 +21,10 @@ const MEDIA_PATH = `${__dirname}/../storage`;
 const getItems = async (req, res) => {
   try {
      //? integramos constante que buscara diversos datos
-     const data = await storageModel.find({});
-     console.log(data);
-     res.send({ data });
-     
+    const data = await perfilModel.find({});
+    console.log(data);
+    res.send({ data });
+    
   } catch (e) {
     //? implementamos el manejador de errorres
     handleHttpError(res, "ERROR_LIST_ITEMS");
@@ -44,7 +44,7 @@ const getItem = async (req, res) => {
     req = matchedData(req);
     const {id} = req;
     //? integramos constante que buscara segun un id predeterminado
-    const data = await storageModel.findById(id);
+    const data = await perfilModel.findById(id);
     res.send({ data });
   } catch (e) {
     console.log(e)
@@ -68,11 +68,9 @@ const createItems = async (req, res) => {
       url: `${PUBLIC_URL}/${file.filename}`,
       filename: file.filename,
     };
-
-    
     console.log(fileData);
     //? Se sube a la base de datos segun el modelo
-    const data = await storageModel.create(fileData);
+    const data = await perfilModel.create(fileData);
     //? codigo de satisafaccion al enviar un archivo
     res.status(201);
     //? mostramos los datos que se quieren subir 
@@ -95,9 +93,9 @@ const deleteItems = async (req, res) => {
     //? Filtramos el id de la req
     req = matchedData(req);
     const {id} = req;
-    const dataFile = await storageModel.findById(id);
+    const dataFile = await perfilModel.findById(id);
     //? eliminamos dato en la base de datos 
-    const deleteResponse = await storageModel.delete({ _id: id });
+    const deleteResponse = await perfilModel.delete({ _id: id });
     const { filename } = dataFile;
     //? concatenamos nombre        
     const filePath = `${MEDIA_PATH}/${filename}`; //TODO c:/miproyecto/file-1232.png
@@ -118,9 +116,9 @@ const deleteItems = async (req, res) => {
 
 //! Exportaciones
 module.exports = {
-     getItems,
-     createItems,
-     deleteItems,
+    getItems,
+    createItems,
+    deleteItems,
      // updateItems,
-     getItem
+    getItem
 };

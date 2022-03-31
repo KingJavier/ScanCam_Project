@@ -2,11 +2,11 @@
 const multer = require("multer");
 
 //? creamos haciendo referencia al disco de almacenamiento 
-const storage = multer.diskStorage({
+const perfil = multer.diskStorage({
 
     //? creamos un destino de guardado 
     destination: function (req, file, cb) {
-        cb(null, `${__dirname}/../storage`);
+        cb(null, `${__dirname}/../perfil`);
     },
     
 
@@ -21,7 +21,7 @@ const storage = multer.diskStorage({
 
 //?Utilizamos Middleware
 const uploadMiddleware = multer({
-    storage
+    perfil
 });
 
 //! exportamos rutas
