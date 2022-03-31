@@ -25,13 +25,13 @@ app.use(express.static('storage'))
 
 
 //? Utiliza morgan para Eliminar el color de la ventana de comandos, ademas de que solo mande a Slack todas las peticienes que se consideren errores que s
- morganBody(app,{
-     noColors:true,
-     stream: loggerStream,
+morganBody(app,{
+    noColors:true,
+    stream: loggerStream,
     skip: function(req, res){
         return res.statusCode < 400 
     }
- })
+})
 
 //? utilizamos puerto establecido en .env o el puerto 3000
 const port = process.env.PORT || 3000

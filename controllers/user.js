@@ -8,7 +8,6 @@ const users = require("../models/nosql/users")
 const { getTemplate, sendEmail,getTemplateR } = require("../utils/handleMail");
 const  _ = require('lodash');
 const jwt = require("jsonwebtoken");
-const { result } = require("lodash");
 
 
 //? creamos funciones para register y login del usuario

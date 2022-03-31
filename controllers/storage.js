@@ -5,8 +5,8 @@ const { storageModel } = require("../models");
 const { handleHttpError } = require("../utils/handleError");
 
 
-//TODO http://localhost:3001
-const PUBLIC_URL = process.env.PUBLIC_URL;
+//TODO https://apiscancam01.herokuapp.com/
+const HEROKU_URL = process-env.HEROKU_URL;
 
 //TODO ../storage que es donde almacena los archivos enviados.
 const MEDIA_PATH = `${__dirname}/../storage`;
@@ -21,10 +21,10 @@ const MEDIA_PATH = `${__dirname}/../storage`;
 const getItems = async (req, res) => {
   try {
      //? integramos constante que buscara diversos datos
-     const data = await storageModel.find({});
-     console.log(data);
-     res.send({ data });
-     
+    const data = await storageModel.find({});
+    console.log(data);
+    res.send({ data });
+    
   } catch (e) {
     //? implementamos el manejador de errorres
     handleHttpError(res, "ERROR_LIST_ITEMS");
@@ -65,7 +65,7 @@ const createItems = async (req, res) => {
     const { file } = req;
     //? definimos el nombre y la Url del archivo enviado 
     const fileData = {
-      url: `${PUBLIC_URL}/${file.filename}`,
+      url: `${HEROKU_URL}/${file.filename}`,
       filename: file.filename,
     };
     //? Se sube a la base de datos segun el modelo
