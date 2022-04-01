@@ -31,18 +31,18 @@ let transporter = nodemailer.createTransport({
 
 //? Se recibe como parametros el corrreo del User, el asunto y el contenido del correo.
 const sendEmail = async (email, subject, html) => {
-      try{
-        await transporter.sendMail({
-            from: ` ScanCam < ${ mail.user } >`, 
-            to: email, 
-            subject, 
-            text: "Hola querido Usuario, por favor verifica tu correo para ScanCam", 
-            html, 
-          });
-      }catch(e){
-          console.log('Algo no va bien con el email', e);
-      }
-  }
+    try{
+    await transporter.sendMail({
+        from: ` ScanCam < ${ mail.user } >`, 
+        to: email, 
+        subject, 
+        text: "Hola querido Usuario, por favor verifica tu correo para ScanCam", 
+        html, 
+    });
+    }catch(e){
+    console.log('Algo no va bien con el email', e);
+    }
+}
 
 //? Contenido del correo en formato HTML.
 const getTemplate = (name, token) => {

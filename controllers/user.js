@@ -188,7 +188,7 @@ const forgotPassword = async (req, res) => {
     const token = await tokenSing(user);
 
     //? Obtenemos el template de VerifEmail
-    const template = getTemplateR( token);
+    const template = getTemplateR(token);
 
     //? Enviar el Email.
     await sendEmail(user.email, 'Olvido de Contraseña', template);
@@ -197,16 +197,13 @@ const forgotPassword = async (req, res) => {
     user.resetLink = `${token}`;
     await user.save();
 
-    console.log(user);
-
     //? definimos codigo de repuesta de creacion satisfactoria
     res.status(201)
     // res.send('Correo enviado satisfactoriamente, sigue las instrucciones');
     return res.json({
-      msg: 'Mail sent successfully, follow the instructions'
+      msg: 'Mail sent successfully, follow the instructions',
+      token
     });
-
-
   }catch (e) {
     //? implementamos el manejador de errorres
     handleHttpError(res, "ERROR_SENDING_MAIL")
@@ -221,14 +218,9 @@ const resetPassword = async (req, res) => {
     //? Establecemos constante donde almacenara el token del usuario  y la nueva contraseña
     const {resetLink, newPass} = req.body;
 
-    //! ENCRIPTACION
 
-      //? Encriptacion de la contraseña traida del helper
-      const password = await encrypt(newPass)
-
-      console.log('contraseña', password);
-
-    //! ENCRIPTACION
+    //? Encriptacion de la contraseña traida del helper
+    const password = await encrypt(newPass)
 
     //? ponemos condicion en caso de que encuentre el resetLink
     if(resetLink){
@@ -268,9 +260,7 @@ const resetPassword = async (req, res) => {
 
         })
       })
-
     }else{
-
       return handleHttpError(res, "!!ERROR_AUTENTICATION!!", 401)
     }
 

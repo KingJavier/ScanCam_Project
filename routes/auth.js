@@ -24,12 +24,12 @@ router.post("/login", validatorLogueo, loginCtrl);
 
 //? Ruta  confirmar token 
 router.get("/confirm/:token", confirmEmail);
- 
+
 //? Ruta olvidar contraseña
-router.put('/forgot_password',forgotPassword);
+router.put('/forgot-password', forgotPassword);
 
 //? ruta para cambiar el password
+router.put('/reset-password', resetPassword);
 
-router.put('/reset_password',resetPassword);
 //! exportamos rutas
 module.exports = router;
