@@ -11,29 +11,30 @@ const oAuth2Client= new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_UR
 
 oAuth2Client.setCredentials({refresh_token: REFRESH_TOKEN});
 
-const accesToken= oAuth2Client.getAccessToken()
-
-const transporter = nodemailer.createTransport({
-    service:"gmail",
-    auth:{
-        type:"OAuth2",
-        user:"scancamsena@gmail.com",
-        clientId:CLIENT_ID,
-        clientSecret:CLIENT_SECRET,
-        refreshToken: REFRESH_TOKEN,
-        accessToken: accesToken
-    },
-    tls: {
-        rejectUnauthorized: false
-    }
-});
-
 //? Construcción de parametros enviados al correo a verificar
 //? Se recibe como parametros el corrreo del User, el asunto y el contenido del correo.
 const sendEmail = async (email, subject, html) => {
     try{
+
+        const accessToken = await oAuth2Client.getAccessToken()
+
+        const transporter = nodemailer.createTransport({
+            service:"gmail",
+            auth:{
+                type:"OAuth2",
+                user:"scancamsena@gmail.com",
+                clientId:CLIENT_ID,
+                clientSecret:CLIENT_SECRET,
+                refreshToken: REFRESH_TOKEN,
+                accessToken: accessToken
+            },
+            tls: {
+                rejectUnauthorized: false
+            }
+        });
+
         await transporter.sendMail({
-            from: ` ScanCam <scancamsena@gmail.com>`, 
+            from: ` ScanCam <scancamsenafggd@gmail.com>`, 
             to: email, 
             subject, 
             text: "Hola querido Usuario, por favor verifica tu correo para ScanCam", 

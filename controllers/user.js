@@ -219,7 +219,6 @@ const resetPassword = async (req, res) => {
     //? Establecemos constante donde almacenara el token del usuario  y la nueva contraseña
     const {resetLink, newPass} = req.body;
 
-
     //? Encriptacion de la contraseña traida del helper
     const password = await encrypt(newPass)
 
