@@ -119,6 +119,6 @@ module.exports = {
     getItems,
     createItems,
     deleteItems,
-     // updateItems,
+    // updateItems,
     getItem
 };

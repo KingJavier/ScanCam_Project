@@ -36,7 +36,7 @@ const UserScheme = new mongoose.Schema(
         },
         resetLink:{
             type:String,
-            default: '', 
+            default: '',
         },
         status: {
             type: String,

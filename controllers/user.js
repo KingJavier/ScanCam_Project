@@ -5,7 +5,7 @@ const { tokenSing, decodeSign} = require("../utils/handleJwt");
 const { handleHttpError } = require("../utils/handleError");
 const { userModel } = require("../models");
 const users = require("../models/nosql/users")
-const { getTemplate, sendEmail,getTemplateR } = require("../utils/handleMail");
+const { getTemplate, sendEmail, getTemplateR} = require("../utils/handleMail");
 const  _ = require('lodash');
 const jwt = require("jsonwebtoken");
 
@@ -171,7 +171,7 @@ const confirmEmail = async (req, res) => {
 //? Este controlador es el encargado de enviar un email para restablecer password
 const forgotPassword = async (req, res) => {
   try{
-    //? traemos el emial enviado en la request
+    //? traemos el email enviado en la request
     const {email} = req.body;
 
     //? Verificamos que el usuario exista.
@@ -201,9 +201,10 @@ const forgotPassword = async (req, res) => {
     res.status(201)
     // res.send('Correo enviado satisfactoriamente, sigue las instrucciones');
     return res.json({
-      msg: 'Mail sent successfully, follow the instructions',
+      msg: 'Email enviado correctamente, sigue las instrucciones',
       token
     });
+
   }catch (e) {
     //? implementamos el manejador de errorres
     handleHttpError(res, "ERROR_SENDING_MAIL")
@@ -270,7 +271,6 @@ const resetPassword = async (req, res) => {
     console.log(e)
   }
 }
-
 
 
 //! Exportaciones
