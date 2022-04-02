@@ -1,44 +1,45 @@
-//* Importamos nodemailer
-
+ //* Importamos nodemailer
 const nodemailer = require('nodemailer');
-
-
-//? Definimos el correo y la contraseña del Mail desde el cual se remitira la verificación.
-
-const mail = {
-    user: 'scancamsena@gmail.com',
-    pass: 'elmejorequipo',
-}
+const {google} = require("googleapis");
 
 //? Configiración NodeMailer
+const CLIENT_ID="180701275743-u889fh71ufdkl0lindve2b0iko4ubjrg.apps.googleusercontent.com"
+const CLIENT_SECRET="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"
+const REDIRECT_URI="https://developers.google.com/oauthplayground"
+const REFRESH_TOKEN="1//04Ds20_lRKvUICgYIARAAGAQSNwF-L9IrNpTpEHoFhxN2XIm5Z8_yuGw1ZR3Znsj0WyLSLO0_YhIHCWwcRWwgov85vQU0GRUwQuc"
+const oAuth2Client= new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
 
-let transporter = nodemailer.createTransport({
-    //? Host de Gmail
-    host: "smtp.gmail.com",
-    //? Puerto de Gmail
-    port: 25,
+oAuth2Client.setCredentials({refresh_token: REFRESH_TOKEN});
+
+const accesToken= oAuth2Client.getAccessToken()
+
+const transporter = nodemailer.createTransport({
+    service:"gmail",
+    auth:{
+        type:"OAuth2",
+        user:"scancamsena@gmail.com",
+        clientId:CLIENT_ID,
+        clientSecret:CLIENT_SECRET,
+        refreshToken: REFRESH_TOKEN,
+        accessToken: accesToken
+    },
     tls: {
         rejectUnauthorized: false
-    },
-    secure: false, 
-    auth: {
-    user: mail.user, //? Correo del Email remitante
-    pass: mail.pass, //? Contraseña del Email.
-    },
+    }
 });
 
 //? Construcción de parametros enviados al correo a verificar
-
 //? Se recibe como parametros el corrreo del User, el asunto y el contenido del correo.
 const sendEmail = async (email, subject, html) => {
     try{
-    await transporter.sendMail({
-        from: ` ScanCam < ${ mail.user } >`, 
-        to: email, 
-        subject, 
-        text: "Hola querido Usuario, por favor verifica tu correo para ScanCam", 
-        html, 
-    });
+        await transporter.sendMail({
+            from: ` ScanCam <scancamsena@gmail.com>`, 
+            to: email, 
+            subject, 
+            text: "Hola querido Usuario, por favor verifica tu correo para ScanCam", 
+            html, 
+        });
+
     }catch(e){
     console.log('Algo no va bien con el email', e);
     }
@@ -75,5 +76,5 @@ const getTemplateR = (token) => {
     </div>
     `;
 }
- //!Exporatciones
+//!Exporatciones
 module.exports = { sendEmail, getTemplate,getTemplateR};
