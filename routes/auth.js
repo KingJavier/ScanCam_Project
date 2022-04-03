@@ -5,7 +5,7 @@ const { matchedData } = require('express-validator');
 const router = express.Router();
 //* Importamos funcion del controlador 
 //* Importamos loginctrl
-const {loginCtrl, registerCtrl, confirmEmail, forgotPassword, resetPassword} = require ("../controllers/user")
+const {loginCtrl, registerCtrl, confirmEmail, forgotPassword, resetPassword, getUsers} = require ("../controllers/user")
 
 //* Importamos validacion CreateItem
 const {validatorLogueo,validatorRegister} = require ('../validators/auth');
@@ -14,6 +14,11 @@ const {validatorLogueo,validatorRegister} = require ('../validators/auth');
 const {encrypt,compare} = require('../utils/handlePassword');
 const { userModel } = require('../models');
 
+//* Importamos  authMiddleware
+const {authMiddleware} = require("../middleware/session");
+
+//* Importamos el validador de los roles.
+const checkRol = require('../middleware/rol');
 
 
 //?  Ruta Crear registro 
@@ -21,6 +26,9 @@ router.post("/register", validatorRegister, registerCtrl);
 
 //? Ruta  Login 
 router.post("/login", validatorLogueo, loginCtrl);
+
+//? Ruta listar Usuarios
+router.get('/users', authMiddleware, checkRol(['gestor', 'seguridad']), getUsers);
 
 //? Ruta  confirmar token 
 router.get("/confirm/:token", confirmEmail);

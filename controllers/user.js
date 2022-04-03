@@ -271,6 +271,19 @@ const resetPassword = async (req, res) => {
   }
 }
 
+//? método para obtener Lista de los usuarios.
+const getUsers = async (req, res) => {
+  try {
+    //? integramos constante que buscara diversos datos
+    const users = await userModel.find({});
+    res.send({ users });
+    
+  } catch (e) {
+    //? implementamos el manejador de errorres
+    handleHttpError(res, "ERROR_LIST_USERS");
+  }
+};
+
 
 //! Exportaciones
 module.exports = {
@@ -278,5 +291,6 @@ module.exports = {
   loginCtrl,
   confirmEmail,
   forgotPassword,
-  resetPassword
+  resetPassword,
+  getUsers
 };

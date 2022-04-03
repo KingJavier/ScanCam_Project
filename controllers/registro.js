@@ -14,6 +14,9 @@ const getItems = async (req, res) => {
   try {
     //? integramos constante que buscara diversos datos
     const data = await registroModel.findAllData({});
+
+    console.log(data);
+    
     res.send({ data });
     
   } catch (e) {
