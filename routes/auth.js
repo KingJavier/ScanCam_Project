@@ -7,7 +7,7 @@ const router = express.Router();
 //* Importamos loginctrl
 const {loginCtrl, registerCtrl, confirmEmail, 
     forgotPassword, resetPassword, getUsers,
-    desactivarUser
+    desactivarUser, activarUser
 } = require ("../controllers/user")
 
 //* Importamos validacion CreateItem
@@ -35,6 +35,9 @@ router.get('/users', authMiddleware, checkRol(['gestor', 'seguridad']), getUsers
 
 //? ruta para inhabilitar usuarios
 router.put('/deshabilitar/:id', authMiddleware,checkRol(['gestor']), desactivarUser);
+
+// //? ruta para inhabilitar usuarios
+// router.put('/activar/:id', authMiddleware,checkRol(['gestor']), activarUser);
 
 //? Ruta  confirmar token 
 router.get("/confirm/:token", confirmEmail);

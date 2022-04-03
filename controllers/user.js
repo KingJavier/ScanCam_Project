@@ -170,8 +170,12 @@ const forgotPassword = async (req, res) => {
     }
 
     try {
-      await userModel.findOne(email);
+      var mail = await userModel.findOne({email});
+      if(mail == null){
+        return res.json({msg: "No se encontro el usuario ingresado"})
+      }
     } catch (e) {
+      console.log(e);
       return res.json({msg: "No se encontro el usuario"})
     }
 
@@ -193,11 +197,11 @@ const forgotPassword = async (req, res) => {
 
     //? definimos codigo de repuesta de creacion satisfactoria
     //res.status(201)
-    return res.send('Correo enviado satisfactoriamente, sigue las instrucciones');
-    // return res.json({
-    //   msg: 'Mail sent successfully, follow the instructions',
-    //   token
-    // });
+    // return res.send('Correo enviado satisfactoriamente, sigue las instrucciones', token);
+    return res.json({
+      msg: 'Correo enviado satisfactoriamente, sigue las instrucciones',
+      token
+    });
   }catch (e) {
     //? implementamos el manejador de errorres
     handleHttpError(res, "ERROR_SENDING_MAIL")
@@ -325,6 +329,8 @@ const desactivarUser = async (req, res) => {
     console.log(e)
   }
 };
+
+
 
 
 
