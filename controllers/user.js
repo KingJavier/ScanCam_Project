@@ -11,11 +11,7 @@ const jwt = require("jsonwebtoken");
 
 
 //? creamos funciones para register y login del usuario
-/**
- * Este controlador es el encargado de registrar un usuario
- * @param {*} req 
- * @param {*} res 
- */
+
 //? Controlados de registro de usaurio en la DB.
 const registerCtrl = async (req, res) => {
   try {
@@ -66,12 +62,6 @@ const registerCtrl = async (req, res) => {
     console.log(e)
   }
 };
-
-/**
- * Este controlador es el encargado de logear a una persona
- * @param {*} req 
- * @param {*} res 
- */
 
 
 //? Este controlador es el encargado de logear una persona
@@ -171,15 +161,19 @@ const confirmEmail = async (req, res) => {
 //? Este controlador es el encargado de enviar un email para restablecer password
 const forgotPassword = async (req, res) => {
   try{
-    //? traemos el email enviado en la request
+    //? traemos el emial enviado en la request
     const {email} = req.body;
 
     //? Verificamos que el usuario exista.
-    users.findOne({email}, (err, user) => {
-      if(err || !user){
-        return handleHttpError(res, "USER_ALREADY_NOT_EXIST")
-      }
-    })
+    if(!(email)){
+      return res.status(400).json({msg: 'Email is required'});
+    }
+
+    try {
+      await userModel.findOne(email);
+    } catch (e) {
+      return res.json({msg: "No se encontro el usuario"})
+    }
 
     //? Treamos la info del user dependiendo del email.
     const user = await users.findOne({email});
@@ -198,13 +192,12 @@ const forgotPassword = async (req, res) => {
     await user.save();
 
     //? definimos codigo de repuesta de creacion satisfactoria
-    res.status(201)
-    // res.send('Correo enviado satisfactoriamente, sigue las instrucciones');
-    return res.json({
-      msg: 'Email enviado correctamente, sigue las instrucciones',
-      token
-    });
-
+    //res.status(201)
+    return res.send('Correo enviado satisfactoriamente, sigue las instrucciones');
+    // return res.json({
+    //   msg: 'Mail sent successfully, follow the instructions',
+    //   token
+    // });
   }catch (e) {
     //? implementamos el manejador de errorres
     handleHttpError(res, "ERROR_SENDING_MAIL")
@@ -284,6 +277,56 @@ const getUsers = async (req, res) => {
   }
 };
 
+//? método para inhabilitar usuarios.
+const desactivarUser = async (req, res) => {
+  try {
+    //? Filtramos el id de la req
+    const {id} = req.params;
+    const _id = id;
+
+    // console.log("Mateneme",_id)
+
+    //? Verificar existencia del usaurio.
+    //? En caso de que el usuario no exista arroje un error  
+    try {
+      var user = await userModel.findById({_id});
+    } catch (error) {
+      return handleHttpError(res, "ID_NO_VALIDO");
+    }
+
+    // console.log("Matenme X2", user);
+
+    // console.log("Matenem x3",user._id);
+    
+    //? Actualizar User 
+    user.estado = 'DESHABILITADO';
+    await user.save();
+
+    //console.log(user);
+    //? Busqueda del usuario
+    try {
+      var estado = await userModel.findById({_id});
+    } catch (error) {
+      return handleHttpError(res, "ID_NO_VALIDO");
+    }
+
+    //? verificación de en que estado esta el usaurio.
+    if(estado.estado = 'DESHABILITADO'){
+      return handleHttpError(res, "USUARIO_YA_DESHABILITADO");
+    }
+
+    //console.log("Ya se desabilito");
+    //? retornamos mensaje de acción
+    return res.send({ msg: 'USUARIO_DESHABILITADO' });
+
+  } catch (e) {
+    //? implementamos el manejador de errorres
+    handleHttpError(res, "ERROR_DESHABILITANDO");
+    console.log(e)
+  }
+};
+
+
 
 //! Exportaciones
 module.exports = {
@@ -292,5 +335,6 @@ module.exports = {
   confirmEmail,
   forgotPassword,
   resetPassword,
-  getUsers
+  getUsers,
+  desactivarUser
 };

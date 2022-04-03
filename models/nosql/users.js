@@ -42,6 +42,10 @@ const UserScheme = new mongoose.Schema(
             type: String,
             required: true,
             default: 'UNVERIFIED',
+        },
+        estado: {
+            type: String,
+            default: 'ACTIVO',
         }
         
     },
