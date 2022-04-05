@@ -6,7 +6,7 @@ const { handleHttpError } = require("../utils/handleError");
 
 
 //TODO http://localhost:3001
-const PUBLIC_URL = process.env.PUBLIC_URL;
+const HEROKU_URL = process.env.HEROKU_URL;
 
 //TODO ../storage que es donde almacena los archivos enviados.
 const MEDIA_PATH = `${__dirname}/../storage`;
@@ -65,7 +65,7 @@ const createItems = async (req, res) => {
     const { file } = req;
     //? definimos el nombre y la Url del archivo enviado 
     const fileData = {
-      url: `${PUBLIC_URL}/${file.filename}`,
+      url: `${HEROKU_URL}/${file.filename}`,
       filename: file.filename,
     };
 
