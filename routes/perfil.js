@@ -9,7 +9,7 @@ const router = express.Router();
 const {getItems, createItems, deleteItems, updateItems, getItem} = require('../controllers/perfil');
 const { text } = require('express');
 //* Importamos validate
- const {validatorGetItem} = require ('../validators/auth')
+const {validatorGetItem} = require ('../validators/auth')
 
 //* Importamos  authMiddleware
 const {authMiddleware} = require("../middleware/session");

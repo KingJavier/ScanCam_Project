@@ -6,7 +6,7 @@ const express = require('express');
 const uploadMiddleware =require('../utils/handleStorage');
 const router = express.Router();
 //* Importamos funcion del controlador 
-const {getItems, createItems, deleteItems, updateItems, getItem} = require('../controllers/storage');
+const {getItems, createItems, deleteItems, getItem} = require('../controllers/storage');
 const { text } = require('express');
 //* Importamos validate
 const {validatorGetItem} = require ('../validators/registro')
