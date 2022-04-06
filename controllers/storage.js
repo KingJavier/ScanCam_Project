@@ -65,7 +65,7 @@ const createItems = async (req, res) => {
     const { file } = req;
     //? definimos el nombre y la Url del archivo enviado 
     const fileData = {
-      url: `${HEROKU_URL}/${file.filename}`,
+      url: `${PUBLIC_URL}/${file.filename}`,
       filename: file.filename,
     };
 
