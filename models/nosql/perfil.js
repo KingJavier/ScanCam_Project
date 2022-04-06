@@ -6,7 +6,7 @@ const mongooseDelete = require("mongoose-delete")
 
 const PerfilScheme = new mongoose.Schema(
      //? declaramos estructura de la tabla
-     {
+    {
           //? Establecemos cada uno de los atributos que utilizaremos 
         url: {
             type: String
@@ -14,7 +14,7 @@ const PerfilScheme = new mongoose.Schema(
         filename: {
             type: String
         },
-     },
+    },
      //? Registramos creacion y actualizacion
     {
         timestamps: true,

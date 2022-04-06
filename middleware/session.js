@@ -10,14 +10,14 @@ const authMiddleware = async(req,res,next) =>{
             return
         }
         const token =req.headers.authorization.split(' ').pop();
-        // verificamos la data del token
+        //? verificamos la data del token
         const dataToken = await verifyToken(token) 
-        // indicamos condicion en caso de que no exista
+        //? indicamos condicion en caso de que no exista
         if (!dataToken._id) {
             handleHttpError(res, "ERROR_ID_TOKEN", 401);
             return
         }
-        // Creamos 
+        //? Creamos 
         const  user = await userModel.findById(dataToken._id)
         req.user = user
         next()
