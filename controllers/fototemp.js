@@ -13,7 +13,7 @@ const PUBLIC_URL = process.env.PUBLIC_URL;
 const MEDIA_PATH = `${__dirname}/../fototemp`;
 
 const subscriptionKey = '4eef5ce54b79409c919d21d1c682db18';
-const endpoint = 'https://scancam.cognitiveservices.azure.com/face/v1.0/persongroups/amcan/persons/a7fb54b3-84e1-4d28-99c5-b468cb7bc16c/persistedfaces';
+const endpoint = 'https://scancam.cognitiveservices.azure.com/face/v1.0/detect';
 
 //? creamos funciones para creacion del crud
 /**
@@ -79,6 +79,28 @@ const createItems = async (req, res) => {
         res.status(201);
         //? mostramos los datos que se quieren subir 
         res.send({ data });
+
+        const imageUrl = data.url;
+
+        axios({
+            method: 'post',
+            url: endpoint,
+            params : {
+                recognitionModel: 'recognition_04',
+                returnFaceId: true,
+            },
+            data: {
+                url: imageUrl,
+            },
+            headers: { 'Ocp-Apim-Subscription-Key': subscriptionKey }
+        }).then(function (response) {
+            console.log('Status text: ' + response.status)
+            console.log('Status text: ' + response.statusText)
+            console.log()
+            console.log(response.data)
+        }).catch(function (error) {
+            console.log(error)
+        });
 
     } catch (e) {
         //? implementamos el manejador de errorres
