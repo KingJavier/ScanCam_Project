@@ -13,7 +13,7 @@ const PUBLIC_URL = process.env.PUBLIC_URL;
 const MEDIA_PATH = `${__dirname}/../storage`;
 
 const subscriptionKey = '4eef5ce54b79409c919d21d1c682db18';
-const endpoint = 'https://scancam.cognitiveservices.azure.com/face/v1.0/persongroups/amcan/persons/a7fb54b3-84e1-4d28-99c5-b468cb7bc16c/persistedfaces';
+const endpoint = 'https://scancam.cognitiveservices.azure.com/face/v1.0/persongroups/amcan/persons/d858caf8-750d-4cdf-af25-fd70d9f6324c/persistedfaces';
 
 //? creamos funciones para creacion del crud
 /**
