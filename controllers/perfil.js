@@ -68,7 +68,6 @@ const createItems = async (req, res) => {
       url: `${PUBLIC_URL}/${file.filename}`,
       filename: file.filename,
     };
-    console.log(fileData);
     //? Se sube a la base de datos segun el modelo
     const data = await perfilModel.create(fileData);
     //? codigo de satisafaccion al enviar un archivo
