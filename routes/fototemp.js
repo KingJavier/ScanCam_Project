@@ -1,15 +1,14 @@
 //* Importamos y guardamos express, router en una variable
-const { Router } = require('express');
 const express = require('express');
 
 //* Importamos middleware
-const uploadMiddleware = require('../utils/handlePerfil');
+const uploadMiddlewareFotoTemp =require('../utils/handleFotoTemp');
 const router = express.Router();
 //* Importamos funcion del controlador 
-const {getItems, createItems, deleteItems, updateItems, getItem} = require('../controllers/perfil');
+const {getItems, createItems, deleteItems, getItem} = require('../controllers/fototemp');
 const { text } = require('express');
 //* Importamos validate
-const {validatorGetItem} = require ('../validators/auth')
+const {validatorGetItem} = require ('../validators/registro')
 
 //* Importamos  authMiddleware
 const {authMiddleware} = require("../middleware/session");
@@ -28,11 +27,8 @@ router.delete('/:id',authMiddleware,checkRol(['aprenidz', 'funcionario', 'gestor
 
 //? implementamos ruta de middleware para subir un archivo en una peticionenviar utilizar en caso de se envien varios datos usar multi
 
-//router.post('/',uploadMiddleware.single("Myface"), createItems);
+// router.post('/',uploadMiddleware.single("FileMy"), createItems);
 
-router.post('/',authMiddleware,checkRol(['aprenidz', 'funcionario', 'gestor', 'seguridad', 'invitado']),uploadMiddleware.single("Myface"), createItems);
+router.post('/', authMiddleware, checkRol(['aprenidz', 'funcionario', 'gestor', 'seguridad', 'invitado']), uploadMiddlewareFotoTemp.single("Myfile"), createItems);
 
-
-
-//! exportamos rutas
 module.exports = router;

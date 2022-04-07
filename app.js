@@ -3,6 +3,7 @@ require("dotenv").config()
 //* Importamos y guardamos express, Cors en una variable
 const express = require('express')
 const cors = require('cors')
+
 //* Importamos conexion de mongo
 const dbConect = require('./config/mongo')
 //*Importamos el helper

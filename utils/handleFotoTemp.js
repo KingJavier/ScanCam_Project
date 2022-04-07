@@ -6,7 +6,7 @@ const storage = multer.diskStorage({
 
     //? creamos un destino de guardado 
     destination: function (req, file, cb) {
-        cb(null, `${__dirname}/../storage`);
+        cb(null, `${__dirname}/../fototemp`);
     },
     
 
@@ -15,15 +15,16 @@ const storage = multer.diskStorage({
         const ext = file.originalname.split('.').pop()
         const filename = `file-${Date.now()}.${ext}`
         cb(null, filename);
+
+        console.log('Este es el que importa',filename);
     },
 
 });
 
 //?Utilizamos Middleware
-const uploadMiddleware = multer({
+const uploadMiddlewareFotoTemp = multer({
     storage
 });
 
-
 //! exportamos rutas
-module.exports = uploadMiddleware;
+module.exports = uploadMiddlewareFotoTemp;
