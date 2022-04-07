@@ -80,27 +80,28 @@ const createItems = async (req, res) => {
         //? mostramos los datos que se quieren subir 
         res.send({ data });
 
-        const imageUrl = data.url;
+        // const imageUrl = "https://www.cabroworld.com/wp-content/uploads/2021/01/rostro-portada.jpg";
+        // console.log(imageUrl);
 
-        axios({
-            method: 'post',
-            url: endpoint,
-            params : {
-                recognitionModel: 'recognition_04',
-                returnFaceId: true,
-            },
-            data: {
-                url: imageUrl,
-            },
-            headers: { 'Ocp-Apim-Subscription-Key': subscriptionKey }
-        }).then(function (response) {
-            console.log('Status text: ' + response.status)
-            console.log('Status text: ' + response.statusText)
-            console.log()
-            console.log(response.data)
-        }).catch(function (error) {
-            console.log(error)
-        });
+        // axios({
+        //     method: 'post',
+        //     url: endpoint,
+        //     params : {
+        //         detectionModel: 'detection_04',
+        //         returnFaceId: true
+        //     },
+        //     data: {
+        //         url: imageUrl,
+        //     },
+        //     headers: { 'Ocp-Apim-Subscription-Key': subscriptionKey }
+        // }).then(function (response) {
+        //     console.log('Status text: ' + response.status)
+        //     console.log('Status text: ' + response.statusText)
+        //     console.log()
+        //     console.log(response.data)
+        // }).catch(function (error) {
+        //     console.log(error)
+        // });
 
     } catch (e) {
         //? implementamos el manejador de errorres
