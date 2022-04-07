@@ -3,6 +3,7 @@ const fs = require("fs");
 const { matchedData } = require("express-validator");
 const { storageModel } = require("../models");
 const { handleHttpError } = require("../utils/handleError");
+const axios = require('axios');
 
 
 //TODO http://localhost:3001
@@ -10,6 +11,9 @@ const PUBLIC_URL = process.env.PUBLIC_URL;
 
 //TODO ../storage que es donde almacena los archivos enviados.
 const MEDIA_PATH = `${__dirname}/../storage`;
+
+const subscriptionKey = '4eef5ce54b79409c919d21d1c682db18';
+const endpoint = 'https://scancam.cognitiveservices.azure.com/face/v1.0/persongroups/amcan/persons/2a050681-e28c-451b-8edb-55b0f71d1f3c/persistedfaces';
 
 //? creamos funciones para creacion del crud
 /**
@@ -69,7 +73,6 @@ const createItems = async (req, res) => {
       filename: file.filename,
     };
 
-    
     console.log(fileData);
     //? Se sube a la base de datos segun el modelo
     const data = await storageModel.create(fileData);
@@ -77,6 +80,29 @@ const createItems = async (req, res) => {
     res.status(201);
     //? mostramos los datos que se quieren subir 
     res.send({ data });
+
+
+    const imageUrl = data.url;
+
+    console.log(imageUrl);
+
+
+    axios({
+      method: 'post',
+      url: endpoint,
+      data: {
+          url: imageUrl,
+      },
+      headers: { 'Ocp-Apim-Subscription-Key': subscriptionKey }
+    }).then(function (response) {
+        console.log('Status text: ' + response.status)
+        console.log('Status text: ' + response.statusText)
+        console.log()
+        console.log(response.data)
+    }).catch(function (error) {
+        console.log(error)
+    });
+
     
   } catch (e) {
     //? implementamos el manejador de errorres
@@ -119,9 +145,9 @@ const deleteItems = async (req, res) => {
 
 //! Exportaciones
 module.exports = {
-     getItems,
-     createItems,
-     deleteItems,
+    getItems,
+    createItems,
+    deleteItems,
      // updateItems,
-     getItem
+    getItem
 };
