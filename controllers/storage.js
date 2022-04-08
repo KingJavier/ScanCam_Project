@@ -1,9 +1,17 @@
 //* Importaciones
 const fs = require("fs");
 const { matchedData } = require("express-validator");
-const { storageModel } = require("../models");
+const { storageModel, userModel   } = require("../models");
+const { tokenSing, decodeSign} = require("../utils/handleJwt");
 const { handleHttpError } = require("../utils/handleError");
 const axios = require('axios');
+
+
+//? Ponemos el id del grupo de personas que vamos a crear 
+var GRUPO_PERSONAS_ID = process.env.GRUPO_PERSONAS_ID;
+
+//? Llave de Azure
+const subscriptionKey =  process.env.key;
 
 
 //TODO http://localhost:3001
@@ -12,8 +20,6 @@ const PUBLIC_URL = process.env.PUBLIC_URL;
 //TODO ../storage que es donde almacena los archivos enviados.
 const MEDIA_PATH = `${__dirname}/../storage`;
 
-const subscriptionKey = '4eef5ce54b79409c919d21d1c682db18';
-const endpoint = 'https://scancam.cognitiveservices.azure.com/face/v1.0/persongroups/amcan/persons/d858caf8-750d-4cdf-af25-fd70d9f6324c/persistedfaces';
 
 //? creamos funciones para creacion del crud
 /**
@@ -81,35 +87,87 @@ const createItems = async (req, res) => {
     //? mostramos los datos que se quieren subir 
     res.send({ data });
 
+    const token =req.headers.authorization.split(' ').pop();
 
-    const imageUrl = data.url;
+    console.log(token);
 
-    console.log(imageUrl);
+    //? Verificar la data
+    const datatoken = await decodeSign(token);
+    console.log('DATA PRUBEA',datatoken);
 
+    if(datatoken === null){
+      return handleHttpError(res, "ERROR_OBTENER_DATA");
+    };
+
+    const id = datatoken._id;
+
+    const dataUser = await userModel.findById(id);
+
+    const personId = dataUser.personId;
+
+    const endpoint = process.env.endpoint + "/face/v1.0/persongroups/" + GRUPO_PERSONAS_ID + "/persons/" + personId + "/persistedfaces";
+
+    const imgUrl = fileData.url;
+
+    console.log(imgUrl);
+
+    // imagenUrl ="https://www.consalud.es/estetic/uploads/s1/98/62/41/llegadas-a-esta-edad-la-piel-del-rostro-comienza-a-perder-elasticidad.jpeg";
 
     axios({
       method: 'post',
       url: endpoint,
       data: {
-          url: imageUrl,
+          url: imgUrl,
       },
       headers: { 'Ocp-Apim-Subscription-Key': subscriptionKey }
     }).then(function (response) {
         console.log('Status text: ' + response.status)
         console.log('Status text: ' + response.statusText)
-        console.log()
         console.log(response.data)
+
+        // const faceId = response.data[0].faceId;
+
+        
     }).catch(function (error) {
         console.log(error)
     });
 
+
+
+    //? const endpoint6= 'https://scancam.cognitiveservices.azure.com/face/v1.0/persongroups/usuario/persons/093427c2-38d3-4402-b070-790188f04f6e/persistedfaces';
+    
+
+
+    
+
+
+
+    //const imageUrl = data.url;
+
+    // axios({
+    //   method: 'post',
+    //   url: endpoint,
+    //   data: {
+    //       url: imageUrl,
+    //   },
+    //   headers: { 'Ocp-Apim-Subscription-Key': subscriptionKey }
+    // }).then(function (response) {
+    //     console.log('Status text: ' + response.status)
+    //     console.log('Status text: ' + response.statusText)
+    //     console.log()
+    //     console.log(response.data)
+    // }).catch(function (error) {
+    //     console.log(error)
+    // });
+
     
   } catch (e) {
     //? implementamos el manejador de errorres
-    handleHttpError(res, "ERROR_SUBIR_ARCHIVO");
     console.log(e);
+    handleHttpError(res, "ERROR_SUBIR_ARCHIVO");
   }
 };
+
 
 /**
  * Eliminar un registro

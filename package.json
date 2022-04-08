@@ -3,6 +3,8 @@
   "versión": "1.0.0",
   "descripción": "",
   "dependencies": {
+    "@azure/cognitiveservices-face": "^5.0.0",
+    "@azure/ms-rest-js": "^2.6.1",
     "@slack/webhook": "^6.1.0",
     "axios": "^0.26.1",
     "bcryptjs": "^2.4.3",

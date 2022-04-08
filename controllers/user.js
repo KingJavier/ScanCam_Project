@@ -8,10 +8,25 @@ const users = require("../models/nosql/users")
 const { getTemplate, sendEmail, getTemplateR} = require("../utils/handleMail");
 const  _ = require('lodash');
 const jwt = require("jsonwebtoken");
+const axios = require('axios');
+var msRest = require("@azure/ms-rest-js");
+var Face = require("@azure/cognitiveservices-face");
 
+
+//? Ponemos el id del grupo de personas que vamos a crear 
+var GRUPO_PERSONAS_ID = 'usuario';
+
+//? Llave de Azure
+const key =  process.env.key;
+
+//? Ruta Azure para crear PersonGruopPerson
+const endpoint = process.env.endpoint;
+
+let credentials = new msRest.ApiKeyCredentials({ inHeader: { 'Ocp-Apim-Subscription-Key': key } });
+
+let client = new Face.FaceClient(credentials, endpoint);
 
 //? creamos funciones para register y login del usuario
-
 //? Controlados de registro de usaurio en la DB.
 const registerCtrl = async (req, res) => {
   try {
@@ -38,7 +53,6 @@ const registerCtrl = async (req, res) => {
     //? seteamos un modelo
     dataUser.set ("password", undefined, {strict:false});
 
-
     //? Convinamos el token y el usuario
     const data = {
         token: await tokenSing(dataUser),
@@ -52,9 +66,46 @@ const registerCtrl = async (req, res) => {
     //? Enviar el Email.
     await sendEmail(req.email, 'Confirma tu Correo', template);
 
+    //? Extraemos ID del usuario creado
+    const id = data.user._id;
+
+    //? Peticion a Microsoft Azure para crear un person group person.
+
+    let pablito = await client.personGroupPerson.create(GRUPO_PERSONAS_ID, { 'name': id })
+        .then((wFace) => {
+            //? Enviamos por consola mensaje de creacion exitosa
+            console.log('Persona' + wFace.personId + 'a sido creada.')
+
+            console.log(wFace.personId);
+            //? Retornamos la creacion 
+            return wFace
+        })//?En caso de error me retorne un un mensaje y el error que genera este fallo
+        .catch((err) => {
+            throw err
+        })
+
+    const personId = pablito.personId;
+
+    try {
+      var userDa = await userModel.findById(data.user._id);
+    } catch (error) {
+      console.log(error);
+      return handleHttpError(res, "ID_NO_VALIDO");
+    }
+
+    userDa.personId = personId;
+    await userDa.save();
+
+    console.log(userDa);
+    
+    const data2 = {
+      token: await tokenSing(dataUser),
+      user: userDa
+    }
+
     //? definimos codigo de repuesta de creacion satisfactoria
     res.status(201)
-    res.send({data});
+    res.send({data2});
     
   } catch (e) {
     //? implementamos el manejador de errorres
@@ -363,10 +414,6 @@ const activarUser = async (req, res) => {
     console.log(e)
   }
 };
-
-
-
-
 
 //! Exportaciones
 module.exports = {

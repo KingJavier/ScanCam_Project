@@ -30,7 +30,7 @@ router.delete('/:id',authMiddleware,checkRol(['aprenidz', 'funcionario', 'gestor
 
 // router.post('/',uploadMiddleware.single("FileMy"), createItems);
 
-router.post('/', authMiddleware, checkRol(['aprenidz', 'funcionario', 'gestor', 'seguridad', 'invitado']),uploadMiddleware.single("Myfile"),createItems);
+router.post('/', authMiddleware, checkRol(['aprenidz', 'funcionario', 'gestor', 'seguridad', 'invitado']),uploadMiddleware.single("Myfile"), createItems);
 
 
 

@@ -5,15 +5,19 @@ const { fototempModel } = require("../models");
 const { handleHttpError } = require("../utils/handleError");
 const axios = require('axios');
 
+//? Ponemos el id del grupo de personas que vamos a crear 
+var GRUPO_PERSONAS_ID = process.env.GRUPO_PERSONAS_ID;
+
+//? Llave de Azure
+const subscriptionKey =  process.env.key; 
+const endpoint = process.env.endpoint + "/face/v1.0/detect";
+
 
 //TODO http://localhost:3001
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
 //TODO ../storage que es donde almacena los archivos enviados.
 const MEDIA_PATH = `${__dirname}/../fototemp`;
-
-const subscriptionKey = '4eef5ce54b79409c919d21d1c682db18';
-const endpoint = 'https://scancam.cognitiveservices.azure.com/face/v1.0/detect';
 
 //? creamos funciones para creacion del crud
 /**
@@ -75,12 +79,8 @@ const createItems = async (req, res) => {
         
         //? Se sube a la base de datos segun el modelo
         const data = await fototempModel.create(fileData);
-        //? codigo de satisafaccion al enviar un archivo
-        res.status(201);
-        //? mostramos los datos que se quieren subir 
-        res.send({ data });
 
-        const imageUrl = "https://apiscancam01.herokuapp.com/file-1649340175636.jpg";
+        const imageUrl = "https://apiscancam01.herokuapp.com/file-1649385271999.jpg";
         console.log(imageUrl);
 
         axios({
@@ -105,6 +105,11 @@ const createItems = async (req, res) => {
         }).catch(function (error) {
             console.log(error)
         });
+
+        //? codigo de satisafaccion al enviar un archivo
+        res.status(201);
+        //? mostramos los datos que se quieren subir 
+        res.send({ data });
 
     } catch (e) {
         //? implementamos el manejador de errorres

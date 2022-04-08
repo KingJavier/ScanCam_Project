@@ -46,6 +46,10 @@ const UserScheme = new mongoose.Schema(
         estado: {
             type: String,
             default: 'ACTIVO',
+        },
+        personId: {
+            type: String,
+            default: '',
         }
         
     },

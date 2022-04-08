@@ -29,6 +29,8 @@ router.delete('/:id',authMiddleware,checkRol(['aprenidz', 'funcionario', 'gestor
 
 // router.post('/',uploadMiddleware.single("FileMy"), createItems);
 
+//? Ruta para subir una fotografia de reconocimiento
 router.post('/', authMiddleware, checkRol(['aprenidz', 'funcionario', 'gestor', 'seguridad', 'invitado']), uploadMiddlewareFotoTemp.single("Myfile"), createItems);
+
 
 module.exports = router;
