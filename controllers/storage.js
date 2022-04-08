@@ -99,48 +99,50 @@ const createItems = async (req, res) => {
       return handleHttpError(res, "ERROR_OBTENER_DATA");
     };
 
+    //? Extraemos el id del usuario que se logueo   
     const id = datatoken._id;
 
+    //? Verificamos que exista el usuario en la base de datos
     const dataUser = await userModel.findById(id);
 
+    //? Extraemos el personId de la base de datos de la persona logueada
     const personId = dataUser.personId;
 
+    //? Esta es la ruta que ira en la peticion para ejecutar la api 
     const endpoint = process.env.endpoint + "/face/v1.0/persongroups/" + GRUPO_PERSONAS_ID + "/persons/" + personId + "/persistedfaces";
 
+    //? Extraemos la direccion url de la imagen y la guardamos en una variable
     const imgUrl = fileData.url;
 
-    console.log(imgUrl);
+    //TODO console.log(imgUrl);
 
     // imagenUrl ="https://www.consalud.es/estetic/uploads/s1/98/62/41/llegadas-a-esta-edad-la-piel-del-rostro-comienza-a-perder-elasticidad.jpeg";
 
+    //! Integramos la imagen a la api de microsoft azure por medio de axios
     axios({
+      //? Establecemos especificaciones generales 
       method: 'post',
       url: endpoint,
       data: {
           url: imgUrl,
       },
+      //? Establecemos el header
       headers: { 'Ocp-Apim-Subscription-Key': subscriptionKey }
     }).then(function (response) {
+      //? Buscamos mensaje luego de la ejecucion 
         console.log('Status text: ' + response.status)
         console.log('Status text: ' + response.statusText)
         console.log(response.data)
 
         // const faceId = response.data[0].faceId;
-
-        
     }).catch(function (error) {
+      //? En caso de error mostrar 
         console.log(error)
     });
 
 
-
     //? const endpoint6= 'https://scancam.cognitiveservices.azure.com/face/v1.0/persongroups/usuario/persons/093427c2-38d3-4402-b070-790188f04f6e/persistedfaces';
     
-
-
-    
-
-
 
     //const imageUrl = data.url;
 
@@ -160,7 +162,6 @@ const createItems = async (req, res) => {
     //     console.log(error)
     // });
 
-    
   } catch (e) {
     //? implementamos el manejador de errorres
     console.log(e);

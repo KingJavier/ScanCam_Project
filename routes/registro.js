@@ -16,7 +16,7 @@ const checkRol = require('../middleware/rol');
 router.get('/',authMiddleware,checkRol(['gestor', 'seguridad']), getItems);
 
 //? Creamos ruta para crear un registro a la base de datos previamente validada
-router.post('/',authMiddleware,checkRol(['aprenidz', 'funcionario', 'gestor', 'seguridad', 'invitado']), validatorCreateItem, createItems);
+router.post('/', checkRol(['aprenidz', 'funcionario', 'gestor', 'seguridad', 'invitado']), validatorCreateItem, createItems);
 
 //? Obtener un solo detalle aplicando una validación
 router.get('/:id',authMiddleware,checkRol([ 'gestor','seguridad']),validatorGetItem, getItem);

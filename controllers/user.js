@@ -69,8 +69,7 @@ const registerCtrl = async (req, res) => {
     //? Extraemos ID del usuario creado
     const id = data.user._id;
 
-    //? Peticion a Microsoft Azure para crear un person group person.
-
+    //! Peticion a Microsoft Azure para crear un person group person.
     let pablito = await client.personGroupPerson.create(GRUPO_PERSONAS_ID, { 'name': id })
         .then((wFace) => {
             //? Enviamos por consola mensaje de creacion exitosa
@@ -84,20 +83,28 @@ const registerCtrl = async (req, res) => {
             throw err
         })
 
+    //? Extraemos el PersonId 
     const personId = pablito.personId;
 
+    //? Generamos try catch para verificar que si nos traiga el id del usuario registrado 
     try {
+      //? Guardamos el id del usuario 
       var userDa = await userModel.findById(data.user._id);
     } catch (error) {
+      //? Mostramos el error
       console.log(error);
       return handleHttpError(res, "ID_NO_VALIDO");
     }
 
+    //? Insertamos el valor personId en el campo personId de la base de datos 
     userDa.personId = personId;
+    //? Guardamos los cambios realizados 
     await userDa.save();
 
+    //? Verificamos con un console que se haya guardado el personId
     console.log(userDa);
     
+    //? Generamos una variable donde generaremos un token de los cambios realizados anteriormente
     const data2 = {
       token: await tokenSing(dataUser),
       user: userDa

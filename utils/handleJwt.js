@@ -42,7 +42,7 @@ const verifyToken = async (tokenJwt) => {
         //? Veryficamos el token 
         return jwt.verify(tokenJwt, process.env.JWT_SECRET)
     }catch(e){
-        console.log('Esta vaina se daño');
+        console.log('Esta vaina se daño, es fallo del token xd');
         return null
     }
     
@@ -52,8 +52,6 @@ const decodeSign = (token) => {
     return jwt.decode(token, any);
 };
 
-
-  
 
 
 

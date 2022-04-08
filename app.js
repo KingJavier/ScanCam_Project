@@ -26,7 +26,7 @@ app.use(express.static('storage'))
 
 app.use((req, res, next) => {
     
-    // Metodos de solicitud que deseas permitir
+    //? Metodos de solicitud que deseas permitir
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
 
     next();
