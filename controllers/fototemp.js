@@ -16,7 +16,7 @@ const endpoint = process.env.endpoint + "/face/v1.0/detect";
 
 const endpoint2 = process.env.endpoint +  '/face/v1.0/identify';
 
-const endpointRegEnt = "https://apiscancam01.herokuapp.com" + "api/registro";
+const endpointRegEnt = process.env.PUBLIC_URL + "/api/registro";
 
 
 //TODO http://localhost:3001
@@ -74,6 +74,8 @@ const getItem = async (req, res) => {
 //? metodo para subir guardar un item 
 const createItems = async (req, res) => {
     try {
+        const tokenUsuPet = req.headers.authorization
+
         //?  Almacenamos en una constante el file
         const { file } = req;
         //? definimos el nombre y la Url del archivo enviado 
@@ -87,6 +89,8 @@ const createItems = async (req, res) => {
 
         //? Guardamos la url de la imagen que se traera de la base de datos 
         const imageUrl = data.url;
+
+        // const imageUrl = "https://cdn2.estamosrodando.com/biografias/2/13/chace-crawford-170117.jpg";
 
         try {
             //! Integramos el reconocimiento facial de la api de microsoft azure por medio de axios
@@ -111,8 +115,6 @@ const createItems = async (req, res) => {
 
                 //? Guardamos en un avariable el id que extraemos cuando se detecta una cara en la imagen
                 const faceId = response.data[0].faceId;
-
-                // let faceId = "d0a7a2d4-7032-4309-a7c1-88b958cb6b3e"; 
 
                 try {
                     //! Integramos otro metodo axios para extraer la cara con la mayor coincidencia
@@ -148,7 +150,7 @@ const createItems = async (req, res) => {
                             console.log(personId);
 
                         } catch(e) {
-                             //? En caso de error mostrar 
+                            //? En caso de error mostrar 
                             return console.log("ROSTRO NO ENCONTRADO");
                         }
                         
@@ -182,46 +184,95 @@ const createItems = async (req, res) => {
                                     console.log(error);
                                     return handleHttpError(res, "ERROR_TRAYENDO_DATAUSER");
                                 }
-                                
+
                                 //? Mostramos el usuario obtenido 
                                 console.log("DATAUSER-->",userData);
+
+                                const doc = userData.documento;
+                                const name = userData.name;
+                                const ape = userData.apellido;
+                                const email = userData.email;
+                                const rol = userData.role[0];
+
+                                //? Creamos registro de entrada con los datos del usuario.
+                                try {
+                                    axios({
+                                        method: 'post',
+                                        url: endpointRegEnt,
+                                        data: {
+                                            name: name,
+                                            apellido: ape,
+                                            documento: doc,
+                                            email: email,
+                                            role: rol,
+                                            confirmacion: "true"
+                                        },
+                                        headers: { Authorization: tokenUsuPet }
+                                    }).then(function (response) {
+                                        console.log('Status text: ' + response.status)
+                                        console.log('Status text: ' + response.statusText)
+                                        const dataUser = response.data;
+
+
+
+                                        const resData = {
+                                            dataImg: data,
+                                            dataUser: dataUser,
+                                        };
+
+                                        //! ---------
+                                        //? codigo de satisafaccion al enviar un archivo
+                                        res.status(response.status);
+                                        //? mostramos los datos que se quieren subir 
+                                        res.send(resData);
+
+                                        //! ---------
+                                    
+                                    }).catch(function (error) {
+                                        console.log(error);
+                                        return res.send("ERROR_REG_ENTRADA_POSIBLEMENTE_NO_TIENE_ROL_INDICADO", error)
+                                    });
+
+                                } catch (error) {
+                                    console.log(error);
+                                    return res.send("ERROR_CREANDO_REGISTRO DE ENTRADA", error)
+                                }
                             
                             }).catch(function (error) {
-                                 //? En caso de error mostrar 
-                                console.log(error)
+                                //? En caso de error mostrar 
+                                console.log(error);
+                                return res.send("ERROR_TRAYENDO_DATA_USER", error)
                             });
                         } catch (e) {
                              //? En caso de error mostrar 
-                            return handleHttpError(res, "ERROR_GET_PERSON_ID");
+                            console.log(e);
+                            return res.send("ERROR_GET_PERSON_ID->", e)
                         }
-                
                     }).catch(function (error) {
-                         //? En caso de error mostrar 
-                        return console.log("Error para encontrar coincidencia ->",error)
+                         //? En caso de error mostrar
+                        console.log(error);
+                        return res.send("Error para encontrar coincidencia ->", error)
                     });
                 } catch (error) {
                      //? En caso de error mostrar 
-                    return handleHttpError(res, "ERROR_ROSTRO NO ENCONTRADO");
+                    console.log(error);
+                    return res.send("ERROR_ROSTRO NO ENCONTRADO", error)
                 } 
-            }).catch(function (error) {
+            }).catch( function (error) {
                  //? En caso de error mostrar 
-                return console.log("ERROR DETECTANDO ROSTRO",error)
+                console.log(error);
+                return res.send("ERROR DETECTANDO ROSTRO", error)
             });
 
         } catch (err) {
              //? En caso de error mostrar 
-            return handleHttpError(res, "ERROR_AZURE");
+            console.log(e);
+            return res.send("ERROR AZURE", error)
         }
-
-        //? codigo de satisafaccion al enviar un archivo
-        res.status(201);
-        //? mostramos los datos que se quieren subir 
-        //? mostramos los datos que se quieren subir //? mostramos los datos que se quieren subir //? mostramos los datos que se quieren subir //? mostramos los datos que se quieren subir //? mostramos los datos que se quieren subir //? mostramos los datos que se quieren subir //? mostramos los datos que se quieren subir //? mostramos los datos que se quieren subir 
-        res.send({ data });
 
     } catch (e) {
         //? implementamos el manejador de errorres
-        return handleHttpError(res, "ERROR_SUBIR_ARCHIVO");
+        return res.send(res, "ERROR_SUBIR_ARCHIVO");
     }
 };
 
