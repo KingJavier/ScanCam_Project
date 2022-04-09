@@ -28,9 +28,9 @@ const RegistroScheme = new mongoose.Schema(
         confirmacion:{
             type:Boolean
         },
-        imgid:{
-            type: mongoose.Types.ObjectId
-        }
+        //TODO imgid:{
+        //TODO     type: mongoose.Types.ObjectId
+        //TODO }
 
 
     },
@@ -46,53 +46,53 @@ const RegistroScheme = new mongoose.Schema(
  */
 
 //?creamos metodo 
-RegistroScheme.statics.findAllData = function(){
-    const joinData = this.aggregate ([
-        {
-            $lookup: {
-                from:"storages",
-                localField:"imgid",
-                foreignField:"_id",
-                as:"RgEntrada",
+//TODO RegistroScheme.statics.findAllData = function(){
+//TODO     const joinData = this.aggregate ([
+//TODO         {
+//TODO             $lookup: {
+//TODO                 from:"storages",
+//TODO                 localField:"imgid",
+//TODO                 foreignField:"_id",
+//TODO                 as:"RgEntrada",
                 
-            }
-        },
-        {
-            $unwind:"$RgEntrada"
-        }
+//TODO             }
+//TODO         },
+//TODO         {
+//TODO             $unwind:"$RgEntrada"
+//TODO         }
 
     
-    ])
-    return joinData
-};
-RegistroScheme.statics.findOneData = function(id){
-    const joinData = this.aggregate ([
-        {
-            $match:{
-                _id:mongoose.Types.ObjectId(id)
-            }
-        },
-        {
-        // Creamos una realcion en la cual regsitro se relacion con el id 
-        $lookup:{
-            from:"storages",
-            // viscamos campo a relacionar
-            localField:"imgid",
-            // Detemonamos un id
-            foreignField:"_id",
-            // Creamos un alias
-            as:"RgEntrada"
-        },
-    },
-        {
-            $unwind:"$RgEntrada"
-        },
+//TODO     ])
+//TODO     return joinData
+//TODO };
+//TODO RegistroScheme.statics.findOneData = function(id){
+//TODO     const joinData = this.aggregate ([
+//TODO         {
+//TODO             $match:{
+//TODO                 _id:mongoose.Types.ObjectId(id)
+//TODO             }
+//TODO         },
+//TODO         {
+//TODO         //? Creamos una realcion en la cual regsitro se relacion con el id 
+//TODO         $lookup:{
+//TODO             from:"storages",
+//TODO             // viscamos campo a relacionar
+//TODO             localField:"imgid",
+//TODO             // Detemonamos un id
+//TODO             foreignField:"_id",
+//TODO             // Creamos un alias
+//TODO             as:"RgEntrada"
+//TODO         },
+//TODO     },
+//TODO         {
+//TODO             $unwind:"$RgEntrada"
+//TODO         },
         
 
-    ])
-    console.log( joinData );
-    return joinData
-}
+//TODO     ])
+//TODO     console.log( joinData );
+//TODO     return joinData
+//TODO }
 
 
 //?Utilizamos el esquema de este documento para sobre escribir metodos

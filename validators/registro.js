@@ -23,9 +23,9 @@ const validatorCreateItem=[
     check("confirmacion")
     .exists()
     .notEmpty(),
-    check("imgid")
-    .exists()
-    .notEmpty(),
+    // check("imgid")
+    // .exists()
+    // .notEmpty(),
     (req, res, next) => {
         return validateResult(req, res, next)
     }
