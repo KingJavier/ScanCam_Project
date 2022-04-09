@@ -26,6 +26,9 @@ const validatorRegister =[
     check("telefono")
     .exists()
     .notEmpty(),
+    check("role")
+    .exists()
+    .notEmpty(),
     
     (req, res, next) => {
         return validateResult(req, res, next)
