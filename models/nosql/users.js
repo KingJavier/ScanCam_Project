@@ -50,6 +50,10 @@ const UserScheme = new mongoose.Schema(
         personId: {
             type: String,
             default: '',
+        },
+        idImgPerfil: {
+            type: String,
+            default: '',
         }
         
     },

@@ -79,22 +79,17 @@ const createItems = async (req, res) => {
       filename: file.filename,
     };
 
-    console.log(fileData);
     //? Se sube a la base de datos segun el modelo
-    const data = await storageModel.create(fileData);
-    //? codigo de satisafaccion al enviar un archivo
-    res.status(201);
-    //? mostramos los datos que se quieren subir 
-    res.send({ data });
+    const dataI = await storageModel.create(fileData);
 
+    //? extraemos el token de los headers de la petición.
     const token =req.headers.authorization.split(' ').pop();
 
-    console.log(token);
-
-    //? Verificar la data
+    //? Decodificamos el token 
     const datatoken = await decodeSign(token);
     console.log('DATA PRUBEA',datatoken);
 
+    //? Verificamos que la el token si sea gnerado por nosotros
     if(datatoken === null){
       return handleHttpError(res, "ERROR_OBTENER_DATA");
     };
@@ -116,8 +111,6 @@ const createItems = async (req, res) => {
 
     //TODO console.log(imgUrl);
 
-    // imagenUrl ="https://www.consalud.es/estetic/uploads/s1/98/62/41/llegadas-a-esta-edad-la-piel-del-rostro-comienza-a-perder-elasticidad.jpeg";
-
     //! Integramos la imagen a la api de microsoft azure por medio de axios
     axios({
       //? Establecemos especificaciones generales 
@@ -134,38 +127,27 @@ const createItems = async (req, res) => {
         console.log('Status text: ' + response.statusText)
         console.log(response.data)
 
-        // const faceId = response.data[0].faceId;
+        //? codigo de satisafaccion al enviar un archivo
+        res.status(201);
+
+        const dataImg = {
+          data: dataI,
+          persistedFaceId: response.data,
+        };
+
+        //? mostramos los datos que se quieren subir 
+        res.send({ dataImg });
+
     }).catch(function (error) {
       //? En caso de error mostrar 
         console.log(error)
+        return handleHttpError(res, "ROSTRO NO ENCONTRADO");
     });
-
-
-    //? const endpoint6= 'https://scancam.cognitiveservices.azure.com/face/v1.0/persongroups/usuario/persons/093427c2-38d3-4402-b070-790188f04f6e/persistedfaces';
-    
-
-    //const imageUrl = data.url;
-
-    // axios({
-    //   method: 'post',
-    //   url: endpoint,
-    //   data: {
-    //       url: imageUrl,
-    //   },
-    //   headers: { 'Ocp-Apim-Subscription-Key': subscriptionKey }
-    // }).then(function (response) {
-    //     console.log('Status text: ' + response.status)
-    //     console.log('Status text: ' + response.statusText)
-    //     console.log()
-    //     console.log(response.data)
-    // }).catch(function (error) {
-    //     console.log(error)
-    // });
 
   } catch (e) {
     //? implementamos el manejador de errorres
     console.log(e);
-    handleHttpError(res, "ERROR_SUBIR_ARCHIVO");
+    res.send(handleHttpError(res, "ERROR_SUBIR_ARCHIVO"));
   }
 };
 

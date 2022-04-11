@@ -1,7 +1,7 @@
 //* Importaciones
 const fs = require("fs");
 const { matchedData } = require("express-validator");
-const { perfilModel } = require("../models");
+const { perfilModel, userModel } = require("../models");
 const { handleHttpError } = require("../utils/handleError");
 
 
@@ -70,6 +70,23 @@ const createItems = async (req, res) => {
     };
     //? Se sube a la base de datos segun el modelo
     const data = await perfilModel.create(fileData);
+
+    const {user} = req;
+
+    try {
+      var datosUser = await userModel.findById(user._id);
+
+      datosUser.idImgPerfil = data._id;
+      await datosUser.save();
+
+    } catch (error) {
+      return handleHttpError(res, "USUARIO_NO_ENCONTRADO");
+    }
+
+    const baboso = await userModel.findById(user._id);
+
+    console.log(baboso);
+
     //? codigo de satisafaccion al enviar un archivo
     res.status(201);
     //? mostramos los datos que se quieren subir 
