@@ -26,9 +26,6 @@ router.get('/:id',authMiddleware,checkRol(['aprendiz', 'funcionario', 'gestor', 
 router.delete('/:id',authMiddleware, checkRol(['aprendiz', 'funcionario', 'gestor', 'seguridad', 'invitado']),validatorGetItem,deleteItems);
 
 //? implementamos ruta de middleware para subir un archivo en una peticionenviar utilizar en caso de se envien varios datos usar multi
-
-// router.post('/',uploadMiddleware.single("FileMy"), createItems);
-
 //? Ruta para subir una fotografia de reconocimiento
 router.post('/', authMiddleware, uploadMiddlewareFotoTempSal.single("Myfile"), createItems);
 

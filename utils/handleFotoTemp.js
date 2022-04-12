@@ -15,8 +15,6 @@ const storage = multer.diskStorage({
         const ext = file.originalname.split('.').pop()
         const filename = `file-${Date.now()}.${ext}`
         cb(null, filename);
-
-        console.log('Este es el que importa',filename);
     },
 
 });

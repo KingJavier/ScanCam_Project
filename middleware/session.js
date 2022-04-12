@@ -16,7 +16,7 @@ const authMiddleware = async(req,res,next) =>{
         // indicamos condicion en caso de que no exista
         if (!dataToken._id) {
             return res.json({
-                msg: 'El_Usuario_No_Tiene_Permisos'
+                msg: "ERROR_ID_TOKEN"
             });
         }
         // Creamos 
@@ -26,7 +26,7 @@ const authMiddleware = async(req,res,next) =>{
         
     }catch(e){
         return res.json({
-            msg: 'El_Usuario_No_Tiene_Permisos'
+            msg: "NOT_SESSION_TOKEN"
         });
     }
 }

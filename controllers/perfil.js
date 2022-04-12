@@ -12,10 +12,6 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-
-//TODO http://localhost:3001
-const PUBLIC_URL = process.env.PUBLIC_URL;
-
 //TODO ../perfil que es donde almacena los archivos enviados.
 const MEDIA_PATH = `${__dirname}/../perfil`;
 
@@ -30,12 +26,12 @@ const getItems = async (req, res) => {
   try {
      //? integramos constante que buscara diversos datos
     const data = await perfilModel.find({});
-    console.log(data);
     res.send({ data });
-    
   } catch (e) {
     //? implementamos el manejador de errorres
-    handleHttpError(res, "ERROR_LIST_ITEMS");
+    return res.status(501).json({
+      msg: "ERROR_LIST_ITEMS"
+    });
   }
 };
 
@@ -47,7 +43,6 @@ const getItems = async (req, res) => {
 //? método para obtener en detalle vel elemento enviado donde es necesatio que se envie el ID del registro en la DB.
 const getItem = async (req, res) => {
   try {
-
     //? Filtramos el id y se alamacena en {id}.
     req = matchedData(req);
     const {id} = req;
@@ -57,7 +52,9 @@ const getItem = async (req, res) => {
   } catch (e) {
     console.log(e)
     //? implementamos el manejador de errorres
-    handleHttpError(res, "ERROR_DETALLE_ITEMS");
+    return res.status(501).json({
+      msg: "ERROR_DETALLE_ITEMS"
+    });
   }
 };
 
@@ -84,7 +81,6 @@ const createItems = async (req, res) => {
 
     //? Se sube a la base de datos segun el modelo
     const data = await perfilModel.create(fileData);
-
     const {user} = req;
 
     try {
@@ -94,12 +90,11 @@ const createItems = async (req, res) => {
       await datosUser.save();
 
     } catch (error) {
-      return handleHttpError(res, "USUARIO_NO_ENCONTRADO");
+      console.log(e);
+      return res.status(404).json({
+        msg: "USUARIO_NO_ENCONTRADO"
+      });
     }
-
-    const baboso = await userModel.findById(user._id);
-
-    console.log(baboso);
 
     //? codigo de satisafaccion al enviar un archivo
     res.status(201);
@@ -108,7 +103,10 @@ const createItems = async (req, res) => {
     
   } catch (e) {
     //? implementamos el manejador de errorres
-    handleHttpError(res, "ERROR_SUBIR_ARCHIVO");
+    console.log(e);
+    return res.status(500).json({
+      msg: "ERROR_SUBIR_ARCHIVO"
+    });
   }
 };
 
@@ -136,11 +134,13 @@ const deleteItems = async (req, res) => {
       filePath,
       deleted: deleteResponse.matchedCount,
     };
-
     res.send({ data });
   } catch (e) {
     //? implementamos el manejador de errorres
-    handleHttpError(res, "ERROR_DELETE_ITEMS");
+    console.log(e);
+    return res.status(501).json({
+      msg: "ERROR_DELETE_ITEMS"
+    });
   }
 };
 

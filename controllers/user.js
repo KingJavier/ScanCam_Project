@@ -38,8 +38,9 @@ const registerCtrl = async (req, res) => {
 
     //? Condición donde en caso de ser falso emplea el manejador de errores 
     if( user!== null){
-      res.send(handleHttpError(res, "EMAIL_ALREADY_REGISTERED", 406));
-      return
+      return res.status(406).json({
+        msg: "EMAIL_ALREADY_REGISTERED"
+      }); 
     }
 
     //? Encriptacion de la contraseña traida del helper
@@ -73,9 +74,8 @@ const registerCtrl = async (req, res) => {
     let pablito = await client.personGroupPerson.create(GRUPO_PERSONAS_ID, { 'name': id })
         .then((wFace) => {
             //? Enviamos por consola mensaje de creacion exitosa
-            console.log('Persona' + wFace.personId + 'a sido creada.')
-
-            console.log(wFace.personId);
+            //console.log('Persona' + wFace.personId + 'a sido creada.')
+            //console.log(wFace.personId);
             //? Retornamos la creacion 
             return wFace
         })//?En caso de error me retorne un un mensaje y el error que genera este fallo
@@ -90,10 +90,12 @@ const registerCtrl = async (req, res) => {
     try {
       //? Guardamos el id del usuario 
       var userDa = await userModel.findById(data.user._id);
-    } catch (error) {
+    } catch (e) {
       //? Mostramos el error
-      console.log(error);
-      return handleHttpError(res, "ID_NO_VALIDO");
+      console.log(e);
+      return res.status(401).json({
+        msg: "ID_NO_VALIDO"
+      });
     }
 
     //? Insertamos el valor personId en el campo personId de la base de datos 
@@ -117,7 +119,9 @@ const registerCtrl = async (req, res) => {
   } catch (e) {
     console.log(e)
     //? implementamos el manejador de errorres
-    res.send(handleHttpError(res, "ERROR_REGISTER_USER"));
+    return res.status(404).json({
+      msg: "ERROR_REGISTER_USER"
+    });
   }
 };
 
@@ -131,8 +135,9 @@ const loginCtrl = async (req, res) => {
 
     //? Condición donde en caso de ser falso emplea el manejador de errores 
     if(!user){
-      handleHttpError(res, "USER_NOT_EXISTS", 404);
-      return
+      return res.status(404).json({
+        msg: "USER_NOT_EXISTS"
+      });
     }
 
     //? Extrae la contraseña en texto plano
@@ -142,13 +147,13 @@ const loginCtrl = async (req, res) => {
 
     //? Condición donde en caso de ser falso se ejecuta emplea el manejador de errores
     if(!check){
-      handleHttpError(res, "PASSWORD_INVALID", 401);
-      return
+      return res.status(401).json({
+        msg: "PASSWORD_INVALID"
+      });
     }
 
     //? Metodo para que NO aparezca en desntro de la data la contraseña por temas de seguridad
     user.set('password', undefined, {strict:false})
-      
 
     //? Enviamos los datos para la creacion del token y lo concatenamos en el objeto con los datos del user
     const data = {
@@ -158,9 +163,12 @@ const loginCtrl = async (req, res) => {
 
     //?mostarmos la data como respuesta
     res.send({data})
+
   }catch(e){
     console.log(e)
-    handleHttpError(res, "ERROR_LOGIN_USER")
+    return res.status(404).json({
+      msg: "ERROR_LOGIN_USER"
+    });
   }
 }
 
@@ -169,32 +177,34 @@ const confirmEmail = async (req, res) => {
   try{
     //? Obtener el Token
     const {token} = req.params;
-    console.log('Token traido del email',token);
 
     //? Verificar la data
     const data = await decodeSign(token);
-    console.log('DATA PRUBEA',data);
 
     if(data === null){
-      handleHttpError(res, "ERROR_OBTENER_DATA");
+      return res.status(401).json({
+        msg: "ERROR_OBTENER_DATA"
+      });
     }
 
     //? Obtener email de la data
     const {email} = data;
 
     //? Verificar existencia del usaurio.
-    
     const user = await userModel.findOne({email}) || null;
 
-    //console.log('INFO_USER_BY_ID', user);
     //? En caso de que el usuario no exista arroje un error  
     if(user === null){
-      handleHttpError(res, "USUERIO_NO_EXISTE",404);
+      return res.status(404).json({
+        msg: "USUARIO_NO_EXISTE"
+      });
     }
 
     //? verificar que el correo sea correcto.
     if(email !== user.email){
-      handleHttpError(res, "ERROR_AL_VERIFICAR_EMAIL");
+      return res.status(404).json({
+        msg: "ERROR_AL_VERIFICAR_EMAIL"
+      });
     }
     
     //? Actualizar User 
@@ -202,14 +212,16 @@ const confirmEmail = async (req, res) => {
     await user.save();
 
     //? redireccionar a la Confirmación
-    return res.json({
+    return res.status(200).json({
       msg: 'EMAIL_VERIFICADO_CORRECTAMENTE'
     });
 
   }catch (e) {
     //? implementamos el manejador de errorres
-    handleHttpError(res, "ERROR_CONFIRM_USER")
     console.log(e)
+    return res.status(401).json({
+      msg: "ERROR_CONFIRM_USER"
+    });
   }
 }
 
@@ -227,11 +239,11 @@ const forgotPassword = async (req, res) => {
     try {
       var mail = await userModel.findOne({email});
       if(mail == null){
-        return res.json({msg: "No se encontro el usuario ingresado"})
+        return res.status(404).json({msg: "No se encontro el usuario ingresado"})
       }
     } catch (e) {
       console.log(e);
-      return res.json({msg: "No se encontro el usuario"})
+      return res.status(404).json({msg: "No se encontro el usuario"})
     }
 
     //? Treamos la info del user dependiendo del email.
@@ -251,16 +263,16 @@ const forgotPassword = async (req, res) => {
     await user.save();
 
     //? definimos codigo de repuesta de creacion satisfactoria
-    //res.status(201)
-    // return res.send('Correo enviado satisfactoriamente, sigue las instrucciones', token);
-    return res.json({
+    return res.status(200).json({
       msg: 'Correo enviado satisfactoriamente, sigue las instrucciones',
       token
     });
   }catch (e) {
     //? implementamos el manejador de errorres
-    handleHttpError(res, "ERROR_SENDING_MAIL")
     console.log(e)
+    return res.status(401).json({
+      msg: "ERROR_SENDING_MAIL"
+    });
   }
 }
 
@@ -281,7 +293,9 @@ const resetPassword = async (req, res) => {
         //? condicion en caso de que no sea el token o que haya expirado
         if (err){
           //? retornamos un mensaje para el error anterior
-          return handleHttpError(res, "ERROR_VERIF_TOKEN", 401)
+          return res.status(401).json({
+            msg: "ERROR_VERIF_TOKEN"
+          });
         }
 
         //? realizamos una consulta con el resetLink hacia el usuario
@@ -289,7 +303,10 @@ const resetPassword = async (req, res) => {
            //? ponemos condicion en caso de que el noken no coincida con nigun usuario
           if(e || !user){
             //? mensaje en caso de que el usuario no coincida
-            return handleHttpError(res, "USER_ALREADY_NOT_EXIST_WITH_THIS_TOKEN", 400)
+            
+            return res.status(400).json({
+              msg: "USER_ALREADY_NOT_EXIST_WITH_THIS_TOKEN"
+            });
           }
 
           //? guardamos nueva contraseña en una variable
@@ -300,7 +317,9 @@ const resetPassword = async (req, res) => {
           user.save((err)=>{
             if(err){
               //? generamos una respuesta en caso de error
-              return handleHttpError(res, "ERROR_RESET_PASSWORD", 400)
+              return res.json({
+                msg: "ERROR_RESET_PASSWORD"
+              });
             }else{
               //? mostramos mensaje en caso de exito en la operacion 
               return res.status(200).json({
@@ -308,17 +327,20 @@ const resetPassword = async (req, res) => {
               });
             }
           })
-
         })
       })
     }else{
-      return handleHttpError(res, "!!ERROR_AUTENTICATION!!", 401)
+      return res.json({
+        msg: "!!ERROR_AUTENTICATION!!"
+      });
     }
 
   }catch (e) {
     //? implementamos el manejador de errorres
-    handleHttpError(res, "ERROR_REGISTER_USER")
     console.log(e)
+    return res.status(409).json({
+        msg: "ERROR_REGISTER_USER"
+    });
   }
 }
 
@@ -332,13 +354,20 @@ const getUsers = async (req, res) => {
 
       return res.send({ users });
 
-    } catch (error) {
-      res.send("ERROR_LIST_USERS");
+    } catch (e) {
+      //? implementamos el manejador de errorres
+      console.log(e)
+      return res.status(400).json({
+        msg: "ERROR_LIST_USERS"
+      });
     }
     
   } catch (e) {
     //? implementamos el manejador de errorres
-    res.send("ERROR_LIST_USERS");
+    console.log(e)
+    return res.status(400).json({
+      msg: "ERROR_LIST_USERS"
+    });
   }
 };
 
@@ -355,13 +384,18 @@ const desactivarUser = async (req, res) => {
       //? En caso de que el usuario no exista arroje un error  
       try {
         var user = await userModel.findById({_id});
-      } catch (error) {
-        return handleHttpError(res, "ID_NO_VALIDO");
+      } catch (e) {
+        console.log(e)
+        return res.status(404).json({
+          msg: "ID_NO_VALIDO"
+        });
       }
 
       //? verificación de en que estado esta el usaurio.
       if(user.estado == 'DESHABILITADO'){
-        return handleHttpError(res, "USUARIO_YA_DESHABILITADO");
+        return res.status(100).json({
+          msg: "USUARIO_YA_DESHABILITADO"
+        });
       };
       
       //? Actualizar User 
@@ -369,19 +403,22 @@ const desactivarUser = async (req, res) => {
       await user.save();
 
       //? retornamos mensaje de acción
-      return res.send({ msg: 'USUARIO_DESHABILITADO_CON_EXITO' });
-    } catch (error) {
-      console.log(error)
-      res.send(handleHttpError(res, "ERROR_DESHABILITANDO"));
+      return res.status(200).send({ msg: 'USUARIO_DESHABILITADO_CON_EXITO' });
+    } catch (e) {
+      console.log(e)
+      return res.status(500).json({
+        msg: "ERROR_DESHABILITANDO"
+      });
     }
 
   } catch (e) {
     //? implementamos el manejador de errorres
     console.log(e)
-    res.send(handleHttpError(res, "ERROR_DESHABILITANDO"));
+    return res.status(500).json({
+      msg: "ERROR_DESHABILITANDO"
+    });
   }
 };
-
 
 //? metodo para activar usuarios.
 const activarUser = async (req, res) => {
@@ -396,12 +433,16 @@ const activarUser = async (req, res) => {
       try {
         var user = await userModel.findById({_id});
       } catch (error) {
-        return handleHttpError(res, "ID_NO_VALIDO");
+        return res.status(404).json({
+          msg: "ID_NO_VALIDO"
+        });
       }
 
       //? verificación de en que estado esta el usaurio.
       if(user.estado == 'ACTIVO'){
-        return handleHttpError(res, "USUARIO_YA_ACTIVO");
+        return res.status(100).json({
+          msg: "USUARIO_YA_ACTIVO"
+        });
       };
       
       //? Actualizar User 
@@ -413,13 +454,17 @@ const activarUser = async (req, res) => {
       return res.send({ msg: 'USUARIO_ACTIVO_CON_EXITO' });
     } catch (error) {
       console.log(error)
-      res.send(handleHttpError(res, "ERROR_DESHABILITANDO"));
+      return res.status(500).json({
+        msg: "ERROR_DESHABILITANDO"
+      });
     }
 
   } catch (e) {
-    //? implementamos el manejador de errorres
-    handleHttpError(res, "ERROR_ACTIVANDO_USUARIO");
     console.log(e)
+    //? implementamos el manejador de errorres
+    return res.status(500).json({
+      msg: "ERROR_ACTIVANDO_USUARIO"
+    });
   }
 };
 
@@ -437,21 +482,24 @@ const actualizarRol = async (req, res) => {
         var user = await userModel.findById({_id});
       } catch (err) {
         console.log(err);
-        return handleHttpError("ID_NO_VALIDO");
+        return res.status(404).json({
+          msg: "ID_NO_VALIDO"
+        });
       }
     //? actualizamos dato en la DB dependiendo el ID recibido y lo almacenamso en data
     const data = await userModel.findByIdAndUpdate(
       req.params.id, {role}
     );
+    const datosUsu = await userModel.findById(req.params.id);
 
-    const datosUsu = await userModel.findById(req.params.id)
-    console.log(datosUsu);
-    // //? integramos constante que buscara segun un id predeterminado
+    //? integramos constante que buscara segun un id predeterminado
     res.send({ datosUsu });
   } catch (e) {
     console.log(e)
     //? implementamos el manejador de errorres
-    handleHttpError("ERROR_DETALLE_ITEMS");
+    return res.status(501).json({
+      msg: "ERROR_DETALLE_ITEMS"
+    });
   }
 };
 

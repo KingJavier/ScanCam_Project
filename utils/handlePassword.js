@@ -12,6 +12,7 @@ const encrypt = async (passwordPlain) =>{
     //? Retornamos 
     return hash
 };
+
 /**
  * 
  * @param {*} passwordPlain 

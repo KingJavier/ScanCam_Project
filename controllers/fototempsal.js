@@ -23,9 +23,6 @@ const endpoint = process.env.endpoint + "/face/v1.0/detect";
 const endpoint2 = process.env.endpoint +  '/face/v1.0/identify';
 const endpointRegEnt = process.env.PUBLIC_URL + "/api/registro";
 
-//TODO http://localhost:3001
-const PUBLIC_URL = process.env.PUBLIC_URL;
-
 //TODO ../storage que es donde almacena los archivos enviados.
 const MEDIA_PATH = `${__dirname}/../fototempsal`;
 
@@ -42,10 +39,12 @@ const getItems = async (req, res) => {
         const data = await fototempsalModel.find({});
         console.log(data);
         res.send({ data });
-        
     } catch (e) {
         //? implementamos el manejador de errorres
-        handleHttpError(res, "ERROR_LIST_ITEMS");
+        console.log(e);
+        return res.status(501).json({
+            msg: "ERROR_LIST_ITEMS"
+        });
     }
 };
 
@@ -66,7 +65,9 @@ const getItem = async (req, res) => {
     } catch (e) {
         console.log(e)
         //? implementamos el manejador de errorres
-        handleHttpError(res, "ERROR_DETALLE_ITEMS");
+        return res.status(501).json({
+            msg: "ERROR_DETALLE_ITEMS"
+        });
     }
 };
 
@@ -83,11 +84,9 @@ const createItems = async (req, res) => {
         //?  Almacenamos en una constante el file
         const { file } = req;
 
-        console.log(file);
-
+        //console.log(file);
         //? subimos la imagen a cloudinary
         const result = await cloudinary.v2.uploader.upload(file.path);
-
 
         //? definimos el nombre y la Url del archivo enviado 
         const fileData = {
@@ -95,8 +94,7 @@ const createItems = async (req, res) => {
             filename: file.filename,
             public_id: result.public_id,
         };
-
-        console.log(fileData);
+        //console.log(fileData);
         
         //? Se sube la imagen a la base de datos segun el modelo
         const data = await fototempsalModel.create(fileData);
@@ -123,9 +121,9 @@ const createItems = async (req, res) => {
                 headers: { 'Ocp-Apim-Subscription-Key': subscriptionKey }
             }).then(function(response) {
                 //? Buscamos mensaje luego de la ejecucion 
-                console.log('Status text: ' + response.status)
-                console.log('Status text: ' + response.statusText)
-                console.log(response.data)
+                //console.log('Status text: ' + response.status)
+                //console.log('Status text: ' + response.statusText)
+                //console.log(response.data)
 
                 //? Guardamos en un avariable el id que extraemos cuando se detecta una cara en la imagen
                 const faceId = response.data[0].faceId;
@@ -136,7 +134,6 @@ const createItems = async (req, res) => {
                     //? Establecemos especificaciones generales para el reconocimiento
                         method: 'post',
                         url: endpoint2,
-                        
                         data: {
                             //? Especificamos que propiedades ha de tener el identificador
                             personGroupId: "usuario",
@@ -149,33 +146,28 @@ const createItems = async (req, res) => {
                         },
                         headers: { 'Ocp-Apim-Subscription-Key': subscriptionKey }
                     }).then(function (response) {
-                        
                         //? Mostramos mensaje luego de la ejecucion 
-                        console.log('Status text: ' + response.status)
-                        console.log('Status text: ' + response.statusText)
-                        console.log(response.data)
-                        
+                        //console.log('Status text: ' + response.status)
+                        //console.log('Status text: ' + response.statusText)
+                        //console.log(response.data)
                         //? Generamos un try catch con el cual traeremos el person y la coincidencia del resultado
                         try {
                             //? Instanciamos en variables el personId y la confianza del identificador 
                             var personId = response.data[0].candidates[0].personId; 
                             var confidence = response.data[0].candidates[0].confidence; 
-
-                            console.log(personId);
+                            //console.log(personId);
 
                         } catch(e) {
                             //? En caso de error mostrar 
-                            return res.send("ERROR ROSTRO NO ENCONTRADO", e);
+                            console.log(e);
+                            return res.send("ERROR ROSTRO NO ENCONTRADO");
                         }
-                        
-                        console.log(personId);
-                        console.log(confidence);
-
+                        //console.log(personId);
+                        //console.log(confidence);
                         //? Generamos un try catch con el cual traeremos datos persongrouperson
                         try {
                             //! Extraemos la informacion del Person Group Person de la base de datos Azure 
                             const endpointGetPerson = process.env.endpoint + "/face/v1.0/persongroups/" + GRUPO_PERSONAS_ID + "/persons/" + personId;
-    
                             axios({
                                  //? Establecemos especificaciones generales para el reconocimiento
                                 method: 'get',
@@ -183,24 +175,22 @@ const createItems = async (req, res) => {
                                 headers: { 'Ocp-Apim-Subscription-Key': subscriptionKey }
                             }).then( async function (response) {
                                  //? Mostramos mensaje luego de la ejecucion de los resultados obtenidos 
-                                console.log('Status text: ' + response.status)
-                                console.log('Status text: ' + response.statusText)
-                                console.log(response.data)
-    
+                                //console.log('Status text: ' + response.status)
+                                //console.log('Status text: ' + response.statusText)
+                                //console.log(response.data)
                                 //? Guardamos el nombre de la cara en una variable id
                                 const id = response.data.name;
-    
                                 try {
-                                    // Buscamos en la base de datos que se encuentre un usuario existente  segun el id 
+                                    //? Buscamos en la base de datos que se encuentre un usuario existente  segun el id 
                                     var userData = await userModel.findById(id);
-                                } catch (error) {
-                                     //? En caso de error mostrar 
-                                    console.log(error);
-                                    return handleHttpError(res, "ERROR_TRAYENDO_DATAUSER");
+                                } catch (e) {
+                                    //? En caso de error mostrar 
+                                    console.log(e);
+                                    return res.send("ERROR_TRAYENDO_DATAUSER");
                                 }
 
                                 //? Mostramos el usuario obtenido 
-                                console.log("DATAUSER-->",userData);
+                                //console.log("DATAUSER-->",userData);
 
                                 const doc = userData.documento;
                                 const name = userData.name;
@@ -210,16 +200,13 @@ const createItems = async (req, res) => {
 
                                 try {
                                     const idReg = userData.idRegistro;
-
                                     const regEnt = await registroModel.findById(idReg);
-    
-                                    console.log(regEnt);
-    
+                                    //console.log(regEnt);
                                     var confirmacion = regEnt.confirmacion;
                                 } catch (error) {
+                                    console.log(e);
                                     return res.send("USUARIO NO TIENE REGISTRO DE ENTRADA");
                                 }
-
                                 try {
                                     if (confirmacion == true) {
                                         //? Creamos registro de entrada con los datos del usuario.
@@ -237,36 +224,33 @@ const createItems = async (req, res) => {
                                                 },
                                                 headers: { Authorization: tokenUsuPet }
                                             }).then(function (response) {
-                                                console.log('Status text: ' + response.status)
-                                                console.log('Status text: ' + response.statusText)
+                                                //console.log('Status text: ' + response.status)
+                                                //console.log('Status text: ' + response.statusText)
                                                 const dataUser = response.data;
-
                                                 const resData = {
                                                     dataImg: data,
                                                     dataUser: dataUser,
                                                 };
-
                                                 //! ---------
                                                 //? codigo de satisafaccion al enviar un archivo
                                                 res.status(response.status);
                                                 //? mostramos los datos que se quieren subir 
                                                 res.send(resData);
-
                                                 //! ---------
-                                            
                                             }).catch(function (error) {
                                                 console.log(error);
                                                 return res.send("ERROR_REG_ENTRADA_POSIBLEMENTE_NO_TIENE_ROL_INDICADO")
                                             });
 
-                                        } catch (error) {
-                                            console.log(error);
+                                        } catch (e) {
+                                            console.log(e);
                                             return res.send("ERROR_CREANDO_REGISTRO DE ENTRADA");
                                         }
                                     } else {
                                         return res.send("USUARIO NO TIENE REGISTRO DE ENTRADA");
                                     };
-                                } catch (error) {
+                                } catch (e) {
+                                    console.log(e);
                                     return res.send("ERROR_VRRIFICANDO_CONFIRMACIÓN")
                                 };
                             
@@ -278,28 +262,28 @@ const createItems = async (req, res) => {
                         } catch (e) {
                              //? En caso de error mostrar 
                             console.log(e);
-                            return res.send("ERROR_GET_PERSON_ID->", e)
+                            return res.send("ERROR_GET_PERSON_ID")
                         }
                     }).catch(function (error) {
                          //? En caso de error mostrar
                         console.log(error);
-                        return res.send("Error para encontrar coincidencia ->", error)
+                        return res.send("Error para encontrar coincidencia")
                     });
-                } catch (error) {
+                } catch (e) {
                      //? En caso de error mostrar 
-                    console.log(error);
-                    return res.send("ERROR_ROSTRO NO ENCONTRADO", error)
+                    console.log(e);
+                    return res.send("ERROR_ROSTRO NO ENCONTRADO")
                 } 
             }).catch( function (error) {
                  //? En caso de error mostrar 
                 console.log(error);
-                return res.send("ERROR DETECTANDO ROSTRO", error)
+                return res.send("ERROR DETECTANDO ROSTRO")
             });
 
-        } catch (err) {
+        } catch (e) {
              //? En caso de error mostrar 
             console.log(e);
-            return res.send("ERROR AZURE", error)
+            return res.send("ERROR AZURE")
         }
 
     } catch (e) {
@@ -336,8 +320,11 @@ const deleteItems = async (req, res) => {
 
         res.send({ data });
     } catch (e) {
+        console.log(e);
         //? implementamos el manejador de errorres
-        handleHttpError(res, "ERROR_DELETE_ITEMS");
+        return res.status(501).json({
+            msg: "ERROR_DELETE_ITEMS"
+        });
     }
 };
 

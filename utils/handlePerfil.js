@@ -7,8 +7,8 @@ const storage = multer.diskStorage({
     //? creamos un destino de guardado 
     destination: function (req, file, cb) {
         cb(null, `${__dirname}/../perfil`);
-      },
-      
+    },
+    
 
     //? Asignar un nombre unico al archivo sin importar cual sea el nombre del archivo recibido 
     filename: function (req, file, cb) {

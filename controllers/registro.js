@@ -17,7 +17,10 @@ const getItems = async (req, res) => {
     
   } catch (e) {
     //? implementamos el manejador de errorres
-    handleHttpError(res, "ERROR_LIST_ITEMS");
+    console.log(e);
+    return res.status(501).json({
+      msg: "ERROR_LIST_ITEMS"
+    });
   }
   
 };
@@ -31,17 +34,19 @@ const getItems = async (req, res) => {
 const getItem = async (req, res) => {
   try{
     req = matchedData(req);
-    
     //? Filtramos el id y se alamacena en {id}.
     const {id} = req;
     
     //? integramos constante que buscara segun un id predeterminado
     const data = await registroModel.findById(id);
     res.send({ data });
+
   } catch (e) {
     console.log(e)
     //? implementamos el manejador de errorres
-    handleHttpError(res, "ERROR_DETALLE_ITEMS");
+    return res.status(501).json({
+      msg: "ERROR_DETALLE_ITEMS"
+    });
   }
 };
 
@@ -63,7 +68,10 @@ const createItems = async (req, res) => {
     res.send({ data });
   } catch (e) {
     //? implementamos el manejador de errorres
-    handleHttpError(res, "ERROR_CREATE_ITEMS");
+    console.log(e);
+    return res.status(500).json({
+      msg: "ERROR_CREATE_ITEMS"
+    });
   }
 };
 
@@ -84,7 +92,10 @@ const updateItems = async (req, res) => {
     res.send({ data });
   } catch (e) {
     //? implementamos el manejador de errorres
-    handleHttpError(res, "ERROR_UPDATE_ITEMS");
+    console.log(e);
+    return res.status(500).json({
+      msg: "ERROR_UPDATE_ITEMS"
+    });
   }
 };
 
@@ -109,7 +120,9 @@ const deleteItems = async (req, res) => {
   }catch(e){
     console.log(e)
     //? implementamos el manejador de errorres
-    handleHttpError(res,"ERROR_DELETE_ITEM")
+    return res.status(500).json({
+      msg: "ERROR_DELETE_ITEMS"
+    });
   }
 };
 

@@ -2,18 +2,17 @@
 const fs = require("fs");
 const { matchedData } = require("express-validator");
 const { storageModel, userModel   } = require("../models");
-const { tokenSing, decodeSign} = require("../utils/handleJwt");
+const { decodeSign} = require("../utils/handleJwt");
 const { handleHttpError } = require("../utils/handleError");
 const axios = require('axios');
 const cloudinary =require('cloudinary');
 
 //? Configuración de cloudinary
 cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
 });
-
 
 //? Ponemos el id del grupo de personas que vamos a crear 
 var GRUPO_PERSONAS_ID = process.env.GRUPO_PERSONAS_ID;
@@ -21,12 +20,8 @@ var GRUPO_PERSONAS_ID = process.env.GRUPO_PERSONAS_ID;
 //? Llave de Azure
 const subscriptionKey =  process.env.key;
 
-//TODO http://localhost:3001
-const PUBLIC_URL = process.env.PUBLIC_URL;
-
-//TODO ../storage que es donde almacena los archivos enviados.
+//? ../storage que es donde almacena los archivos enviados.
 const MEDIA_PATH = `${__dirname}/../storage`;
-
 
 //? creamos funciones para creacion del crud
 /**
@@ -39,12 +34,14 @@ const getItems = async (req, res) => {
   try {
      //? integramos constante que buscara diversos datos
     const data = await storageModel.find({});
-    console.log(data);
     res.send({ data });
     
   } catch (e) {
     //? implementamos el manejador de errorres
-    handleHttpError(res, "ERROR_LIST_ITEMS");
+    console.log(e);
+    return res.status(501).json({
+      msg: "ERROR_LIST_ITEMS"
+    });
   }
 };
 
@@ -66,7 +63,9 @@ const getItem = async (req, res) => {
   } catch (e) {
     console.log(e)
     //? implementamos el manejador de errorres
-    handleHttpError(res, "ERROR_DETALLE_ITEMS");
+    return res.status(501).json({
+      msg: "ERROR_DETALLE_ITEMS"
+    });
   }
 };
 
@@ -86,9 +85,9 @@ const createItems = async (req, res) => {
 
     //? definimos el nombre y la Url del archivo enviado 
     const fileData = {
-        url: result.url,
-        filename: file.filename,
-        public_id: result.public_id,
+      url: result.url,
+      filename: file.filename,
+      public_id: result.public_id,
     };
 
     //? Se sube a la base de datos segun el modelo
@@ -103,7 +102,9 @@ const createItems = async (req, res) => {
 
     //? Verificamos que la el token si sea gnerado por nosotros
     if(datatoken === null){
-      return handleHttpError(res, "ERROR_OBTENER_DATA");
+      return res.status(404).json({
+        msg: "ERROR_OBTENER_DATA"
+      });
     };
 
     //? Extraemos el id del usuario que se logueo   
@@ -129,19 +130,17 @@ const createItems = async (req, res) => {
       method: 'post',
       url: endpoint,
       data: {
-          url: imgUrl,
+        url: imgUrl,
       },
       //? Establecemos el header
       headers: { 'Ocp-Apim-Subscription-Key': subscriptionKey }
     }).then(function (response) {
       //? Buscamos mensaje luego de la ejecucion 
-        console.log('Status text: ' + response.status)
-        console.log('Status text: ' + response.statusText)
-        console.log(response.data)
-
+        //console.log('Status text: ' + response.status)
+        //console.log('Status text: ' + response.statusText)
+        //console.log(response.data)
         //? codigo de satisafaccion al enviar un archivo
         res.status(201);
-
         const dataImg = {
           data: dataI,
           persistedFaceId: response.data,
@@ -153,13 +152,18 @@ const createItems = async (req, res) => {
     }).catch(function (error) {
       //? En caso de error mostrar 
         console.log(error)
-        return handleHttpError(res, "ROSTRO NO ENCONTRADO");
+        return res.status(404).json({
+          msg: "ROSTRO NO ENCONTRADO"
+        });
     });
 
   } catch (e) {
     //? implementamos el manejador de errorres
     console.log(e);
-    res.send(handleHttpError(res, "ERROR_SUBIR_ARCHIVO"));
+    res.send(handleHttpError(res, ));
+    return res.status(403).json({
+      msg: "ERROR_SUBIR_ARCHIVO"
+    });
   }
 };
 
@@ -192,7 +196,10 @@ const deleteItems = async (req, res) => {
     res.send({ data });
   } catch (e) {
     //? implementamos el manejador de errorres
-    handleHttpError(res, "ERROR_DELETE_ITEMS");
+    console.log(e);
+    return res.status(501).json({
+      msg: "ERROR_DELETE_ITEMS"
+    });
   }
 };
 

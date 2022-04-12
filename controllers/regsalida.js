@@ -10,16 +10,17 @@ const { handleHttpError } = require("../utils/handleError");
  */
 //? método para obtener Lista de los archivos recividos de la base de datos.
 const getItems = async (req, res) => {
-    try {
+  try {
     //? integramos constante que buscara diversos datos
     const data = await registrosalidaModel.find({});
-    res.send({ data });
-    
-    } catch (e) {
+    res.send({ data }); 
+  } catch (e) {
     //? implementamos el manejador de errorres
-    handleHttpError(res, "ERROR_LIST_ITEMS");
-    }
-
+    console.log(e)
+    return res.status(501).json({
+      msg: "ERROR_LIST_ITEMS"
+    });
+  }
 };
 
 /**
@@ -29,20 +30,20 @@ const getItems = async (req, res) => {
  */
 //? método para obtener en detalle del elemento enviado donde es necesatio que se envie el ID del registro en la DB.
 const getItem = async (req, res) => {
-    try{
+  try{
     req = matchedData(req);
-    
     //? Filtramos el id y se alamacena en {id}.
     const {id} = req;
-    
     //? integramos constante que buscara segun un id predeterminado
     const data = await registrosalidaModel.findById(id);
     res.send({ data });
-    } catch (e) {
-    console.log(e)
+  } catch (e) {
     //? implementamos el manejador de errorres
-    handleHttpError(res, "ERROR_DETALLE_ITEMS");
-    }
+    console.log(e)
+    return res.status(501).json({
+      msg: "ERROR_DETALLE_ITEMS"
+    });
+  }
 };
 
 /**
@@ -52,7 +53,7 @@ const getItem = async (req, res) => {
  */
 //? metodo para crear registro de entrad guardar un item 
 const createItems = async (req, res) => {
-    try {
+  try {
     //? optenemos el cuerpo de la req 
     const body = matchedData(req);
     //? Se sube a la base de datos segun el modelo
@@ -61,10 +62,13 @@ const createItems = async (req, res) => {
     res.status(201);
     //? mostramos los datos que se quieren subir 
     res.send({ data });
-    } catch (e) {
+  } catch (e) {
     //? implementamos el manejador de errorres
-    handleHttpError(res, "ERROR_CREATE_ITEMS");
-    }
+    console.log(e);
+    return res.status(501).json({
+      msg: "ERROR_CREATE_ITEMS"
+    });
+  }
 };
 
 /**
@@ -74,18 +78,21 @@ const createItems = async (req, res) => {
  */
 //? metodo para actualizar un registro 
 const updateItems = async (req, res) => {
-    try {
+  try {
     //? Filtramos el id de la req
     const {id, ...body} = matchedData(req);
     //? actualizamos dato en la DB dependiendo el ID recibido y lo almacenamso en data
     const data = await registrosalidaModel.findOneAndUpdate(
       id, body
     );
-    res.send({ data });
-    } catch (e) {
+  res.send({ data });
+  } catch (e) {
     //? implementamos el manejador de errorres
-    handleHttpError(res, "ERROR_UPDATE_ITEMS");
-    }
+    console.log(e);
+    return res.status(501).json({
+      msg: "ERROR_UPDATE_ITEMS"
+    });
+  }
 };
 
 /**
@@ -109,7 +116,9 @@ const deleteItems = async (req, res) => {
   }catch(e){
     console.log(e)
     //? implementamos el manejador de errorres
-    handleHttpError(res,"ERROR_DELETE_ITEM")
+    return res.status(501).json({
+      msg: "ERROR_DELETE_ITEM"
+    });
   }
 };
 
