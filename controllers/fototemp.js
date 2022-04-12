@@ -97,6 +97,8 @@ const createItems = async (req, res) => {
             filename: file.filename,
             public_id: result.public_id,
         };
+
+        console.log(fileData);
         
         //? Se sube la imagen a la base de datos segun el modelo
         const data = await fototempModel.create(fileData);
@@ -165,7 +167,7 @@ const createItems = async (req, res) => {
 
                         } catch(e) {
                             //? En caso de error mostrar 
-                            return console.log("ROSTRO NO ENCONTRADO");
+                            return res.send("ERROR ROSTRO NO ENCONTRADO", e);
                         }
                         
                         console.log(personId);
@@ -286,7 +288,8 @@ const createItems = async (req, res) => {
 
     } catch (e) {
         //? implementamos el manejador de errorres
-        return res.send(res, "ERROR_SUBIR_ARCHIVO");
+        console.log(e);
+        return res.send("ERROR AZURE");
     }
 };
 
