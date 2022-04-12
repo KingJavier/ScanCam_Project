@@ -31,7 +31,7 @@ const UserScheme = new mongoose.Schema(
         },
         //? establecmos los roles y definimos que cuando se cree un usser aparezca por defecto Invitado
         role: {
-            type: ['aprenidz', 'funcionario', 'gestor', 'seguridad', 'invitado'],
+            type: ['aprendiz', 'funcionario', 'gestor', 'seguridad', 'invitado'],
             default : 'invitado'
         },
         resetLink:{

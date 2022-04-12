@@ -21,10 +21,10 @@ const checkRol = require('../middleware/rol');
 router.get('/', getItems);
 
 //? Creamos ruta para optener detalle de un dato almacenado en la DB
-router.get('/:id',authMiddleware,checkRol(['aprenidz', 'funcionario', 'gestor', 'seguridad', 'invitado']),validatorGetItem,getItem);
+router.get('/:id',authMiddleware,checkRol(['aprendiz', 'funcionario', 'gestor', 'seguridad', 'invitado']),validatorGetItem,getItem);
 
 //? Creamos ruta para eliminar datos de la base de datos
-router.delete('/:id',authMiddleware,checkRol(['aprenidz', 'funcionario', 'gestor', 'seguridad', 'invitado']),validatorGetItem,deleteItems);
+router.delete('/:id',authMiddleware,checkRol(['aprendiz', 'funcionario', 'gestor', 'seguridad', 'invitado']),validatorGetItem,deleteItems);
 
 //? implementamos ruta de middleware para subir un archivo en una peticionenviar utilizar en caso de se envien varios datos usar multi
 
