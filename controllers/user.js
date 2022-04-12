@@ -121,7 +121,6 @@ const registerCtrl = async (req, res) => {
   }
 };
 
-
 //? Este controlador es el encargado de logear una persona
 const loginCtrl = async (req, res) => {
   try{
@@ -164,7 +163,6 @@ const loginCtrl = async (req, res) => {
     handleHttpError(res, "ERROR_LOGIN_USER")
   }
 }
-
 
 //? Este controlador es el encargado de confirmar email
 const confirmEmail = async (req, res) => {
@@ -214,7 +212,6 @@ const confirmEmail = async (req, res) => {
     console.log(e)
   }
 }
-
 
 //? Este controlador es el encargado de enviar un email para restablecer password
 const forgotPassword = async (req, res) => {
@@ -266,7 +263,6 @@ const forgotPassword = async (req, res) => {
     console.log(e)
   }
 }
-
 
 //? Este controlador es el encargado de cambiar contraseña
 const resetPassword = async (req, res) => {
@@ -329,54 +325,61 @@ const resetPassword = async (req, res) => {
 //? método para obtener Lista de los usuarios.
 const getUsers = async (req, res) => {
   try {
-    //? integramos constante que buscara diversos datos
-    const users = await userModel.find({});
-    res.send({ users });
+
+    try {
+      //? integramos constante que buscara diversos datos
+      const users = await userModel.find({});
+
+      res.send({ users });
+
+    } catch (error) {
+      res.send(handleHttpError(res, "ERROR_LIST_USERS"));
+    }
+    
     
   } catch (e) {
     //? implementamos el manejador de errorres
-    handleHttpError(res, "ERROR_LIST_USERS");
+    res.send(handleHttpError(res, "ERROR_LIST_USERS"));
   }
 };
 
 //? método para inhabilitar usuarios.
 const desactivarUser = async (req, res) => {
   try {
-    //? Filtramos el id de la req
-    const {id} = req.params;
-    const _id = id;
-
-    // console.log("Mateneme",_id)
-
-    //? Verificar existencia del usaurio.
-    //? En caso de que el usuario no exista arroje un error  
-    try {
-      var user = await userModel.findById({_id});
-    } catch (error) {
-      return handleHttpError(res, "ID_NO_VALIDO");
-    }
-
-    // console.log("Matenme X2", user);
-
-    // console.log("Matenem x3",user._id);
-
-    //? verificación de en que estado esta el usaurio.
-    if(user.estado == 'DESHABILITADO'){
-      return handleHttpError(res, "USUARIO_YA_DESHABILITADO");
-    };
     
-    //? Actualizar User 
-    user.estado = 'DESHABILITADO';
-    await user.save();
+    try {
+      //? Filtramos el id de la req
+      const {id} = req.params;
+      const _id = id;
 
-    //console.log("Ya se desabilito");
-    //? retornamos mensaje de acción
-    return res.send({ msg: 'USUARIO_DESHABILITADO_CON_EXITO' });
+      //? Verificar existencia del usaurio.
+      //? En caso de que el usuario no exista arroje un error  
+      try {
+        var user = await userModel.findById({_id});
+      } catch (error) {
+        return handleHttpError(res, "ID_NO_VALIDO");
+      }
+
+      //? verificación de en que estado esta el usaurio.
+      if(user.estado == 'DESHABILITADO'){
+        return handleHttpError(res, "USUARIO_YA_DESHABILITADO");
+      };
+      
+      //? Actualizar User 
+      user.estado = 'DESHABILITADO';
+      await user.save();
+
+      //? retornamos mensaje de acción
+      return res.send({ msg: 'USUARIO_DESHABILITADO_CON_EXITO' });
+    } catch (error) {
+      console.log(error)
+      res.send(handleHttpError(res, "ERROR_DESHABILITANDO"));
+    }
 
   } catch (e) {
     //? implementamos el manejador de errorres
-    handleHttpError(res, "ERROR_DESHABILITANDO");
     console.log(e)
+    res.send(handleHttpError(res, "ERROR_DESHABILITANDO"));
   }
 };
 
@@ -384,36 +387,35 @@ const desactivarUser = async (req, res) => {
 //? metodo para activar usuarios.
 const activarUser = async (req, res) => {
   try {
-    //? Filtramos el id de la req
-    const {id} = req.params;
-    const _id = id;
-
-    // console.log("Mateneme",_id)
-
-    //? Verificar existencia del usaurio.
-    //? En caso de que el usuario no exista arroje un error  
     try {
-      var user = await userModel.findById({_id});
+      //? Filtramos el id de la req
+      const {id} = req.params;
+      const _id = id;
+
+      //? Verificar existencia del usaurio.
+      //? En caso de que el usuario no exista arroje un error  
+      try {
+        var user = await userModel.findById({_id});
+      } catch (error) {
+        return handleHttpError(res, "ID_NO_VALIDO");
+      }
+
+      //? verificación de en que estado esta el usaurio.
+      if(user.estado == 'ACTIVO'){
+        return handleHttpError(res, "USUARIO_YA_ACTIVO");
+      };
+      
+      //? Actualizar User 
+      user.estado = 'ACTIVO';
+      await user.save();
+
+      //console.log("Ya se desabilito");
+      //? retornamos mensaje de acción
+      return res.send({ msg: 'USUARIO_ACTIVO_CON_EXITO' });
     } catch (error) {
-      return handleHttpError(res, "ID_NO_VALIDO");
+      console.log(error)
+      res.send(handleHttpError(res, "ERROR_DESHABILITANDO"));
     }
-
-    // console.log("Matenme X2", user);
-
-    // console.log("Matenem x3",user._id);
-
-    //? verificación de en que estado esta el usaurio.
-    if(user.estado == 'ACTIVO'){
-      return handleHttpError(res, "USUARIO_YA_ACTIVO");
-    };
-    
-    //? Actualizar User 
-    user.estado = 'ACTIVO';
-    await user.save();
-
-    //console.log("Ya se desabilito");
-    //? retornamos mensaje de acción
-    return res.send({ msg: 'USUARIO_ACTIVO_CON_EXITO' });
 
   } catch (e) {
     //? implementamos el manejador de errorres
