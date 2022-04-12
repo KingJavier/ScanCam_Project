@@ -11,6 +11,9 @@ const PerfilScheme = new mongoose.Schema(
         url: {
             type: String
         },
+        public_id: {
+            type: String
+        },
         filename: {
             type: String
         },

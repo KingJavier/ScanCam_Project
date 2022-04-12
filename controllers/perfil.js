@@ -3,6 +3,14 @@ const fs = require("fs");
 const { matchedData } = require("express-validator");
 const { perfilModel, userModel } = require("../models");
 const { handleHttpError } = require("../utils/handleError");
+const cloudinary =require('cloudinary');
+
+//? Configuración de cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 
 //TODO http://localhost:3001
@@ -63,11 +71,17 @@ const createItems = async (req, res) => {
   try {
     //?  Almacenamos en una constante el file
     const { file } = req;
+
+    //? subimos la imagen a cloudinary
+    const result = await cloudinary.v2.uploader.upload(file.path);
+
     //? definimos el nombre y la Url del archivo enviado 
     const fileData = {
-      url: `${PUBLIC_URL}/${file.filename}`,
+      url: result.url,
       filename: file.filename,
+      public_id: result.public_id,
     };
+
     //? Se sube a la base de datos segun el modelo
     const data = await perfilModel.create(fileData);
 

@@ -14,6 +14,9 @@ const StorageScheme = new mongoose.Schema(
         filename: {
             type: String
         },
+        public_id: {
+            type: String
+        },
     },
     //? Registramos creacion y actualizacion
     {

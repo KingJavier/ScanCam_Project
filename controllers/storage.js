@@ -5,6 +5,14 @@ const { storageModel, userModel   } = require("../models");
 const { tokenSing, decodeSign} = require("../utils/handleJwt");
 const { handleHttpError } = require("../utils/handleError");
 const axios = require('axios');
+const cloudinary =require('cloudinary');
+
+//? Configuración de cloudinary
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 
 //? Ponemos el id del grupo de personas que vamos a crear 
@@ -12,7 +20,6 @@ var GRUPO_PERSONAS_ID = process.env.GRUPO_PERSONAS_ID;
 
 //? Llave de Azure
 const subscriptionKey =  process.env.key;
-
 
 //TODO http://localhost:3001
 const PUBLIC_URL = process.env.PUBLIC_URL;
@@ -73,10 +80,15 @@ const createItems = async (req, res) => {
   try {
     //?  Almacenamos en una constante el file
     const { file } = req;
+
+    //? subimos la imagen a cloudinary
+    const result = await cloudinary.v2.uploader.upload(file.path);
+
     //? definimos el nombre y la Url del archivo enviado 
     const fileData = {
-      url: `${PUBLIC_URL}/${file.filename}`,
-      filename: file.filename,
+        url: result.url,
+        filename: file.filename,
+        public_id: result.public_id,
     };
 
     //? Se sube a la base de datos segun el modelo
