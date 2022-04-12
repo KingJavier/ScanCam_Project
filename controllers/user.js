@@ -38,7 +38,7 @@ const registerCtrl = async (req, res) => {
 
     //? Condición donde en caso de ser falso emplea el manejador de errores 
     if( user!== null){
-      handleHttpError(res, "EMAIL_ALREADY_REGISTERED", 406);
+      res.send(handleHttpError(res, "EMAIL_ALREADY_REGISTERED", 406));
       return
     }
 
@@ -115,9 +115,9 @@ const registerCtrl = async (req, res) => {
     res.send({data2});
     
   } catch (e) {
-    //? implementamos el manejador de errorres
-    handleHttpError(res, "ERROR_REGISTER_USER")
     console.log(e)
+    //? implementamos el manejador de errorres
+    res.send(handleHttpError(res, "ERROR_REGISTER_USER"));
   }
 };
 

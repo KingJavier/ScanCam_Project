@@ -193,7 +193,7 @@ const createItems = async (req, res) => {
                                 const id = response.data.name;
     
                                 try {
-                                    // Buscamos en la base de datos que se encuentre un usuario existente  segun el id 
+                                    //? Buscamos en la base de datos que se encuentre un usuario existente  segun el id 
                                     var userData = await userModel.findById(id);
                                 } catch (error) {
                                      //? En caso de error mostrar 
@@ -224,17 +224,26 @@ const createItems = async (req, res) => {
                                             confirmacion: "true"
                                         },
                                         headers: { Authorization: tokenUsuPet }
-                                    }).then(function (response) {
+                                    }).then(async function (response) {
                                         console.log('Status text: ' + response.status)
                                         console.log('Status text: ' + response.statusText)
                                         const dataUser = response.data;
-
-
+                                        const idRegEn = response.data.data._id;
 
                                         const resData = {
                                             dataImg: data,
                                             dataUser: dataUser,
                                         };
+
+                                        try {
+                                            //? Buscamos en la base de datos que se encuentre un usuario existente  segun el id 
+                                            var dataUsu = await userModel.findByIdAndUpdate(id, {idRegistro : idRegEn});
+
+                                        } catch (error) {
+                                             //? En caso de error mostrar 
+                                            console.log(error);
+                                            return handleHttpError(res, "ERROR_TRAYENDO_DATAUSER");
+                                        }
 
                                         //! ---------
                                         //? codigo de satisafaccion al enviar un archivo
@@ -244,46 +253,46 @@ const createItems = async (req, res) => {
 
                                         //! ---------
                                     
-                                    }).catch(function (error) {
-                                        console.log(error);
-                                        return res.send("ERROR_REG_ENTRADA_POSIBLEMENTE_NO_TIENE_ROL_INDICADO", error)
-                                    });
+                                        }).catch(function (error) {
+                                            console.log(error);
+                                            return res.send("ERROR_REG_ENTRADA_POSIBLEMENTE_NO_TIENE_ROL_INDICADO")
+                                        });
 
                                 } catch (error) {
                                     console.log(error);
-                                    return res.send("ERROR_CREANDO_REGISTRO DE ENTRADA", error)
+                                    return res.send("ERROR_CREANDO_REGISTRO DE ENTRADA")
                                 }
                             
                             }).catch(function (error) {
                                 //? En caso de error mostrar 
                                 console.log(error);
-                                return res.send("ERROR_TRAYENDO_DATA_USER", error)
+                                return res.send("ERROR_TRAYENDO_DATA_USER")
                             });
                         } catch (e) {
                              //? En caso de error mostrar 
                             console.log(e);
-                            return res.send("ERROR_GET_PERSON_ID->", e)
+                            return res.send("ERROR_GET_PERSON_ID")
                         }
                     }).catch(function (error) {
                          //? En caso de error mostrar
                         console.log(error);
-                        return res.send("Error para encontrar coincidencia ->", error)
+                        return res.send("Error para encontrar coincidencia ")
                     });
                 } catch (error) {
                      //? En caso de error mostrar 
                     console.log(error);
-                    return res.send("ERROR_ROSTRO NO ENCONTRADO", error)
+                    return res.send("ERROR_ROSTRO NO ENCONTRADO")
                 } 
             }).catch( function (error) {
                  //? En caso de error mostrar 
                 console.log(error);
-                return res.send("ERROR DETECTANDO ROSTRO", error)
+                return res.send("ERROR DETECTANDO ROSTRO")
             });
 
         } catch (err) {
              //? En caso de error mostrar 
-            console.log(e);
-            return res.send("ERROR AZURE", error)
+            console.log(err);
+            return res.send("ERROR AZURE")
         }
 
     } catch (e) {

@@ -1,7 +1,7 @@
 //* Importaciones
 const fs = require("fs");
 const { matchedData } = require("express-validator");
-const { fototempsalModel } = require("../models");
+const { fototempsalModel, registroModel } = require("../models");
 const { handleHttpError } = require("../utils/handleError");
 const { userModel } = require("../models");
 const axios = require('axios');
@@ -19,13 +19,9 @@ var GRUPO_PERSONAS_ID = process.env.GRUPO_PERSONAS_ID;
 
 //? Llave de Azure
 const subscriptionKey =  process.env.key; 
-
 const endpoint = process.env.endpoint + "/face/v1.0/detect";
-
 const endpoint2 = process.env.endpoint +  '/face/v1.0/identify';
-
 const endpointRegEnt = process.env.PUBLIC_URL + "/api/registro";
-
 
 //TODO http://localhost:3001
 const PUBLIC_URL = process.env.PUBLIC_URL;
@@ -212,54 +208,72 @@ const createItems = async (req, res) => {
                                 const email = userData.email;
                                 const rol = userData.role[0];
 
-                                //? Creamos registro de entrada con los datos del usuario.
                                 try {
-                                    axios({
-                                        method: 'post',
-                                        url: endpointRegEnt,
-                                        data: {
-                                            name: name,
-                                            apellido: ape,
-                                            documento: doc,
-                                            email: email,
-                                            role: rol,
-                                            confirmacion: "true"
-                                        },
-                                        headers: { Authorization: tokenUsuPet }
-                                    }).then(function (response) {
-                                        console.log('Status text: ' + response.status)
-                                        console.log('Status text: ' + response.statusText)
-                                        const dataUser = response.data;
+                                    const idReg = userData.idRegistro;
 
-
-
-                                        const resData = {
-                                            dataImg: data,
-                                            dataUser: dataUser,
-                                        };
-
-                                        //! ---------
-                                        //? codigo de satisafaccion al enviar un archivo
-                                        res.status(response.status);
-                                        //? mostramos los datos que se quieren subir 
-                                        res.send(resData);
-
-                                        //! ---------
-                                    
-                                    }).catch(function (error) {
-                                        console.log(error);
-                                        return res.send("ERROR_REG_ENTRADA_POSIBLEMENTE_NO_TIENE_ROL_INDICADO", error)
-                                    });
-
+                                    const regEnt = await registroModel.findById(idReg);
+    
+                                    console.log(regEnt);
+    
+                                    var confirmacion = regEnt.confirmacion;
                                 } catch (error) {
-                                    console.log(error);
-                                    return res.send("ERROR_CREANDO_REGISTRO DE ENTRADA", error)
+                                    return res.send("USUARIO NO TIENE REGISTRO DE ENTRADA");
                                 }
+
+                                try {
+                                    if (confirmacion == true) {
+                                        //? Creamos registro de entrada con los datos del usuario.
+                                        try {
+                                            axios({
+                                                method: 'post',
+                                                url: endpointRegEnt,
+                                                data: {
+                                                    name: name,
+                                                    apellido: ape,
+                                                    documento: doc,
+                                                    email: email,
+                                                    role: rol,
+                                                    confirmacion: "true"
+                                                },
+                                                headers: { Authorization: tokenUsuPet }
+                                            }).then(function (response) {
+                                                console.log('Status text: ' + response.status)
+                                                console.log('Status text: ' + response.statusText)
+                                                const dataUser = response.data;
+
+                                                const resData = {
+                                                    dataImg: data,
+                                                    dataUser: dataUser,
+                                                };
+
+                                                //! ---------
+                                                //? codigo de satisafaccion al enviar un archivo
+                                                res.status(response.status);
+                                                //? mostramos los datos que se quieren subir 
+                                                res.send(resData);
+
+                                                //! ---------
+                                            
+                                            }).catch(function (error) {
+                                                console.log(error);
+                                                return res.send("ERROR_REG_ENTRADA_POSIBLEMENTE_NO_TIENE_ROL_INDICADO")
+                                            });
+
+                                        } catch (error) {
+                                            console.log(error);
+                                            return res.send("ERROR_CREANDO_REGISTRO DE ENTRADA");
+                                        }
+                                    } else {
+                                        return res.send("USUARIO NO TIENE REGISTRO DE ENTRADA");
+                                    };
+                                } catch (error) {
+                                    return res.send("ERROR_VRRIFICANDO_CONFIRMACIÓN")
+                                };
                             
                             }).catch(function (error) {
                                 //? En caso de error mostrar 
                                 console.log(error);
-                                return res.send("ERROR_TRAYENDO_DATA_USER", error)
+                                return res.send("ERROR_TRAYENDO_DATA_USER")
                             });
                         } catch (e) {
                              //? En caso de error mostrar 

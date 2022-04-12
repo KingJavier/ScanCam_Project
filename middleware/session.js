@@ -23,7 +23,7 @@ const authMiddleware = async(req,res,next) =>{
         next()
         
     }catch(e){
-        handleHttpError (res, "NOT_SESSION", 401)
+        res.send(handleHttpError (res, "NOT_SESSION", 401));
     }
 }
 
