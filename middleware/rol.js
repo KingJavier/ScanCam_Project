@@ -17,12 +17,16 @@ const checkRol = (roles) => (req, res, next) => {
 
         //? Condición en caso de error mostrara 403
         if(!checkValueRol){
-            handleHttpError(res, "USER_NOT_PERMISSIONS", 403)
+            return res.json({
+                msg: 'El_Usuario_No_Tiene_Permisos'
+            });
         }
         next()
 
     }catch(e){
-        handleHttpError (res, "ERROR_PERMISSIONS", 403)
+        return res.json({
+            msg: 'El_Usuario_No_Tiene_Permisos'
+        });
     }
 }
 

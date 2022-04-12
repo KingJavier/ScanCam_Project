@@ -6,16 +6,18 @@ const authMiddleware = async(req,res,next) =>{
     //? Condicion 
     try{        
         if (!req.headers.authorization) {
-            handleHttpError(res,"NOT_TOKEN", 401);
-            return
+            return res.json({
+                msg: 'El_Usuario_No_Tiene_Permisos'
+            });
         }
         const token =req.headers.authorization.split(' ').pop();
         // verificamos la data del token
         const dataToken = await verifyToken(token) 
         // indicamos condicion en caso de que no exista
         if (!dataToken._id) {
-            handleHttpError(res, "ERROR_ID_TOKEN", 401);
-            return
+            return res.json({
+                msg: 'El_Usuario_No_Tiene_Permisos'
+            });
         }
         // Creamos 
         const  user = await userModel.findById(dataToken._id)
@@ -23,7 +25,9 @@ const authMiddleware = async(req,res,next) =>{
         next()
         
     }catch(e){
-        res.send(handleHttpError (res, "NOT_SESSION", 401));
+        return res.json({
+            msg: 'El_Usuario_No_Tiene_Permisos'
+        });
     }
 }
 

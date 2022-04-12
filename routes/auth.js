@@ -7,7 +7,7 @@ const router = express.Router();
 //* Importamos loginctrl
 const {loginCtrl, registerCtrl, confirmEmail, 
     forgotPassword, resetPassword, getUsers,
-    desactivarUser, activarUser
+    desactivarUser, activarUser, actualizarRol
 } = require ("../controllers/user")
 
 //* Importamos validacion CreateItem
@@ -47,6 +47,9 @@ router.put('/forgot-password', forgotPassword);
 
 //? ruta para cambiar el password
 router.put('/reset-password', resetPassword);
+
+//? ruta para actulizar el rol.
+router.put('/actualizar-rol/:id', authMiddleware, checkRol(['gestor' ]), actualizarRol);
 
 //! exportamos rutas
 module.exports = router;

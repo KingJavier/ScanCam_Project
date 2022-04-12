@@ -22,9 +22,9 @@ const tokenSing = async(user)=>{
         JWT_SECRET,
         {
              //? insertamos tiempo de expiracion para el token
-          expiresIn: "8h",
+        expiresIn: "8h",
         }
-      );
+    );
 
 }
 
@@ -42,7 +42,6 @@ const verifyToken = async (tokenJwt) => {
         //? Veryficamos el token 
         return jwt.verify(tokenJwt, process.env.JWT_SECRET)
     }catch(e){
-        console.log('Esta vaina se daño, es fallo del token xd');
         return null
     }
     

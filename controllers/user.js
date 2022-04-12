@@ -330,16 +330,15 @@ const getUsers = async (req, res) => {
       //? integramos constante que buscara diversos datos
       const users = await userModel.find({});
 
-      res.send({ users });
+      return res.send({ users });
 
     } catch (error) {
-      res.send(handleHttpError(res, "ERROR_LIST_USERS"));
+      res.send("ERROR_LIST_USERS");
     }
-    
     
   } catch (e) {
     //? implementamos el manejador de errorres
-    res.send(handleHttpError(res, "ERROR_LIST_USERS"));
+    res.send("ERROR_LIST_USERS");
   }
 };
 
@@ -424,6 +423,38 @@ const activarUser = async (req, res) => {
   }
 };
 
+//? Metodo para actualizar el rol del usuario
+const actualizarRol = async (req, res) => {
+  try{
+    //? Filtramos el id y se alamacena en {id}.
+    const {id} = req.params;
+    const {role} = req.body;
+    const _id = id;
+    console.log(_id);
+    //? Verificar existencia del usaurio.
+      //? En caso de que el usuario no exista arroje un error  
+      try {
+        var user = await userModel.findById({_id});
+      } catch (err) {
+        console.log(err);
+        return handleHttpError("ID_NO_VALIDO");
+      }
+    //? actualizamos dato en la DB dependiendo el ID recibido y lo almacenamso en data
+    const data = await userModel.findByIdAndUpdate(
+      req.params.id, {role}
+    );
+
+    const datosUsu = await userModel.findById(req.params.id)
+    console.log(datosUsu);
+    // //? integramos constante que buscara segun un id predeterminado
+    res.send({ datosUsu });
+  } catch (e) {
+    console.log(e)
+    //? implementamos el manejador de errorres
+    handleHttpError("ERROR_DETALLE_ITEMS");
+  }
+};
+
 //! Exportaciones
 module.exports = {
   registerCtrl,
@@ -433,5 +464,6 @@ module.exports = {
   resetPassword,
   getUsers,
   desactivarUser,
-  activarUser
+  activarUser,
+  actualizarRol
 };
