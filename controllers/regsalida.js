@@ -8,12 +8,11 @@ const { handleHttpError } = require("../utils/handleError");
  * @param {*} req
  * @param {*} res
  */
-
 //? método para obtener Lista de los archivos recividos de la base de datos.
 const getItems = async (req, res) => {
     try {
     //? integramos constante que buscara diversos datos
-    const data = await registroModel.find({});
+    const data = await registrosalidaModel.find({});
     res.send({ data });
     
     } catch (e) {
@@ -61,6 +60,7 @@ const createItems = async (req, res) => {
     //? codigo de satisafaccion al enviar un archivo
     res.status(201);
     //? mostramos los datos que se quieren subir 
+    res.send({ data });
     } catch (e) {
     //? implementamos el manejador de errorres
     handleHttpError(res, "ERROR_CREATE_ITEMS");
@@ -79,7 +79,7 @@ const updateItems = async (req, res) => {
     const {id, ...body} = matchedData(req);
     //? actualizamos dato en la DB dependiendo el ID recibido y lo almacenamso en data
     const data = await registrosalidaModel.findOneAndUpdate(
-    id, body
+      id, body
     );
     res.send({ data });
     } catch (e) {

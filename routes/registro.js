@@ -1,5 +1,4 @@
-//* Importamos y guardamos express, router en una variable
-const { Router } = require('express');
+//* Importamos y guardamos express, router en una variable;
 const express = require('express');
 const router = express.Router();
 //* Importamos funcion del controlador 

@@ -27,11 +27,7 @@ const RegistroScheme = new mongoose.Schema(
         },
         confirmacion:{
             type:Boolean
-        },
-        //TODO imgid:{
-        //TODO     type: mongoose.Types.ObjectId
-        //TODO }
-
+        }
 
     },
     //? Registramos creacion y actualizacion
@@ -40,60 +36,6 @@ const RegistroScheme = new mongoose.Schema(
         versionKey: false
     }
 );
-
-/**
- * Implementar metodo propio  con  relacion a storage
- */
-
-//?creamos metodo 
-//TODO RegistroScheme.statics.findAllData = function(){
-//TODO     const joinData = this.aggregate ([
-//TODO         {
-//TODO             $lookup: {
-//TODO                 from:"storages",
-//TODO                 localField:"imgid",
-//TODO                 foreignField:"_id",
-//TODO                 as:"RgEntrada",
-                
-//TODO             }
-//TODO         },
-//TODO         {
-//TODO             $unwind:"$RgEntrada"
-//TODO         }
-
-    
-//TODO     ])
-//TODO     return joinData
-//TODO };
-//TODO RegistroScheme.statics.findOneData = function(id){
-//TODO     const joinData = this.aggregate ([
-//TODO         {
-//TODO             $match:{
-//TODO                 _id:mongoose.Types.ObjectId(id)
-//TODO             }
-//TODO         },
-//TODO         {
-//TODO         //? Creamos una realcion en la cual regsitro se relacion con el id 
-//TODO         $lookup:{
-//TODO             from:"storages",
-//TODO             // viscamos campo a relacionar
-//TODO             localField:"imgid",
-//TODO             // Detemonamos un id
-//TODO             foreignField:"_id",
-//TODO             // Creamos un alias
-//TODO             as:"RgEntrada"
-//TODO         },
-//TODO     },
-//TODO         {
-//TODO             $unwind:"$RgEntrada"
-//TODO         },
-        
-
-//TODO     ])
-//TODO     console.log( joinData );
-//TODO     return joinData
-//TODO }
-
 
 //?Utilizamos el esquema de este documento para sobre escribir metodos
 RegistroScheme.plugin(mongooseDelete,{ overrideMeethods:"all"});

@@ -1,7 +1,7 @@
 //* Importaciones
 const fs = require("fs");
 const { matchedData } = require("express-validator");
-const { fototempModel } = require("../models");
+const { fototempsalModel } = require("../models");
 const { handleHttpError } = require("../utils/handleError");
 const { userModel } = require("../models");
 const axios = require('axios');
@@ -31,7 +31,7 @@ const endpointRegEnt = process.env.PUBLIC_URL + "/api/registro";
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
 //TODO ../storage que es donde almacena los archivos enviados.
-const MEDIA_PATH = `${__dirname}/../fototemp`;
+const MEDIA_PATH = `${__dirname}/../fototempsal`;
 
 //? creamos funciones para creacion del crud
 /**
@@ -43,7 +43,7 @@ const MEDIA_PATH = `${__dirname}/../fototemp`;
 const getItems = async (req, res) => {
     try {
         //? integramos constante que buscara diversos datos
-        const data = await fototempModel.find({});
+        const data = await fototempsalModel.find({});
         console.log(data);
         res.send({ data });
         
@@ -65,7 +65,7 @@ const getItem = async (req, res) => {
         req = matchedData(req);
         const {id} = req;
         //? integramos constante que buscara segun un id predeterminado
-        const data = await fototempModel.findById(id);
+        const data = await fototempsalModel.findById(id);
         res.send({ data });
     } catch (e) {
         console.log(e)
@@ -87,6 +87,8 @@ const createItems = async (req, res) => {
         //?  Almacenamos en una constante el file
         const { file } = req;
 
+        console.log(file);
+
         //? subimos la imagen a cloudinary
         const result = await cloudinary.v2.uploader.upload(file.path);
 
@@ -101,7 +103,7 @@ const createItems = async (req, res) => {
         console.log(fileData);
         
         //? Se sube la imagen a la base de datos segun el modelo
-        const data = await fototempModel.create(fileData);
+        const data = await fototempsalModel.create(fileData);
 
         //? Guardamos la url de la imagen que se traera de la base de datos 
         const imageUrl = data.url;
@@ -289,7 +291,7 @@ const createItems = async (req, res) => {
     } catch (e) {
         //? implementamos el manejador de errorres
         console.log(e);
-        return res.send("ERROR AZURE");
+        return res.send("ERROR_RECIBIENDO_ARCHIVO");
     }
 };
 
@@ -304,9 +306,9 @@ const deleteItems = async (req, res) => {
         //? Filtramos el id de la req
         req = matchedData(req);
         const {id} = req;
-        const dataFile = await fototempModel.findById(id);
+        const dataFile = await fototempsalModel.findById(id);
         //? eliminamos dato en la base de datos 
-        const deleteResponse = await fototempModel.delete({ _id: id });
+        const deleteResponse = await fototempsalModel.delete({ _id: id });
         const { filename } = dataFile;
         //? concatenamos nombre        
         const filePath = `${MEDIA_PATH}/${filename}`; //TODO c:/miproyecto/file-1232.png
