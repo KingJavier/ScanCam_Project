@@ -55,6 +55,10 @@ const UserScheme = new mongoose.Schema(
             type: String,
             default: '',
         },
+        idImgCertificado: {
+            type: String,
+            default: '',
+        },
         idRegistro: {
             type: String,
             default: '',

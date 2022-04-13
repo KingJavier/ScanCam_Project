@@ -6,7 +6,7 @@ const storage = multer.diskStorage({
 
     //? creamos un destino de guardado 
     destination: function (req, file, cb) {
-        cb(null, `${__dirname}/../perfil`);
+        cb(null, `${__dirname}/../certificado`);
     },
     
 

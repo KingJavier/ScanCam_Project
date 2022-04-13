@@ -5,7 +5,8 @@ const models ={
     fototempModel: require('./nosql/FotoTemp'),
     fototempsalModel: require('./nosql/FotoTempSal'),
     userModel: require('./nosql/users'),
-    perfilModel: require('./nosql/perfil')
+    perfilModel: require('./nosql/perfil'),
+    certificadoModel: require('./nosql/certificado')
 }
 
 //! exportamos rutas

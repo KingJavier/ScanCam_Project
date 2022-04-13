@@ -3,13 +3,13 @@ const { Router } = require('express');
 const express = require('express');
 
 //* Importamos middleware
-const uploadMiddleware = require('../utils/handlePerfil');
+const uploadMiddleware = require('../utils/handleCertificado');
 const router = express.Router();
 //* Importamos funcion del controlador 
-const {getItems, createItems, deleteItems, getItem} = require('../controllers/perfil');
+const {getItems, createItems, deleteItems, getItem} = require('../controllers/certificado');
 const { text } = require('express');
 //* Importamos validate
-const {validatorGetItem} = require ('../validators/perfil')
+const {validatorGetItem} = require ('../validators/certificado')
 
 //* Importamos  authMiddleware
 const {authMiddleware} = require("../middleware/session");
@@ -21,13 +21,13 @@ const checkRol = require('../middleware/rol');
 router.get('/', getItems);
 
 //? Creamos ruta para optener detalle de un dato almacenado en la DB
-router.get('/:id',authMiddleware,checkRol(['aprendiz', 'funcionario', 'gestor', 'seguridad', 'invitado']),validatorGetItem,getItem);
+router.get('/:id',authMiddleware,checkRol(['aprendiz', 'funcionario', 'gestor', 'seguridad']),validatorGetItem,getItem);
 
 //? Creamos ruta para eliminar datos de la base de datos
-router.delete('/:id',authMiddleware,checkRol(['aprendiz', 'funcionario', 'gestor', 'seguridad', 'invitado']),validatorGetItem,deleteItems);
+router.delete('/:id',authMiddleware,checkRol(['aprendiz', 'funcionario', 'gestor', 'seguridad']),validatorGetItem,deleteItems);
 
 //? implementamos ruta de middleware para subir un archivo en una peticionenviar utilizar en caso de se envien varios datos usar multi
-router.post('/',authMiddleware,checkRol(['aprendiz', 'funcionario', 'gestor', 'seguridad', 'invitado']),uploadMiddleware.single("Myface"), createItems);
+router.post('/',authMiddleware,checkRol(['aprendiz', 'funcionario', 'gestor', 'seguridad']),uploadMiddleware.single("MyCertificate"), createItems);
 
 
 
