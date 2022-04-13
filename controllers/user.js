@@ -102,9 +102,6 @@ const registerCtrl = async (req, res) => {
     userDa.personId = personId;
     //? Guardamos los cambios realizados 
     await userDa.save();
-
-    //? Verificamos con un console que se haya guardado el personId
-    console.log(userDa);
     
     //? Generamos una variable donde generaremos un token de los cambios realizados anteriormente
     const data2 = {
@@ -225,6 +222,50 @@ const confirmEmail = async (req, res) => {
   }
 }
 
+const renviarverfi = async (req, res) => {
+  try{
+    //? traemos el emial enviado en la request
+    const {email} = req.body;
+
+    //? Verificamos que el usuario exista.
+    if(!(email)){
+      return res.status(400).json({msg: 'Email is required'});
+    }
+
+    try {
+      var mail = await userModel.findOne({email});
+      
+      if(mail == null){
+        return res.status(404).json({msg: "No se encontro el usuario ingresado"})
+      }
+    } catch (e) {
+      console.log(e);
+      return res.status(404).json({msg: "No se encontro el usuario"})
+    }
+
+   //? Treamos la info del user dependiendo del email.
+  const user = await users.findOne({email});
+    
+   //? Creamos el token
+  const token = await tokenSing(user);
+  
+     //? Obtenemos el template de Verif Email
+    const template = getTemplate(user.name, token);
+     //? Enviar el Email.
+    await sendEmail(user.email, 'Confirma tu Correo', template);
+
+    return res.status(200).json({
+      msg: 'Correo enviado satisfactoriamente, sigue las instrucciones',
+    });
+  }catch (e) {
+    //? implementamos el manejador de errorres
+    console.log(e)
+    return res.status(401).json({
+      msg: "ERROR_SENDING_MAIL"
+    });
+  }
+};
+
 //? Este controlador es el encargado de enviar un email para restablecer password
 const forgotPassword = async (req, res) => {
   try{
@@ -249,23 +290,22 @@ const forgotPassword = async (req, res) => {
     //? Treamos la info del user dependiendo del email.
     const user = await users.findOne({email});
 
-    //? Creamos el token
-    const token = await tokenSing(user);
+    //? Creamos un numero aleatorio el
+    const numero = Math.floor(Math.random() * (999999 - 100000)) + 100000;
 
     //? Obtenemos el template de VerifEmail
-    const template = getTemplateR(token);
+    const template = getTemplateR(numero);
 
     //? Enviar el Email.
     await sendEmail(user.email, 'Olvido de Contraseña', template);
 
     //? Actualizar User 
-    user.resetLink = `${token}`;
+    user.resetCode = numero;
     await user.save();
 
     //? definimos codigo de repuesta de creacion satisfactoria
     return res.status(200).json({
-      msg: 'Correo enviado satisfactoriamente, sigue las instrucciones',
-      token
+      msg: 'Correo enviado satisfactoriamente, sigue las instrucciones'
     });
   }catch (e) {
     //? implementamos el manejador de errorres
@@ -280,38 +320,26 @@ const forgotPassword = async (req, res) => {
 const resetPassword = async (req, res) => {
   try{
     //? Establecemos constante donde almacenara el token del usuario  y la nueva contraseña
-    const {resetLink, newPass} = req.body;
+    const {resetCode, newPass} = req.body;
 
     //? Encriptacion de la contraseña traida del helper
     const password = await encrypt(newPass)
 
     //? ponemos condicion en caso de que encuentre el resetLink
-    if(resetLink){
-
-      //? Decodificar el token
-      jwt.verify(resetLink, process.env.JWT_SECRET, function(err){
-        //? condicion en caso de que no sea el token o que haya expirado
-        if (err){
-          //? retornamos un mensaje para el error anterior
-          return res.status(401).json({
-            msg: "ERROR_VERIF_TOKEN"
-          });
-        }
-
-        //? realizamos una consulta con el resetLink hacia el usuario
-        users.findOne({resetLink}, (e, user)=>{
+    if(resetCode){
+        //? realizamos una consulta con el resetCode hacia el usuario
+        users.findOne({resetCode}, (e, user)=>{
            //? ponemos condicion en caso de que el noken no coincida con nigun usuario
           if(e || !user){
             //? mensaje en caso de que el usuario no coincida
-            
             return res.status(400).json({
-              msg: "USER_ALREADY_NOT_EXIST_WITH_THIS_TOKEN"
+              msg: "USER_ALREADY_NOT_EXIST_WITH_THIS_CODE"
             });
           }
-
           //? guardamos nueva contraseña en una variable
           const obj ={
             password: password,
+            resetCode: ''
           }
           user=_.extend(user, obj);
           user.save((err)=>{
@@ -328,8 +356,7 @@ const resetPassword = async (req, res) => {
             }
           })
         })
-      })
-    }else{
+      }else{
       return res.json({
         msg: "!!ERROR_AUTENTICATION!!"
       });
@@ -513,5 +540,6 @@ module.exports = {
   getUsers,
   desactivarUser,
   activarUser,
-  actualizarRol
+  actualizarRol,
+  renviarverfi
 };

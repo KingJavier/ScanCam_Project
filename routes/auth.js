@@ -7,7 +7,8 @@ const router = express.Router();
 //* Importamos loginctrl
 const {loginCtrl, registerCtrl, confirmEmail, 
     forgotPassword, resetPassword, getUsers,
-    desactivarUser, activarUser, actualizarRol
+    desactivarUser, activarUser, actualizarRol,
+    renviarverfi
 } = require ("../controllers/user")
 
 //* Importamos validacion CreateItem
@@ -29,6 +30,9 @@ router.post("/register", validatorRegister, registerCtrl);
 
 //? Ruta  Login 
 router.post("/login", validatorLogueo, loginCtrl);
+
+//? Ruta para enviar varias veces el verifyemail
+router.post("/verifyemail",  renviarverfi);
 
 //? Ruta listar Usuarios
 router.get('/users', authMiddleware, checkRol(['gestor', 'seguridad']), getUsers);

@@ -34,7 +34,7 @@ const sendEmail = async (email, subject, html) => {
         });
 
         await transporter.sendMail({
-            from: ` ScanCam <scancamsenafggd@gmail.com>`, 
+            from: ` ScanCam <scancamsena@gmail.com>`, 
             to: email, 
             subject, 
             text: "Hola querido Usuario, por favor verifica tu correo para ScanCam", 
@@ -63,7 +63,7 @@ const getTemplate = (name, token) => {
 }
 
 //? Contenido del correco en formato HTML para reset_pasword
-const getTemplateR = (token) => {
+const getTemplateR = (numero) => {
     return `
     <head>
         <link rel="stylesheet" href="./style.css">
@@ -72,8 +72,8 @@ const getTemplateR = (token) => {
     <div id="email_content">
         <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiPTda2MMSGauFT8i-tj7Hi5RSt2wHF3Ac2t0A9haWOOBU8Lq1vpmyu1CfCu3HZKCS7VIiuVsvHs8WLEKFq7uEGK9L5oweqJvTYyWfQbQuX-2Uc95hYgWERQ4rtoRugxvsjnHhqG5nZWETM1imSWUma9FXicLrDfOmNyxtp3Ks5WCFqqAutxMf1N9zMLw/s320/logo.png" alt"ScanCam">
         
-        <p>Para recuperar tu contraseña, Ingresa al siguiente enlace</p>
-        <a href="https://apiscancam01.herokuapp.com/api/auth/forgot_password/${ token }" target="_blank">Recupera tu contraseña</a>
+        <p>Código de verificación.</p>
+        <a>${numero}</a>
     </div>
     `;
 }

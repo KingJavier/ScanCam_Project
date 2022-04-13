@@ -34,7 +34,7 @@ const UserScheme = new mongoose.Schema(
             type: ['aprendiz', 'funcionario', 'gestor', 'seguridad', 'invitado'],
             default : 'invitado'
         },
-        resetLink:{
+        resetCode:{
             type:String,
             default: '',
         },
