@@ -128,7 +128,7 @@ const loginCtrl = async (req, res) => {
     //? Limpiamos los datos aplicando machedData 
     req = matchedData(req);
     //? trae el correo y lo usa como metodo de logeo.
-    const user = await userModel.findOne({email:req.email}).select('password name role email')
+    const user = await userModel.findOne({email:req.email}).select('password name role email telefono documento')
 
     //? Condición donde en caso de ser falso emplea el manejador de errores 
     if(!user){
