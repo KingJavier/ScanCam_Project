@@ -21,7 +21,7 @@ var GRUPO_PERSONAS_ID = process.env.GRUPO_PERSONAS_ID;
 const subscriptionKey =  process.env.key; 
 const endpoint = process.env.endpoint + "/face/v1.0/detect";
 const endpoint2 = process.env.endpoint +  '/face/v1.0/identify';
-const endpointRegSal = process.env.PUBLIC_URL + "/api/registrosal";
+const endpointRegSal = process.env.PUBLIC_URL + "/api/regsalida";
 
 
 //TODO ../storage que es donde almacena los archivos enviados.
