@@ -21,7 +21,8 @@ var GRUPO_PERSONAS_ID = process.env.GRUPO_PERSONAS_ID;
 const subscriptionKey =  process.env.key; 
 const endpoint = process.env.endpoint + "/face/v1.0/detect";
 const endpoint2 = process.env.endpoint +  '/face/v1.0/identify';
-const endpointRegEnt = process.env.PUBLIC_URL + "/api/registro";
+const endpointRegSal = process.env.PUBLIC_URL + "/api/registrosal";
+
 
 //TODO ../storage que es donde almacena los archivos enviados.
 const MEDIA_PATH = `${__dirname}/../fototempsal`;
@@ -213,7 +214,7 @@ const createItems = async (req, res) => {
                                         try {
                                             axios({
                                                 method: 'post',
-                                                url: endpointRegEnt,
+                                                url: endpointRegSal,
                                                 data: {
                                                     name: name,
                                                     apellido: ape,
