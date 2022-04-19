@@ -4,7 +4,7 @@ const router = express.Router();
 //* Importamos funcion del controlador 
 const {getItems, createItems, deleteItems, updateItems, getItem} = require('../controllers/regsalida');
 //* Importamos validacion CreateItem
-const {validatorCreateItem,validatorGetItem} = require ('../validators/registro')
+const {validatorCreateItem,validatorGetItem} = require ('../validators/regsalida')
 //* Importamos  authMiddleware
 const {authMiddleware} = require("../middleware/session");
 //* Importamos el validador de los roles.

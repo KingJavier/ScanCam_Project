@@ -202,7 +202,11 @@ const createItems = async (req, res) => {
                                 try {
                                     const idReg = userData.idRegistro;
                                     const regEnt = await registroModel.findById(idReg);
-                                    //console.log(regEnt);
+
+                                    var idRegEntrada = regEnt._id;
+
+                                    console.log(idRegEntrada);
+
                                     var confirmacion = regEnt.confirmacion;
                                 } catch (error) {
                                     console.log(e);
@@ -221,13 +225,15 @@ const createItems = async (req, res) => {
                                                     documento: doc,
                                                     email: email,
                                                     role: rol,
-                                                    confirmacion: "true"
+                                                    confirmacion: "true",
+                                                    idregent: idRegEntrada
                                                 },
                                                 headers: { Authorization: tokenUsuPet }
-                                            }).then(function (response) {
+                                            }).then( async function (response) {
                                                 //console.log('Status text: ' + response.status)
                                                 //console.log('Status text: ' + response.statusText)
                                                 const dataUser = response.data;
+
                                                 const resData = {
                                                     dataImg: data,
                                                     dataUser: dataUser,

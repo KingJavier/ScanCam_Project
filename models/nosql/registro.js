@@ -27,7 +27,7 @@ const RegistroScheme = new mongoose.Schema(
         },
         confirmacion:{
             type:Boolean
-        }
+        },
 
     },
     //? Registramos creacion y actualizacion
