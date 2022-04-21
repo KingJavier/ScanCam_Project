@@ -253,13 +253,16 @@ const createItems = async (req, res) => {
                                                     email: email,
                                                     role: rol,
                                                     confirmacion: "true",
-                                                    idregent: idRegEntrada
                                                 },
                                                 headers: { Authorization: tokenUsuPet }
                                             }).then( async function (response) {
                                                 //console.log('Status text: ' + response.status)
                                                 //console.log('Status text: ' + response.statusText)
                                                 const dataUser = response.data;
+
+                                                const idRegSal = dataUser.data._id;
+
+                                                const regEntandSal = await registroModel.findByIdAndUpdate(idRegEntrada, {idregent: idRegSal});
 
                                                 const resData = {
                                                     dataImg: data,
@@ -273,7 +276,7 @@ const createItems = async (req, res) => {
                                                 //! ---------
                                             }).catch(function (error) {
                                                 console.log(error);
-                                                return res.send("ERROR_REG_ENTRADA_POSIBLEMENTE_NO_TIENE_ROL_INDICADO")
+                                                return res.send("ERROR_REG_SALIDA")
                                             });
 
                                         } catch (e) {

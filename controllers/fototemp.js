@@ -235,6 +235,8 @@ const createItems = async (req, res) => {
                                 const email = userData.email;
                                 const rol = userData.role[0];
 
+                                const mondoid ="626165b49fa5856403698805";
+
                                 //? Creamos registro de entrada con los datos del usuario.
                                 try {
                                     axios({
@@ -246,7 +248,8 @@ const createItems = async (req, res) => {
                                             documento: doc,
                                             email: email,
                                             role: rol,
-                                            confirmacion: "true"
+                                            confirmacion: "true",
+                                            idregent: mondoid
                                         },
                                         headers: { Authorization: tokenUsuPet }
                                     }).then(async function (response) {
@@ -255,6 +258,9 @@ const createItems = async (req, res) => {
                                         const dataUser = response.data;
                                         const idRegEn = response.data.data._id;
 
+
+                                        console.log(dataUser);
+                                        
                                         //? Combinamos los dos resultados para enviar solo una respuesta
                                         const resData = {
                                             dataImg: data,

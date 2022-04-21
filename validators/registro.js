@@ -23,8 +23,8 @@ const validatorCreateItem=[
     check("confirmacion")
     .exists()
     .notEmpty(),
-    // check("imgid")
-    // .exists()
+    check("idregent")
+    .exists(),
     // .notEmpty(),
     (req, res, next) => {
         return validateResult(req, res, next)

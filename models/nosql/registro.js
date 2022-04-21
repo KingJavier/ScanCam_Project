@@ -28,6 +28,9 @@ const RegistroScheme = new mongoose.Schema(
         confirmacion:{
             type:Boolean
         },
+        idregent: {
+            type: mongoose.Types.ObjectId,
+        },
 
     },
     //? Registramos creacion y actualizacion
@@ -36,6 +39,26 @@ const RegistroScheme = new mongoose.Schema(
         versionKey: false
     }
 );
+
+/**
+ * Implementar metodo propio  con  relacion a storage
+ */
+
+//?creamos metodo 
+RegistroScheme.statics.findAllData = function () {
+    const joinData = this.aggregate([
+        {   
+            $lookup: {
+                from:"registrosalidas",
+                localField:"idregent",
+                foreignField: "_id",
+                as: "regEnt",
+            },
+        }
+    ]);
+    return joinData; 
+
+}
 
 //?Utilizamos el esquema de este documento para sobre escribir metodos
 RegistroScheme.plugin(mongooseDelete,{ overrideMeethods:"all"});

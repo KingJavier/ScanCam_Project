@@ -167,15 +167,46 @@ const createItems = async (req, res) => {
         //console.log('Status text: ' + response.status)
         //console.log('Status text: ' + response.statusText)
         //console.log(response.data)
-        //? codigo de satisafaccion al enviar un archivo
-        res.status(201);
-        const dataImg = {
-          data: dataI,
-          persistedFaceId: response.data,
-        };
 
-        //? mostramos los datos que se quieren subir 
-        res.send({ dataImg });
+        var persistedFaceId = response.data;
+
+        try {
+          axios({
+            //? Establecemos especificaciones generales 
+            method: 'post',
+            url: "https://scancam.cognitiveservices.azure.com/face/v1.0/persongroups/usuario/train",
+            data: {
+            },
+            //? Establecemos el header
+            headers: { 'Ocp-Apim-Subscription-Key': subscriptionKey }
+          }).then(function (response) {
+            //? Buscamos mensaje luego de la ejecucion 
+              //console.log('Status text: ' + response.status)
+              //console.log('Status text: ' + response.statusText)
+            //console.log("Si se entreno",response.data)
+      
+            //? codigo de satisafaccion al enviar un archivo
+            res.status(201);
+            const dataImg = {
+              data: dataI,
+              persistedFaceId: persistedFaceId ,
+            };
+            //? mostramos los datos que se quieren subir 
+            res.send({ dataImg });
+      
+          }).catch(function (error) {
+            //? En caso de error mostrar 
+              console.log(error)
+              return res.status(404).json({
+                msg: "ERROR AXIOS AL ENTRENAR LA MAQUINA"
+              });
+          });
+        } catch (error) {
+          console.log(error)
+          return res.status(404).json({
+            msg: "ERROR AL ENTRENAR LA MAQUINA"
+          });
+        }
 
     }).catch(function (error) {
       //? En caso de error mostrar 
