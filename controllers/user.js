@@ -357,7 +357,7 @@ const resetPassword = async (req, res) => {
           })
         })
       }else{
-      return res.json({
+      return res.status(500).json({
         msg: "!!ERROR_AUTENTICATION!!"
       });
     }

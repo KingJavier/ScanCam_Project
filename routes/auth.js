@@ -53,7 +53,7 @@ router.put('/forgot-password', forgotPassword);
 router.put('/reset-password', resetPassword);
 
 //? ruta para actulizar el rol.
-router.put('/actualizar-rol/:id', authMiddleware, checkRol(['gestor' ]), actualizarRol);
+router.put('/actualizar-rol/:id', authMiddleware, checkRol(['gestor']), actualizarRol);
 
 //! exportamos rutas
 module.exports = router;

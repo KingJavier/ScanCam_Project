@@ -17,14 +17,14 @@ const checkRol = (roles) => (req, res, next) => {
 
         //? Condición en caso de error mostrara 403
         if(!checkValueRol){
-            return res.json({
+            return res.status(500).json({
                 msg: 'NO_TIENE_PERMISOS'
             });
         }
         next()
 
     }catch(e){
-        return res.json({
+        return res.status(404).json({
             msg: 'NO_INICIO_SESION'
         });
     }
