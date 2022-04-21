@@ -99,6 +99,9 @@ const createItems = async (req, res) => {
         //? Se emplea una libreria para la conversión de la base64 tomada por la camara a una imagen jpg.
         var imageInfo = base64ToImage(base,path,optionalObj);
 
+        //? Se establece la direccion con el path y el nombre del archivo
+        var direccion = path+imageInfo.fileName
+
         }catch(e){
         //? implementamos el manejador de errorres
         console.log(e);
@@ -106,7 +109,7 @@ const createItems = async (req, res) => {
         }
 
         try {
-        var result = await cloudinary.v2.uploader.upload(imageInfo.Ruta);
+        var result = await cloudinary.v2.uploader.upload(direccion);
         } catch (e) {
         //? implementamos el manejador de errorres
         console.log(e);

@@ -49,15 +49,12 @@ const sendEmail = async (email, subject, html) => {
 //? Contenido del correo en formato HTML.
 const getTemplate = (name, token) => {
     return `
-    <head>
-        <link rel="stylesheet" href="./style.css">
-    <head>
-
-    <div id="email_content">
-        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiPTda2MMSGauFT8i-tj7Hi5RSt2wHF3Ac2t0A9haWOOBU8Lq1vpmyu1CfCu3HZKCS7VIiuVsvHs8WLEKFq7uEGK9L5oweqJvTYyWfQbQuX-2Uc95hYgWERQ4rtoRugxvsjnHhqG5nZWETM1imSWUma9FXicLrDfOmNyxtp3Ks5WCFqqAutxMf1N9zMLw/s320/logo.png" alt"ScanCam">
-        <h2>Hola ${ name }</h2>
-        <p>Para confirmar tu cuenta, Ingresa al siguiente enlace</p>
-        <a href="https://apiscancam01.herokuapp.com/api/auth/confirm/${ token }" target="_blank">Confirmar Cuenta</a>
+    <div id="email_content" style="align-content: center; margin: 10px;">
+        <img src="https://res.cloudinary.com/scancam/image/upload/v1650508060/logo_qkfylb.png" alt"ScanCam">
+        <p>Recibimos una solicitud para confirmar su correo electrónico en <b>SCANCAM</b> Si esto es correcto, confirme haciendo clic en el botón a continuación. Si no sabe por qué recibió este correo electrónico omitalo.</p>
+        </br>
+        <p>Para confirmar da click 👇</p>
+        <button><a href="https://apiscancam01.herokuapp.com/api/auth/confirm/${ token }" target="_blank">Confirmar Cuenta</a></button>
     </div>
     `;
 }
@@ -65,15 +62,12 @@ const getTemplate = (name, token) => {
 //? Contenido del correco en formato HTML para reset_pasword
 const getTemplateR = (numero) => {
     return `
-    <head>
-        <link rel="stylesheet" href="./style.css">
-    <head>
-
     <div id="email_content">
-        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiPTda2MMSGauFT8i-tj7Hi5RSt2wHF3Ac2t0A9haWOOBU8Lq1vpmyu1CfCu3HZKCS7VIiuVsvHs8WLEKFq7uEGK9L5oweqJvTYyWfQbQuX-2Uc95hYgWERQ4rtoRugxvsjnHhqG5nZWETM1imSWUma9FXicLrDfOmNyxtp3Ks5WCFqqAutxMf1N9zMLw/s320/logo.png" alt"ScanCam">
-        
+        <img src="https://res.cloudinary.com/scancam/image/upload/v1650508060/logo_qkfylb.png" alt"ScanCam">
+        <p>Le hemos enviado este correo electrónico en respuesta a su solicitud de restablecer su contraseña para <b>SCANCAM</b>.</p>
+        </br>
         <p>Código de verificación.</p>
-        <a>${numero}</a>
+        <h2>${numero}</h2>
     </div>
     `;
 }
