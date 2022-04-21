@@ -19,10 +19,11 @@ const app = express();
 app.use(cors())
 
 //? preparamos para que reciba informacion en formato json
-app.use(express.json())
+app.use(express.json({limit: '200mb'}));
+app.use(express.urlencoded({limit: '200mb'}));
 
 //? hacemos publicos algunos datos 
-app.use(express.static('storage'))
+app.use(express.static('storage'));
 
 app.use((req, res, next) => {
     

@@ -6,6 +6,7 @@ const { decodeSign} = require("../utils/handleJwt");
 const { handleHttpError } = require("../utils/handleError");
 const axios = require('axios');
 const cloudinary =require('cloudinary');
+const base64ToImage =require('base64-to-image');
 
 //? Configuración de cloudinary
 cloudinary.config({
@@ -77,16 +78,40 @@ const getItem = async (req, res) => {
 //? metodo para subir guardar un item 
 const createItems = async (req, res) => {
   try {
-    //?  Almacenamos en una constante el file
-    const { file } = req;
+    //? Traemos el base64 enviado desde el front
+    const { base } = req.body;
+    
+    try {
+      //?Creamso un nombre aleatorio dependiendo de la fecha y el tiempo actual
+      var fileName = new Date().getTime();
+    
+      //? Definimos la carpeta donde se almacenaran las imagenes temporalmente.
+      var path = './storage/';
 
-    //? subimos la imagen a cloudinary
-    const result = await cloudinary.v2.uploader.upload(file.path);
+      //? Defiminos las el formato de imagen que se asiganara despues de codificar la base64
+      var optionalObj = {'fileName': fileName, 'type':'jpg'};
+
+      //? Se emplea una libreria para la conversión de la base64 tomada por la camara a una imagen jpg.
+      var imageInfo = base64ToImage(base,path,optionalObj);
+
+    }catch(e){
+      //? implementamos el manejador de errorres
+      console.log(e);
+      res.status(400).json("Base 64 Errorea")
+    }
+
+    try {
+      var result = await cloudinary.v2.uploader.upload(imageInfo.Ruta);
+    } catch (e) {
+      //? implementamos el manejador de errorres
+      console.log(e);
+      res.status(500).json("Error subiendo imagen a cloudinary")
+    }
 
     //? definimos el nombre y la Url del archivo enviado 
     const fileData = {
       url: result.url,
-      filename: file.filename,
+      filename:imageInfo.fileName,
       public_id: result.public_id,
     };
 
@@ -98,7 +123,7 @@ const createItems = async (req, res) => {
 
     //? Decodificamos el token 
     const datatoken = await decodeSign(token);
-    console.log('DATA PRUBEA',datatoken);
+    //console.log('DATA PRUBEA',datatoken);
 
     //? Verificamos que la el token si sea gnerado por nosotros
     if(datatoken === null){
@@ -209,5 +234,5 @@ module.exports = {
     createItems,
     deleteItems,
      // updateItems,
-    getItem
+    getItem,
 };

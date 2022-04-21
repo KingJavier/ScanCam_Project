@@ -6,6 +6,7 @@ const { handleHttpError } = require("../utils/handleError");
 const { userModel } = require("../models");
 const axios = require('axios');
 const cloudinary =require('cloudinary');
+const base64ToImage =require('base64-to-image');
 
 //? Configuración de cloudinary
 cloudinary.config({
@@ -82,17 +83,40 @@ const createItems = async (req, res) => {
     try {
         const tokenUsuPet = req.headers.authorization
 
-        //?  Almacenamos en una constante el file
-        const { file } = req;
+        //? Traemos el base64 enviado desde el front
+        const { base } = req.body;
+        
+        try {
+        //?Creamso un nombre aleatorio dependiendo de la fecha y el tiempo actual
+        var fileName = new Date().getTime();
+        
+        //? Definimos la carpeta donde se almacenaran las imagenes temporalmente.
+        var path = './fototempsal/';
 
-        //console.log(file);
-        //? subimos la imagen a cloudinary
-        const result = await cloudinary.v2.uploader.upload(file.path);
+        //? Defiminos las el formato de imagen que se asiganara despues de codificar la base64
+        var optionalObj = {'fileName': fileName, 'type':'jpg'};
+
+        //? Se emplea una libreria para la conversión de la base64 tomada por la camara a una imagen jpg.
+        var imageInfo = base64ToImage(base,path,optionalObj);
+
+        }catch(e){
+        //? implementamos el manejador de errorres
+        console.log(e);
+        res.status(400).json("Base 64 Errorea")
+        }
+
+        try {
+        var result = await cloudinary.v2.uploader.upload(imageInfo.Ruta);
+        } catch (e) {
+        //? implementamos el manejador de errorres
+        console.log(e);
+        res.status(500).json("Error subiendo imagen a cloudinary")
+        }
 
         //? definimos el nombre y la Url del archivo enviado 
         const fileData = {
             url: result.url,
-            filename: file.filename,
+            filename:imageInfo.fileName,
             public_id: result.public_id,
         };
         //console.log(fileData);
@@ -205,7 +229,7 @@ const createItems = async (req, res) => {
 
                                     var idRegEntrada = regEnt._id;
 
-                                    console.log(idRegEntrada);
+                                    //console.log(idRegEntrada);
 
                                     var confirmacion = regEnt.confirmacion;
                                 } catch (error) {
