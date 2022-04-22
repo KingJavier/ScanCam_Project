@@ -24,6 +24,31 @@ const getItems = async (req, res) => {
   }
 };
 
+//? creamos funciones para creacion del crud
+/**
+ * Obtener lista de la base de datos!
+ * @param {*} req
+ * @param {*} res
+ */
+//? método para obtener numero de registros de la base de datos.
+const getRegistros = async (req, res) => {
+  try {
+    //? integramos constante que buscara diversos datos
+    const data = await registrosalidaModel.find().count();
+    res.send({ data }); 
+
+    
+  } catch (e) {
+    //? implementamos el manejador de errorres
+    console.log(e);
+    return res.status(501).json({
+      msg: "ERROR_LIST_ITEMS"
+    });
+  }
+  
+};
+
+
 /**
  * Obtener un detalle
  * @param {*} req
@@ -124,4 +149,4 @@ const deleteItems = async (req, res) => {
 };
 
 //! Exportaciones
-module.exports = { getItems, getItem, createItems, updateItems, deleteItems };
+module.exports = { getItems, getItem, createItems, updateItems, deleteItems, getRegistros};

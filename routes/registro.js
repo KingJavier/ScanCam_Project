@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 //* Importamos funcion del controlador 
-const {getItems, createItems, deleteItems, updateItems, getItem} = require('../controllers/registro');
+const {getItems, createItems, deleteItems, updateItems, getItem, getRegistros} = require('../controllers/registro');
 //* Importamos validacion CreateItem
 const {validatorCreateItem,validatorGetItem} = require ('../validators/registro')
 //* Importamos  authMiddleware
@@ -13,6 +13,9 @@ const checkRol = require('../middleware/rol');
 
 //? Creamos sistema de rutas mediante el metodo get
 router.get('/',authMiddleware, checkRol([ 'gestor','seguridad']), getItems);
+
+//? Creamos sistema de rutas mediante el metodo get
+router.get('/numeroregistros',authMiddleware, checkRol([ 'gestor', 'seguridad']), getRegistros);
 
 //? Creamos ruta para crear un registro a la base de datos previamente validada
 router.post('/', authMiddleware, validatorCreateItem, createItems);
