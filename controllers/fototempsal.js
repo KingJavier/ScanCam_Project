@@ -178,6 +178,8 @@ const createItems = async (req, res) => {
                         //console.log('Status text: ' + response.status)
                         //console.log('Status text: ' + response.statusText)
                         //console.log(response.data)
+                        var datosazure = response.data;
+
                         //? Generamos un try catch con el cual traeremos el person y la coincidencia del resultado
                         try {
                             //? Instanciamos en variables el personId y la confianza del identificador 
@@ -265,8 +267,8 @@ const createItems = async (req, res) => {
                                                 const regEntandSal = await registroModel.findByIdAndUpdate(idRegEntrada, {idregent: idRegSal});
 
                                                 const resData = {
-                                                    dataImg: data,
-                                                    dataUser: dataUser,
+                                                    dataUser: userData,
+                                                    datosazure: datosazure,
                                                 };
                                                 //! ---------
                                                 //? codigo de satisafaccion al enviar un archivo

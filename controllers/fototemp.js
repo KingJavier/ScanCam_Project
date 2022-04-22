@@ -162,7 +162,6 @@ const createItems = async (req, res) => {
                     //? Establecemos especificaciones generales para el reconocimiento
                         method: 'post',
                         url: endpoint2,
-                        
                         data: {
                             //? Especificamos que propiedades ha de tener el identificador
                             personGroupId: "usuario",
@@ -179,6 +178,7 @@ const createItems = async (req, res) => {
                         //console.log('Status text: ' + response.status)
                         //console.log('Status text: ' + response.statusText)
                         //console.log(response.data)
+                        var datosazure = response.data;
                         
                         //? Generamos un try catch con el cual traeremos el person y la coincidencia del resultado
                         try {
@@ -259,12 +259,12 @@ const createItems = async (req, res) => {
                                         const idRegEn = response.data.data._id;
 
 
-                                        console.log(dataUser);
+                                        //console.log(dataUser);
                                         
                                         //? Combinamos los dos resultados para enviar solo una respuesta
                                         const resData = {
-                                            dataImg: data,
-                                            dataUser: dataUser,
+                                            dataUser: userData,
+                                            datosazure: datosazure,
                                         };
 
                                         try {
