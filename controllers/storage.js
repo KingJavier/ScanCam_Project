@@ -157,6 +157,10 @@ const createItems = async (req, res) => {
       //? Establecemos especificaciones generales 
       method: 'post',
       url: endpoint,
+      params : {
+        //? Establecemos modelo de reconocimiento
+        detectionModel: 'detection_03',
+      },
       data: {
         url: imgUrl,
       },

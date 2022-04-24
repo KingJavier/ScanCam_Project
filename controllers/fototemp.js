@@ -140,8 +140,9 @@ const createItems = async (req, res) => {
                 url: endpoint,
                 params : {
                     //? Establecemos modelo de reconocimiento
-                    recognitionModel: 'recognition_04',
+                    detectionModel: 'detection_03',
                     returnFaceId: true,
+                    returnFaceAttributes: "mask",
                 },
                 data:{
                     url: imageUrl,
