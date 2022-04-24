@@ -8,7 +8,7 @@ const router = express.Router();
 const {loginCtrl, registerCtrl, confirmEmail, 
     forgotPassword, resetPassword, getUsers,
     desactivarUser, activarUser, actualizarRol,
-    renviarverfi
+    renviarverfi, createExcel
 } = require ("../controllers/user")
 
 //* Importamos validacion CreateItem
@@ -23,6 +23,9 @@ const {authMiddleware} = require("../middleware/session");
 
 //* Importamos el validador de los roles.
 const checkRol = require('../middleware/rol');
+
+//*Importamos utils
+const uploadMiddleware = require('../utils/handleExcel');
 
 
 //?  Ruta Crear registro 
@@ -54,6 +57,9 @@ router.put('/reset-password', resetPassword);
 
 //? ruta para actulizar el rol.
 router.put('/actualizar-rol/:id', authMiddleware, checkRol(['gestor']), actualizarRol);
+
+//? implementamos ruta de middleware para subir un archivo en una peticionenviar utilizar en caso de se envien varios datos usar multi
+router.post('/excel',authMiddleware, checkRol(['gestor']), uploadMiddleware.single("MyExcel"), createExcel);
 
 //! exportamos rutas
 module.exports = router;

@@ -6,7 +6,7 @@ const {google} = require("googleapis");
 const CLIENT_ID="180701275743-u889fh71ufdkl0lindve2b0iko4ubjrg.apps.googleusercontent.com"
 const CLIENT_SECRET="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"
 const REDIRECT_URI="https://developers.google.com/oauthplayground"
-const REFRESH_TOKEN="1//048PjEUfBWaByCgYIARAAGAQSNwF-L9IrG3GC0mKu-BQhIOfiV9XybaXG0Br-WXGnUCnTSIr0t8Rt9fJJa7tAvJYg9bB-gQqQ7r8"
+const REFRESH_TOKEN="1//042yjNKnxz-akCgYIARAAGAQSNwF-L9Ir8kjk8Yi84zw9Df5x8eckv0G-3Amtpi7Kw2kBzDbRCCRUkS6Eq-Wmc7DELeGWSwsUUqQ"
 const oAuth2Client= new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
 
 oAuth2Client.setCredentials({refresh_token: REFRESH_TOKEN});
@@ -71,5 +71,25 @@ const getTemplateR = (numero) => {
     </div>
     `;
 }
+
+const getTemplateEx = (name, email, password) => {
+    return `
+
+    <div id="email_content" style:"font-family: 'Quicksand', sans-serif;">
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiPTda2MMSGauFT8i-tj7Hi5RSt2wHF3Ac2t0A9haWOOBU8Lq1vpmyu1CfCu3HZKCS7VIiuVsvHs8WLEKFq7uEGK9L5oweqJvTYyWfQbQuX-2Uc95hYgWERQ4rtoRugxvsjnHhqG5nZWETM1imSWUma9FXicLrDfOmNyxtp3Ks5WCFqqAutxMf1N9zMLw/s320/logo.png" alt="ScanCam">
+    <h4>Para:<strong>${ name }</strong></h4>
+    </br>
+    <p>Por medio del presente correo el centro de biotegnología agropecuaría Sena, se permite informarle al usuario ${name} que su cuenta Scamcan ha sido creada con los siguiente datos:</p>
+    </br>
+    <p><strong>Correo:</strong>${email}</p>
+    <p><strong>Contraseña:</strong>${password}</p>
+    </br>
+    <p>Estimdo usuario, se solicita que ingrese a: ('Link') y actualize sus datos personales e inicie el entrenamiento facial: <p>
+    </br>
+    <p>Para ello dirijase a la seccion '<strog>Entrenamiento facial</strog>' e ingrese 5 fotografias(Se le especificara en el apartado como debe ingresar las fotografias) </p>
+</div>
+    `;
+}
+
 //!Exporatciones
-module.exports = { sendEmail, getTemplate,getTemplateR};
+module.exports = { sendEmail, getTemplate,getTemplateR, getTemplateEx };

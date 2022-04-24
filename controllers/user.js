@@ -5,12 +5,13 @@ const { tokenSing, decodeSign} = require("../utils/handleJwt");
 const { handleHttpError } = require("../utils/handleError");
 const { userModel } = require("../models");
 const users = require("../models/nosql/users")
-const { getTemplate, sendEmail, getTemplateR} = require("../utils/handleMail");
+const { getTemplate, sendEmail, getTemplateR, getTemplateEx} = require("../utils/handleMail");
 const  _ = require('lodash');
 const jwt = require("jsonwebtoken");
 const axios = require('axios');
 var msRest = require("@azure/ms-rest-js");
 var Face = require("@azure/cognitiveservices-face");
+const Xlsx = require('xlsx');
 
 
 //? Ponemos el id del grupo de personas que vamos a crear 
@@ -530,6 +531,134 @@ const actualizarRol = async (req, res) => {
   }
 };
 
+//? Trear el archivo de excel para logueo usuarios
+const createExcel = async (req, res) => {
+  try { 
+    //?  Almacenamos en una constante el file
+    const {
+      file
+    } = req;
+    //const workbook =
+    //console.log(file);
+    //console.log(file.path);
+    //? Creamos funcion con el proposito de leer el excel
+    function excel(rutaex) {
+      const workbook = Xlsx.readFile(rutaex);
+
+      //? linea para establecer las hojas que poseemos en el excel
+      const workbookSheets = workbook.SheetNames;
+
+      //? Especificamos la hoja a leer
+      const sheet = workbookSheets[0];
+
+      //? Establecemos en que formato queremos la lectura
+      var dataexcel = Xlsx.utils.sheet_to_json(workbook.Sheets[sheet]);
+
+
+      //console.log(dataexcel);
+      return dataexcel;
+    };
+
+    //? hacemos llamado a la funcion excel
+
+    const daniel = excel(file.path);
+    // console.log('Esto es importaten ', daniel);
+
+    try {
+      //? Gor pra extraer los usurios del array.
+      for (var index = 0; index < daniel.length; index++) {
+        // console.log('esto retorna',index);
+        // console.log('Danielindex',daniel[index]);
+
+        const password = await encrypt(daniel[index].password);
+        // console.log('Contraselña encryptada',password);
+
+
+        var body = {
+          ...daniel[index],
+          password
+        }
+
+        //? Crear usuarios en la base de datos
+        var dataUser = await userModel.create(body);
+        
+
+        //?Creacion de tokens
+        const token = await tokenSing(dataUser);
+        //console.log(token);
+
+        //? Obtenemos el template de Verif Email
+        const template = getTemplate(dataUser.name, token);
+
+        //? Enviar el Email.
+        await sendEmail(dataUser.email, 'Confirma tu Correo', template);
+
+        //? Obtenemos el template de Verif Email
+        const templatecreacion = getTemplateEx(dataUser.name, dataUser.email, daniel[index].password);
+
+        //? Enviar el Email.
+        await sendEmail(dataUser.email, 'CREACION DE CUENTA', templatecreacion);
+
+        //? Extraemos ID del usuario creado
+        const id = dataUser._id;
+
+        //! Peticion a Microsoft Azure para crear un person group person.
+        let pablito = await client.personGroupPerson.create(GRUPO_PERSONAS_ID, {
+          'name': id
+        })
+        .then((wFace) => {
+          //? Enviamos por consola mensaje de creacion exitosa
+          //console.log('Persona' + wFace.personId + 'a sido creada.')
+          //console.log(wFace.personId);
+          //? Retornamos la creacion 
+          return wFace
+        }) //?En caso de error me retorne un mensaje y el error que genera este fallo
+        .catch((err) => {
+          throw err
+        })
+
+        //? Extraemos el PersonId 
+        const personId = pablito.personId;
+
+        //? Generamos try catch para verificar que si nos traiga el id del usuario registrado 
+        try {
+          //? Guardamos el id del usuario 
+          var userDa = await userModel.findById(dataUser._id);
+
+          //? Insertamos el valor personId en el campo personId de la base de datos 
+          userDa.personId = personId;
+          //? Guardamos los cambios realizados 
+          const userda = await userDa.save();
+
+          console.log('miorar si sirve',userda);
+          //? definimos codigo de repuesta de creacion satisfactoria
+
+        } catch (e) {
+          //? Mostramos el error
+          console.log(e);
+          return res.status(401).json({
+            msg: "ID_NO_VALIDO"
+          });
+        }
+      }
+
+      res.status(200).json({
+        msg: "CREADO CON EXITO"
+      });
+  
+    } catch (error) {
+      res.status(400).json({
+        msg: "ERROR EN EL FOR"
+      });
+    }
+  } catch (e) {
+    console.log(e);
+    return res.status(501).json({
+      msg: "ERROR_DETALLE_ITEMS"
+    });
+  }
+};
+
 //! Exportaciones
 module.exports = {
   registerCtrl,
@@ -541,5 +670,6 @@ module.exports = {
   desactivarUser,
   activarUser,
   actualizarRol,
-  renviarverfi
+  renviarverfi,
+  createExcel
 };
