@@ -157,12 +157,13 @@ const createItems = async (req, res) => {
       //? Establecemos especificaciones generales 
       method: 'post',
       url: endpoint,
-      params : {
-        //? Establecemos modelo de reconocimiento
-        detectionModel: 'detection_03',
-      },
       data: {
         url: imgUrl,
+      },
+      params:{
+        detectionModel:'detection_03',
+        returnFaceId:true,
+        returnFaceAttributes:'headpose,mask',
       },
       //? Establecemos el header
       headers: { 'Ocp-Apim-Subscription-Key': subscriptionKey }

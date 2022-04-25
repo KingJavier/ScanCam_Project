@@ -138,14 +138,15 @@ const createItems = async (req, res) => {
                 //? Establecemos especificaciones generales para el reconocimiento
                 method: 'post',
                 url: endpoint,
-                params : {
-                    //? Establecemos modelo de reconocimiento
-                    detectionModel: 'detection_03',
-                    returnFaceId: true,
-                    returnFaceAttributes: "mask",
-                },
                 data:{
                     url: imageUrl,
+                },
+                params:{
+                    //? Establecemos modelo de reconocimiento
+                    recognitionModel: 'recognition_04',
+                    detectionModel:'detection_03',
+                    returnFaceId:true,
+                    returnFaceAttributes:'headpose,mask',
                 },
                 headers: { 'Ocp-Apim-Subscription-Key': subscriptionKey }
             }).then(function(response) {
@@ -171,7 +172,7 @@ const createItems = async (req, res) => {
                             ],
                             //? Especificamos parametros para el resultado del identificador 
                             maxNumOfCandidatesReturned: 1,
-                            confidenceThreshold: 0.5
+                            confidenceThreshold: 0.7
                         },
                         headers: { 'Ocp-Apim-Subscription-Key': subscriptionKey }
                     }).then(function (response) {
