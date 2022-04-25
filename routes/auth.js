@@ -8,7 +8,7 @@ const router = express.Router();
 const {loginCtrl, registerCtrl, confirmEmail, 
     forgotPassword, resetPassword, getUsers,
     desactivarUser, activarUser, actualizarRol,
-    renviarverfi, createExcel
+    renviarverfi, createExcel, numerorostros
 } = require ("../controllers/user")
 
 //* Importamos validacion CreateItem
@@ -60,6 +60,9 @@ router.put('/actualizar-rol/:id', authMiddleware, checkRol(['gestor']), actualiz
 
 //? implementamos ruta de middleware para subir un archivo en una peticionenviar utilizar en caso de se envien varios datos usar multi
 router.post('/excel',authMiddleware, checkRol(['gestor']), uploadMiddleware.single("MyExcel"), createExcel);
+
+//? Ruta mostrar cuantas caras hay registradas en azure
+router.get("/numrostros", numerorostros);
 
 //! exportamos rutas
 module.exports = router;

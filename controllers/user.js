@@ -3,6 +3,7 @@ const { matchedData } = require("express-validator");
 const { encrypt, compare } = require("../utils/handlePassword");
 const { tokenSing, decodeSign} = require("../utils/handleJwt");
 const { handleHttpError } = require("../utils/handleError");
+const {verifyToken} = require('../utils/handleJwt')
 const { userModel } = require("../models");
 const users = require("../models/nosql/users")
 const { getTemplate, sendEmail, getTemplateR, getTemplateEx} = require("../utils/handleMail");
@@ -22,6 +23,7 @@ const key =  process.env.key;
 
 //? Ruta Azure para crear PersonGruopPerson
 const endpoint = process.env.endpoint;
+const subscriptionKey =  process.env.key;
 
 let credentials = new msRest.ApiKeyCredentials({ inHeader: { 'Ocp-Apim-Subscription-Key': key } });
 
@@ -661,6 +663,75 @@ const createExcel = async (req, res) => {
   }
 };
 
+//? método para obtener Lista de los usuarios.
+const numerorostros= async (req, res) => {
+
+  const token =req.headers.authorization.split(' ').pop();
+
+  try {
+
+    try {
+      //? verificamos la data del token
+      const dataToken = await verifyToken(token) 
+      //? indicamos condicion en caso de que no exista
+      if (!dataToken._id) {
+          return res.json({
+              msg: "ERROR_ID_TOKEN"
+          });
+      }
+      //? Creamos consulta a la db para traer datos del user
+      var  user = await userModel.findById(dataToken._id);
+      //console.log(ruta);
+    } catch (e) {
+      console.log(e);
+      return res.status(404).json({
+        msg: "ERROR_TOKEN"
+      });
+    }
+    
+    try {
+      const ruta = process.env.endpoint + "/face/v1.0/persongroups/usuario/persons/" + user.personId;
+
+      //! Integramos el reconocimiento facial de la api de microsoft azure por medio de axios
+      axios({
+        //? Establecemos especificaciones generales para el reconocimiento
+        method: 'get',
+        url: ruta,
+        headers: { 'Ocp-Apim-Subscription-Key': subscriptionKey }
+      }).then(function(response) {
+          //? Buscamos mensaje luego de la ejecucion 
+          //console.log('Status text: ' + response.status)
+          //console.log('Status text: ' + response.statusText)
+          //console.log(response.data)
+
+          const persistedFaceIds = response.data.persistedFaceIds.length;
+
+          res.status(200).json(
+            persistedFaceIds
+          )
+    
+      }).catch( function (error) {
+          //? En caso de error mostrar 
+          console.log(error);
+          return res.send("ERROR TRAYENDO ")
+      });
+
+    } catch (e) {
+      console.log(e);
+      return res.status(500).json({
+        msg: "ERROR_AXIOS_NO_SE_ENCONTRO_PERSON_ID"
+      });
+    }
+
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({
+      msg: "ERROR"
+    });
+  }
+
+};
+
 //! Exportaciones
 module.exports = {
   registerCtrl,
@@ -673,5 +744,6 @@ module.exports = {
   activarUser,
   actualizarRol,
   renviarverfi,
-  createExcel
+  createExcel,
+  numerorostros
 };
