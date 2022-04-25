@@ -593,8 +593,10 @@ const createExcel = async (req, res) => {
         //? Enviar el Email.
         await sendEmail(dataUser.email, 'Confirma tu Correo', template);
 
+        const nombre = dataUser.name;
+
         //? Obtenemos el template de Verif Email
-        const templatecreacion = getTemplateEx(dataUser.name, dataUser.email, daniel[index].password);
+        const templatecreacion = getTemplateEx(nombre, dataUser.email, daniel[index].password);
 
         //? Enviar el Email.
         await sendEmail(dataUser.email, 'CREACION DE CUENTA', templatecreacion);
@@ -630,7 +632,7 @@ const createExcel = async (req, res) => {
           //? Guardamos los cambios realizados 
           const userda = await userDa.save();
 
-          console.log('miorar si sirve',userda);
+          //console.log('miorar si sirve',userda);
           //? definimos codigo de repuesta de creacion satisfactoria
 
         } catch (e) {
