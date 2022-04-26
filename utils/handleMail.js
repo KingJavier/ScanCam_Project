@@ -69,8 +69,12 @@ const getTemplateR = (numero) => {
         <p>Código de verificación.</p>
         <h2>${numero}</h2>
 
-        <h3>CAMILO USTED ME CAE COMO UN CULO (Mentiritas 😘 )</h3>
-        <button><a href="http://localhost:8100/cambiocontrasena" target="_blank">Confirmar Cuenta</a></button>
+        <p>Al dar click en el siguiente botón lo redireccionara a una vista en la cual encontrara los campos para digitar el código y la nueva contraseña para su cuenta</p>
+        </br>
+        <h1>ALGUITO XD</h1>
+        </br>
+        <p>click en el siguiente enlace:</p>
+        <p><a href="http://localhost:8100/cambiocontrasena" target="_blank">Confirmar Cuenta</a></p>
     </div>
     `;
 }
