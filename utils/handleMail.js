@@ -68,6 +68,9 @@ const getTemplateR = (numero) => {
         </br>
         <p>Código de verificación.</p>
         <h2>${numero}</h2>
+
+        <h3>CAMILO USTED ME CAE COMO UN CULO (Mentiritas 😘 )</h3>
+        <button><a href="http://localhost:8100/cambiocontrasena" target="_blank">Confirmar Cuenta</a></button>
     </div>
     `;
 }

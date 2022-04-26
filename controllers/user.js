@@ -212,9 +212,7 @@ const confirmEmail = async (req, res) => {
     await user.save();
 
     //? redireccionar a la Confirmación
-    return res.status(200).json({
-      msg: 'EMAIL_VERIFICADO_CORRECTAMENTE'
-    });
+    return res.status(200).redirect("http://localhost:8100/home");
 
   }catch (e) {
     //? implementamos el manejador de errorres
