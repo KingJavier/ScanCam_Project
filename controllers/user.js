@@ -21,6 +21,9 @@ var GRUPO_PERSONAS_ID = 'usuario';
 //? Llave de Azure
 const key =  process.env.key;
 
+//? Direccion del front 
+const front = process.env.URL_FRONT;
+
 //? Ruta Azure para crear PersonGruopPerson
 const endpoint = process.env.endpoint;
 const subscriptionKey =  process.env.key;
@@ -66,6 +69,8 @@ const registerCtrl = async (req, res) => {
     //? Obtenemos el template de Verif Email
 
     const template = getTemplate(req.name, data.token);
+
+    console.log(template);
 
     //? Enviar el Email.
     await sendEmail(req.email, 'Confirma tu Correo', template);
@@ -179,12 +184,10 @@ const confirmEmail = async (req, res) => {
     const {token} = req.params;
 
     //? Verificar la data
-    const data = await decodeSign(token);
+    const data = decodeSign(token);
 
     if(data === null){
-      return res.status(401).json({
-        msg: "ERROR_OBTENER_DATA"
-      });
+      return res.status(401).redirect(front + "/home");
     }
 
     //? Obtener email de la data
@@ -195,16 +198,12 @@ const confirmEmail = async (req, res) => {
 
     //? En caso de que el usuario no exista arroje un error  
     if(user === null){
-      return res.status(404).json({
-        msg: "USUARIO_NO_EXISTE"
-      });
+      return res.status(404).redirect(front + "/home");
     }
 
     //? verificar que el correo sea correcto.
     if(email !== user.email){
-      return res.status(404).json({
-        msg: "ERROR_AL_VERIFICAR_EMAIL"
-      });
+      return res.status(404).redirect(front + "/home");
     }
     
     //? Actualizar User 
@@ -212,7 +211,7 @@ const confirmEmail = async (req, res) => {
     await user.save();
 
     //? redireccionar a la Confirmación
-    return res.status(200).redirect("http://localhost:8100/home");
+    return res.status(200).redirect(front + "/home");
 
   }catch (e) {
     //? implementamos el manejador de errorres
