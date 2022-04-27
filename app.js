@@ -20,7 +20,7 @@ app.use(cors())
 
 //? preparamos para que reciba informacion en formato json
 app.use(express.json({limit: '200mb'}));
-app.use(express.urlencoded({limit: '200mb'}));
+app.use(express.urlencoded({limit: '200mb', extended: true}));
 
 //? hacemos publicos algunos datos 
 app.use(express.static('storage'));

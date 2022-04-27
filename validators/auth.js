@@ -29,6 +29,8 @@ const validatorRegister =[
     check("role")
     .exists()
     .notEmpty(),
+    check("staEmail"),
+    // check("statusAzure"),
     
     (req, res, next) => {
         return validateResult(req, res, next)

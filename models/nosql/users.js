@@ -62,7 +62,15 @@ const UserScheme = new mongoose.Schema(
         idRegistro: {
             type: String,
             default: '',
-        }
+        },
+        stateEmail:{
+            type:String,
+            default:'UNDEFINED'
+        },
+        // stateAzure:{
+        //     type:String,
+        //     default:'UNDEFINED'
+        // }
         
     },
     //? Registramos creacion y actualizacion

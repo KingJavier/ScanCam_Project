@@ -12,7 +12,7 @@ const back = process.env.PUBLIC_URL;
 const CLIENT_ID="180701275743-u889fh71ufdkl0lindve2b0iko4ubjrg.apps.googleusercontent.com"
 const CLIENT_SECRET="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"
 const REDIRECT_URI="https://developers.google.com/oauthplayground"
-const REFRESH_TOKEN="1//045glFYVtbXPiCgYIARAAGAQSNwF-L9Irrx5yqQoU1346T9ZSoBYlVjtAZYNVNMzVVd5ol2VFvhTKI6dArVQoExq4fpuc9e8BAoI"
+const REFRESH_TOKEN="1//044-DfvJ2Wg4rCgYIARAAGAQSNwF-L9Ir3Fa3zPotfQUQm4qKoPgBYZhPKbrKob7QuXkJscUf4Vx_6PCEsB3R_1OqQoPv8ttMZJU"
 const oAuth2Client= new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
 
 oAuth2Client.setCredentials({refresh_token: REFRESH_TOKEN});
@@ -55,50 +55,61 @@ const sendEmail = async (email, subject, html) => {
 //? Contenido del correo en formato HTML.
 const getTemplate = (name, token) => {
     return `
-    <div id="email_content" style="align-content: center; margin: 10px;">
-        <img  style="width: 170px; height: 170px;" src="https://res.cloudinary.com/scancam/image/upload/v1650508060/logo_qkfylb.png" alt"ScanCam">
-        <p>Recibimos una solicitud para confirmar su correo electrónico en <b>SCANCAM</b> Si esto es correcto, confirme haciendo clic en el botón a continuación. Si no sabe por qué recibió este correo electrónico omitalo.</p>
-        </br>
-        <p>Para confirmar da click 👇</p>
-        <button><a href= "${back}/api/auth/confirm/${ token }" target="_blank">Confirmar Cuenta</a></button>
-    </div>
+        <div id="email_content" style="display: grid; grid-template-columns: repeat(6, 1fr); grid-gap: 10px; grid-auto-rows: minmax(30px, auto);" >
+            <div class="div1" style="grid-column: 1; grid-row: 1 / 10 ; margin-left: 30px; margin-bottom: 50px;">
+                <img style="width: 170px; height: 170px;" src="https://res.cloudinary.com/scancam/image/upload/v1650508060/logo_qkfylb.png" alt="ScanCam">
+            </div>
+            <div class="div2" style="grid-column: 2 / 6; grid-row: 1 / 10;">
+                <p>Recibimos una solicitud para confirmar su correo electrónico en <b>SCANCAM</b> Si esto es correcto, confirme haciendo clic en el botón a continuación. Si no sabe por qué recibió este correo electrónico omitalo.</p>
+                </br>
+                <p>Para confirmar da click 👇</p>
+                <p><a href=""${back}/api/auth/confirm/${ token }">Confirmar Cuenta</a></p>
+            </div>
+        </div>
     `;
 }
 
 //? Contenido del correco en formato HTML para reset_pasword
 const getTemplateR = (numero) => {
     return `
-    <div id="email_content">
-        <img style="width: 170px; height: 170px;" src="https://res.cloudinary.com/scancam/image/upload/v1650508060/logo_qkfylb.png" alt"ScanCam">
-        <p>Le hemos enviado este correo electrónico en respuesta a su solicitud de restablecer su contraseña para <b>SCANCAM</b>.</p>
-        </br>
-        <p>Código de verificación.</p>
-        <h2>${numero}</h2>
+        <div id="email_content" style="display: grid; grid-template-columns: repeat(6, 1fr); grid-gap: 10px; grid-auto-rows: minmax(30px, auto);" >
+            <div class="div1" style="grid-column: 1; grid-row: 2 / 10 ; margin-left: 30px; margin-bottom: 50px;">
+                <img style="width: 170px; height: 170px;" src="https://res.cloudinary.com/scancam/image/upload/v1650508060/logo_qkfylb.png" alt="ScanCam">
+            </div>
+            <div class="div2" style="grid-column: 2 / 6; grid-row: 1 / 10;">
+                <p>Le hemos enviado este correo electrónico en respuesta a su solicitud de restablecer su contraseña para <b>SCANCAM</b>.</p>
+                
+                <p>Código de verificación.</p>
+                <h2>${numero}</h2>
 
-        <p>Al dar click en el siguiente botón lo redireccionara a una vista en la cual encontrara los campos para digitar el código y la nueva contraseña para su cuenta</p>
-        </br>
-        <p>click en el siguiente enlace:</p>
-        <p><a href="${front}/cambiocontrasena" target="_blank">Cambio de contraseña</a></p>
-    </div>
+                <p>Al dar click en el siguiente botón lo redireccionara a una vista en la cual encontrara los campos para digitar el código y la nueva contraseña para su cuenta</p>
+                </br>
+                <p>click en el siguiente enlace:</p>
+                <p><a href="${front}/cambiocontrasena" target="_blank">Cambio de contraseña</a></p>
+            </div>
+        </div>
     `;
 }
 
 const getTemplateEx = (name, email, password) => {
     return `
-
-    <div id="email_content" style:"font-family: 'Quicksand', sans-serif;">
-    <img style="width: 170px; height: 170px;" src="https://res.cloudinary.com/scancam/image/upload/v1650508060/logo_qkfylb.png" alt="ScanCam">
-    <h4>Para:<strong>${ name }</strong></h4>
-    </br>
-    <p>Por medio del presente correo el centro de biotegnología agropecuaría Sena, se permite informarle al usuario ${name} que su cuenta Scamcan ha sido creada con los siguiente datos:</p>
-    </br>
-    <p><strong>Correo:</strong>${email}</p>
-    <p><strong>Contraseña:</strong>${password}</p>
-    </br>
-    <p>Estimdo usuario, se solicita que ingrese a: ('Link') y actualize sus datos personales e inicie el entrenamiento facial: <p>
-    </br>
-    <p>Para ello dirijase a la seccion '<strog>Entrenamiento facial</strog>' e ingrese 5 fotografias(Se le especificara en el apartado como debe ingresar las fotografias) </p>
-</div>
+        <div id="email_content" style="display: grid; grid-template-columns: repeat(6, 1fr); grid-gap: 10px; grid-auto-rows: minmax(30px, auto);" >
+            <div class="div1" style="grid-column: 1; grid-row: 2 / 10 ; margin-left: 30px; margin-bottom: 50px;">
+                <img style="width: 170px; height: 170px;" src="https://res.cloudinary.com/scancam/image/upload/v1650508060/logo_qkfylb.png" alt="ScanCam">
+            </div>
+            <br class="div2" style="grid-column: 2 / 6; grid-row: 1 / 10;">
+                <h4>Para:<strong>${ name }</strong></h4>
+                </br>
+                <p>Por medio del presente correo el centro de biotegnología agropecuaría Sena, se permite informarle al usuario ${name} que su cuenta Scamcan ha sido creada con los siguiente datos:</p>
+                
+                <p><strong>Correo:</strong>${email}</p>
+                <p><strong>Contraseña:</strong>${password}</p>
+                
+                <p>Estimdo usuario, se solicita que ingrese a: ('Link') y actualize sus datos personales e inicie el entrenamiento facial: <p>
+                
+                <p>Para ello dirijase a la seccion '<strog>Entrenamiento facial</strog>' e ingrese 5 fotografias(Se le especificara en el apartado como debe ingresar las fotografias) </p>
+            </div>
+        </div>
     `;
 }
 

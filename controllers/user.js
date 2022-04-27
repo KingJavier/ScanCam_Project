@@ -532,14 +532,12 @@ const actualizarRol = async (req, res) => {
 
 //? Trear el archivo de excel para logueo usuarios
 const createExcel = async (req, res) => {
-  try { 
+  try {
     //?  Almacenamos en una constante el file
     const {
       file
     } = req;
-    //const workbook =
-    //console.log(file);
-    //console.log(file.path);
+
     //? Creamos funcion con el proposito de leer el excel
     function excel(rutaex) {
       const workbook = Xlsx.readFile(rutaex);
@@ -553,105 +551,122 @@ const createExcel = async (req, res) => {
       //? Establecemos en que formato queremos la lectura
       var dataexcel = Xlsx.utils.sheet_to_json(workbook.Sheets[sheet]);
 
-
-      //console.log(dataexcel);
+      //? Retornamos el json. 
       return dataexcel;
     };
 
     //? hacemos llamado a la funcion excel
-
     const daniel = excel(file.path);
-    // console.log('Esto es importaten ', daniel);
+    
+    // ? For para extraer los usurios del array.
+    for (var index = 0; index < daniel.length; index++) {
+      //? Alamacenamos la clave con la cual se esta creando el 
+      var passwordEx = (daniel[index].password);
+      //? Encriptamos la contraseña.
+      var password = await encrypt(daniel[index].password);
+      // console.log('verficar contraseña',contraseña);
+      var body = {
+        ...daniel[index],
+        password
+      }
 
-    try {
-      //? Gor pra extraer los usurios del array.
-      for (var index = 0; index < daniel.length; index++) {
-        // console.log('esto retorna',index);
-        // console.log('Danielindex',daniel[index]);
+      const danieivan0 = daniel[index].email
+      const verEmail = await userModel.findOne({"email":daniel[index].email},{email:1})
 
-        const password = await encrypt(daniel[index].password);
-        // console.log('Contraselña encryptada',password);
+      name(verEmail);
 
+      async function name(hola) {
+        if(hola == null){
+          //? Crear usuarios en la base de datos
+          //console.log('AUN NO EXISTE');
+          var dataUser = await userModel.create(body);
 
-        var body = {
-          ...daniel[index],
-          password
-        }
+          //? Extraemos ID del usuario creado
+          const id = dataUser._id;
 
-        //? Crear usuarios en la base de datos
-        var dataUser = await userModel.create(body);
-        
+          //! Peticion a Microsoft Azure para crear un person group person.
+          let pablito = await client.personGroupPerson.create(GRUPO_PERSONAS_ID, { 'name': id })
+              .then((wFace) => {
+                  //? Enviamos por consola mensaje de creacion exitosa
+                  //console.log('Persona' + wFace.personId + 'a sido creada.')
+                  //console.log(wFace.personId);
+                  //? Retornamos la creacion 
+                  return wFace
+              })//?En caso de error me retorne un un mensaje y el error que genera este fallo
+              .catch((err) => {
+                  throw err
+              })
+              
+          //? Extraemos el PersonId 
+          const personId = pablito.personId;
 
-        //?Creacion de tokens
-        const token = await tokenSing(dataUser);
-        //console.log(token);
-
-        //? Obtenemos el template de Verif Email
-        const template = getTemplate(dataUser.name, token);
-
-        //? Enviar el Email.
-        await sendEmail(dataUser.email, 'Confirma tu Correo', template);
-
-        const nombre = dataUser.name;
-
-        //? Obtenemos el template de Verif Email
-        const templatecreacion = getTemplateEx(nombre, dataUser.email, daniel[index].password);
-
-        //? Enviar el Email.
-        await sendEmail(dataUser.email, 'CREACION DE CUENTA', templatecreacion);
-
-        //? Extraemos ID del usuario creado
-        const id = dataUser._id;
-
-        //! Peticion a Microsoft Azure para crear un person group person.
-        let pablito = await client.personGroupPerson.create(GRUPO_PERSONAS_ID, {
-          'name': id
-        })
-        .then((wFace) => {
-          //? Enviamos por consola mensaje de creacion exitosa
-          //console.log('Persona' + wFace.personId + 'a sido creada.')
-          //console.log(wFace.personId);
-          //? Retornamos la creacion 
-          return wFace
-        }) //?En caso de error me retorne un mensaje y el error que genera este fallo
-        .catch((err) => {
-          throw err
-        })
-
-        //? Extraemos el PersonId 
-        const personId = pablito.personId;
-
-        //? Generamos try catch para verificar que si nos traiga el id del usuario registrado 
-        try {
-          //? Guardamos el id del usuario 
-          var userDa = await userModel.findById(dataUser._id);
+          //? Generamos try catch para verificar que si nos traiga el id del usuario registrado 
+          try {
+            //? Guardamos el id del usuario 
+            var userDa = await userModel.findById(id);
+          } catch (e) {
+            //? Mostramos el error
+            console.log(e);
+            return res.status(401).json({
+              msg: "ID_NO_VALIDO"
+            });
+          }
 
           //? Insertamos el valor personId en el campo personId de la base de datos 
           userDa.personId = personId;
           //? Guardamos los cambios realizados 
-          const userda = await userDa.save();
+          await userDa.save();
 
-          //console.log('miorar si sirve',userda);
-          //? definimos codigo de repuesta de creacion satisfactoria
-
-        } catch (e) {
-          //? Mostramos el error
-          console.log(e);
-          return res.status(401).json({
-            msg: "ID_NO_VALIDO"
-          });
+        }else if(hola.email == danieivan0){
+          console.log('YA EXISTE');
+        }else{
+          console.log("ESTAMOS EN LA INMUNDA");
         }
       }
-
-      res.status(200).json({
-        msg: "CREADO CON EXITO"
-      });
-  
-    } catch (error) {
-      res.status(400).json({
-        msg: "ERROR EN EL FOR"
-      });
     }
+
+    //? Traesmos todos los usuarios de la base de datos 
+    const email = await userModel.find({"stateEmail": "UNDEFINED"},{email:1, stateEmail:1},);
+
+    //? extraemos el estado de verificacion de cada usaurio
+
+    for (let index = 0; index < email.length; index++) {
+      const element = email[index];
+      const verifiid = email[index]._id;
+
+      const stateEmail = element.stateEmail;
+      
+      if (stateEmail === 'UNDEFINED') {
+        const noverif = await userModel.findById(verifiid, {email:1, name:1, stateEmail:1});
+
+        //console.log(noverif);
+
+        //?Creacion de tokens
+        const token = await tokenSing(noverif);
+        //console.log(token);
+
+        //? Extraemos el nombre del usuario al que se le va enviar el correo
+        const nombre = noverif.name;
+
+        //? Extraemos el nombre del usuario que se va enviar al correo
+        const email = noverif.email;
+
+        //? Obtenemos el template de Verif Email
+        const templatecreacion = getTemplateEx(nombre, email ,passwordEx);
+        
+        //? Enviar el Email.
+        await sendEmail(email, 'CREACION DE CUENTA', templatecreacion);
+
+        //? Actualizar User 
+        noverif.stateEmail = 'DEFINIDO'
+        await noverif.save();
+      }
+    }
+
+    res.status(200).json({
+      msg: "CREADO CON EXITO"
+    });
+
   } catch (e) {
     console.log(e);
     return res.status(501).json({
