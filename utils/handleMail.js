@@ -63,7 +63,7 @@ const getTemplate = (name, token) => {
                 <p>Recibimos una solicitud para confirmar su correo electrónico en <b>SCANCAM</b> Si esto es correcto, confirme haciendo clic en el botón a continuación. Si no sabe por qué recibió este correo electrónico omitalo.</p>
                 </br>
                 <p>Para confirmar da click 👇</p>
-                <p><a href=""${back}/api/auth/confirm/${ token }">Confirmar Cuenta</a></p>
+                <p><a href="${back}/api/auth/confirm/${ token }">Confirmar Cuenta</a></p>
             </div>
         </div>
     `;
@@ -85,7 +85,7 @@ const getTemplateR = (numero) => {
                 <p>Al dar click en el siguiente botón lo redireccionara a una vista en la cual encontrara los campos para digitar el código y la nueva contraseña para su cuenta</p>
                 </br>
                 <p>click en el siguiente enlace:</p>
-                <p><a href="${front}/cambiocontrasena" target="_blank">Cambio de contraseña</a></p>
+                <p><a href="${front}/cambiocontrasena">Cambio de contraseña</a></p>
             </div>
         </div>
     `;
