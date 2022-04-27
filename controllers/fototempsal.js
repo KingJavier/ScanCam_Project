@@ -154,6 +154,7 @@ const createItems = async (req, res) => {
                 //console.log('Status text: ' + response.status)
                 //console.log('Status text: ' + response.statusText)
                 //console.log(response.data)
+                const coordenadas = response.data;
 
                 //? Guardamos en un avariable el id que extraemos cuando se detecta una cara en la imagen
                 const faceId = response.data[0].faceId;
@@ -271,6 +272,7 @@ const createItems = async (req, res) => {
                                                 const resData = {
                                                     dataUser: userData,
                                                     datosazure: datosazure,
+                                                    coordenadas: coordenadas,
                                                 };
                                                 //! ---------
                                                 //? codigo de satisafaccion al enviar un archivo
