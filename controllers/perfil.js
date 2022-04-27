@@ -25,7 +25,7 @@ const MEDIA_PATH = `${__dirname}/../perfil`;
 const getItems = async (req, res) => {
   try {
      //? integramos constante que buscara diversos datos
-    const data = await perfilModel.find({});
+    const data = await perfilModel.find({},{deleted:0, createdAt:0, updatedAt:0});
     res.send({ data });
   } catch (e) {
     //? implementamos el manejador de errorres
@@ -47,7 +47,7 @@ const getItem = async (req, res) => {
     req = matchedData(req);
     const {id} = req;
     //? integramos constante que buscara segun un id predeterminado
-    const data = await perfilModel.findById(id);
+    const data = await perfilModel.findById(id, {deleted:0, createdAt:0, updatedAt:0});
     res.send({ data });
   } catch (e) {
     console.log(e)
@@ -84,7 +84,7 @@ const createItems = async (req, res) => {
     const {user} = req;
 
     try {
-      var datosUser = await userModel.findById(user._id);
+      var datosUser = await userModel.findById(user._id,{idImgPerfil:1});
 
       datosUser.idImgPerfil = data._id;
       await datosUser.save();

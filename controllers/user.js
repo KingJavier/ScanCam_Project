@@ -40,7 +40,7 @@ const registerCtrl = async (req, res) => {
     req = matchedData(req);
 
     //? Verificamos que el usuario exista.
-    const user = await userModel.findOne({email:req.email}) || null;
+    const user = await userModel.findOne({email:req.email},{email:1}) || null;
 
     //? Condición donde en caso de ser falso emplea el manejador de errores 
     if( user!== null){
@@ -70,8 +70,6 @@ const registerCtrl = async (req, res) => {
 
     const template = getTemplate(req.name, data.token);
 
-    console.log(template);
-
     //? Enviar el Email.
     await sendEmail(req.email, 'Confirma tu Correo', template);
 
@@ -97,7 +95,7 @@ const registerCtrl = async (req, res) => {
     //? Generamos try catch para verificar que si nos traiga el id del usuario registrado 
     try {
       //? Guardamos el id del usuario 
-      var userDa = await userModel.findById(data.user._id);
+      var userDa = await userModel.findById(data.user._id , {createdAt:0, updatedAt:0, deleted:0, personId:0, idRegistro:0, stateEmail:0, resetCode:0, idImgCertificado:0});
     } catch (e) {
       //? Mostramos el error
       console.log(e);
@@ -194,7 +192,7 @@ const confirmEmail = async (req, res) => {
     const {email} = data;
 
     //? Verificar existencia del usaurio.
-    const user = await userModel.findOne({email}) || null;
+    const user = await userModel.findOne({email}, {email:1, status:1}) || null;
 
     //? En caso de que el usuario no exista arroje un error  
     if(user === null){
@@ -233,7 +231,7 @@ const renviarverfi = async (req, res) => {
     }
 
     try {
-      var mail = await userModel.findOne({email});
+      var mail = await userModel.findOne({email},{email:1});
       
       if(mail == null){
         return res.status(404).json({msg: "No se encontro el usuario ingresado"})
@@ -244,14 +242,14 @@ const renviarverfi = async (req, res) => {
     }
 
    //? Treamos la info del user dependiendo del email.
-  const user = await users.findOne({email});
+    const user = await users.findOne({email},{role:1, email:1, name:1});
+      
+    //? Creamos el token
+    const token = await tokenSing(user);
     
-   //? Creamos el token
-  const token = await tokenSing(user);
-  
-     //? Obtenemos el template de Verif Email
+    //? Obtenemos el template de Verif Email
     const template = getTemplate(user.name, token);
-     //? Enviar el Email.
+    //? Enviar el Email.
     await sendEmail(user.email, 'Confirma tu Correo', template);
 
     return res.status(200).json({
@@ -278,7 +276,7 @@ const forgotPassword = async (req, res) => {
     }
 
     try {
-      var mail = await userModel.findOne({email});
+      var mail = await userModel.findOne({email},{email:1});
       if(mail == null){
         return res.status(404).json({msg: "No se encontro el usuario ingresado"})
       }
@@ -377,7 +375,7 @@ const getUsers = async (req, res) => {
 
     try {
       //? integramos constante que buscara diversos datos
-      const users = await userModel.find({});
+      const users = await userModel.find({},{createdAt:0, updatedAt:0, deleted:0, personId:0, idRegistro:0, stateEmail:0, resetCode:0, idImgCertificado:0});
 
       return res.send({ users });
 
@@ -410,7 +408,7 @@ const desactivarUser = async (req, res) => {
       //? Verificar existencia del usaurio.
       //? En caso de que el usuario no exista arroje un error  
       try {
-        var user = await userModel.findById({_id});
+        var user = await userModel.findById({_id},{estado:1});
       } catch (e) {
         console.log(e)
         return res.status(404).json({
@@ -458,7 +456,7 @@ const activarUser = async (req, res) => {
       //? Verificar existencia del usaurio.
       //? En caso de que el usuario no exista arroje un error  
       try {
-        var user = await userModel.findById({_id});
+        var user = await userModel.findById({_id},{estado:1});
       } catch (error) {
         return res.status(404).json({
           msg: "ID_NO_VALIDO"
@@ -485,7 +483,6 @@ const activarUser = async (req, res) => {
         msg: "ERROR_DESHABILITANDO"
       });
     }
-
   } catch (e) {
     console.log(e)
     //? implementamos el manejador de errorres
@@ -502,25 +499,24 @@ const actualizarRol = async (req, res) => {
     const {id} = req.params;
     const {role} = req.body;
     const _id = id;
-    console.log(_id);
     //? Verificar existencia del usaurio.
-      //? En caso de que el usuario no exista arroje un error  
-      try {
-        var user = await userModel.findById({_id});
-      } catch (err) {
-        console.log(err);
-        return res.status(404).json({
-          msg: "ID_NO_VALIDO"
-        });
-      }
+    //? En caso de que el usuario no exista arroje un error  
+    try {
+      var user = await userModel.findById({_id});
+    } catch (err) {
+      console.log(err);
+      return res.status(404).json({
+        msg: "ID_NO_VALIDO"
+      });
+    }
     //? actualizamos dato en la DB dependiendo el ID recibido y lo almacenamso en data
     const data = await userModel.findByIdAndUpdate(
       req.params.id, {role}
     );
-    const datosUsu = await userModel.findById(req.params.id);
+    const datosUsu = await userModel.findById(req.params.id, {email:1, role:1});
 
     //? integramos constante que buscara segun un id predeterminado
-    res.send({ datosUsu });
+    res.status(200).send({ datosUsu });
   } catch (e) {
     console.log(e)
     //? implementamos el manejador de errorres
@@ -692,7 +688,7 @@ const numerorostros= async (req, res) => {
           });
       }
       //? Creamos consulta a la db para traer datos del user
-      var  user = await userModel.findById(dataToken._id);
+      var  user = await userModel.findById(dataToken._id, {personId:1});
       //console.log(ruta);
     } catch (e) {
       console.log(e);

@@ -38,7 +38,7 @@ const MEDIA_PATH = `${__dirname}/../fototempsal`;
 const getItems = async (req, res) => {
     try {
         //? integramos constante que buscara diversos datos
-        const data = await fototempsalModel.find({});
+        const data = await fototempsalModel.find({},{deleted:0, updatedAt:0});
         console.log(data);
         res.send({ data });
     } catch (e) {
@@ -62,7 +62,7 @@ const getItem = async (req, res) => {
         req = matchedData(req);
         const {id} = req;
         //? integramos constante que buscara segun un id predeterminado
-        const data = await fototempsalModel.findById(id);
+        const data = await fototempsalModel.findById(id, {deleted:0, updatedAt:0});
         res.send({ data });
     } catch (e) {
         console.log(e)
@@ -214,7 +214,7 @@ const createItems = async (req, res) => {
                                 const id = response.data.name;
                                 try {
                                     //? Buscamos en la base de datos que se encuentre un usuario existente  segun el id 
-                                    var userData = await userModel.findById(id);
+                                    var userData = await userModel.findById(id,{createdAt:0, updatedAt:0, deleted:0, personId:0, stateEmail:0, resetCode:0, idImgCertificado:0});
                                 } catch (e) {
                                     //? En caso de error mostrar 
                                     console.log(e);
@@ -262,11 +262,11 @@ const createItems = async (req, res) => {
                                             }).then( async function (response) {
                                                 //console.log('Status text: ' + response.status)
                                                 //console.log('Status text: ' + response.statusText)
-                                                const dataUser = response.data;
+                                                //const dataUser = response.data;
 
-                                                const idRegSal = dataUser.data._id;
+                                                //const idRegSal = dataUser.data._id;
 
-                                                const regEntandSal = await registroModel.findByIdAndUpdate(idRegEntrada, {idregent: idRegSal});
+                                                // const regEntandSal = await registroModel.findByIdAndUpdate(idRegEntrada, {idregent: idRegSal});
 
                                                 const resData = {
                                                     dataUser: userData,

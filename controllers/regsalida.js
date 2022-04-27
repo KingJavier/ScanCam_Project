@@ -12,9 +12,8 @@ const { handleHttpError } = require("../utils/handleError");
 const getItems = async (req, res) => {
   try {
     //? integramos constante que buscara diversos datos
-    const data = await registrosalidaModel.find({});
+    const data = await registrosalidaModel.find({},{deleted:0, updatedAt:0});
     res.send({ data });
-    
   } catch (e) {
     //? implementamos el manejador de errorres
     console.log(e)
@@ -36,7 +35,6 @@ const getRegistros = async (req, res) => {
     //? integramos constante que buscara diversos datos
     const data = await registrosalidaModel.find().count();
     res.send({ data }); 
-
     
   } catch (e) {
     //? implementamos el manejador de errorres
@@ -61,7 +59,7 @@ const getItem = async (req, res) => {
     //? Filtramos el id y se alamacena en {id}.
     const {id} = req;
     //? integramos constante que buscara segun un id predeterminado
-    const data = await registrosalidaModel.findById(id);
+    const data = await registrosalidaModel.findById(id, {deleted:0, updatedAt:0});
     res.send({ data });
   } catch (e) {
     //? implementamos el manejador de errorres

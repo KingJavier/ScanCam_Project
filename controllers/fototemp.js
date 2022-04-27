@@ -38,7 +38,7 @@ const MEDIA_PATH = `${__dirname}/../fototemp`;
 const getItems = async (req, res) => {
     try {
         //? integramos constante que buscara diversos datos
-        const data = await fototempModel.find({});
+        const data = await fototempModel.find({},{deleted:0, updatedAt:0});
         console.log(data);
         res.send({ data });
     } catch (e) {
@@ -62,7 +62,7 @@ const getItem = async (req, res) => {
         req = matchedData(req);
         const {id} = req;
         //? integramos constante que buscara segun un id predeterminado
-        const data = await fototempModel.findById(id);
+        const data = await fototempModel.findById(id,{deleted:0, updatedAt:0});
         res.send({ data });
     } catch (e) {
         console.log(e)
@@ -185,7 +185,7 @@ const createItems = async (req, res) => {
                         //? Generamos un try catch con el cual traeremos el person y la coincidencia del resultado
                         try {
                             //? Instanciamos en variables el personId y la confianza del identificador 
-                            var personId = response.data[0].candidates[0].personId; 
+                            var personId = response.data[0].candidates[0].personId;
                             var confidence = response.data[0].candidates[0].confidence; 
 
                             //console.log(personId);
@@ -219,7 +219,7 @@ const createItems = async (req, res) => {
     
                                 try {
                                     //? Buscamos en la base de datos que se encuentre un usuario existente  segun el id 
-                                    var userData = await userModel.findById(id);
+                                    var userData = await userModel.findById(id,{createdAt:0, updatedAt:0, deleted:0, personId:0, stateEmail:0, resetCode:0, idImgCertificado:0});
                                 } catch (e) {
                                      //? En caso de error mostrar 
                                     console.log(e);

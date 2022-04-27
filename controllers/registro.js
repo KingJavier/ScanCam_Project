@@ -12,13 +12,9 @@ const { handleHttpError } = require("../utils/handleError");
 const getItems = async (req, res) => {
   try {
     //? integramos constante que buscara diversos datos
-    const data = await registroModel.findAllData({});
-
+    const data = await registroModel.findAllData({},{deleted:0, updatedAt:0});
     //console.log(data);
-
     res.send({ data }); 
-
-    
   } catch (e) {
     //? implementamos el manejador de errorres
     console.log(e);
@@ -66,7 +62,7 @@ const getItem = async (req, res) => {
     const {id} = req;
     
     //? integramos constante que buscara segun un id predeterminado
-    const data = await registroModel.findById(id);
+    const data = await registroModel.findById(id, {deleted:0, updatedAt:0});
     res.send({ data });
 
   } catch (e) {

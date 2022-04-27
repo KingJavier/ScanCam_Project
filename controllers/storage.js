@@ -34,7 +34,7 @@ const MEDIA_PATH = `${__dirname}/../storage`;
 const getItems = async (req, res) => {
   try {
      //? integramos constante que buscara diversos datos
-    const data = await storageModel.find({});
+    const data = await storageModel.find({},{deleted:0, createdAt:0, updatedAt:0});
     res.send({ data });
     
   } catch (e) {
@@ -59,7 +59,7 @@ const getItem = async (req, res) => {
     req = matchedData(req);
     const {id} = req;
     //? integramos constante que buscara segun un id predeterminado
-    const data = await storageModel.findById(id);
+    const data = await storageModel.findById(id,{deleted:0, createdAt:0, updatedAt:0});
     res.send({ data });
   } catch (e) {
     console.log(e)
