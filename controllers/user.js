@@ -138,7 +138,7 @@ const loginCtrl = async (req, res) => {
 
     //? Condición donde en caso de ser falso emplea el manejador de errores 
     if(!user){
-      return res.status(404).json({
+      return res.status(404).send({
         msg: "USER_NOT_EXISTS"
       });
     }
