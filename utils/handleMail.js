@@ -105,7 +105,7 @@ const getTemplateEx = (name, email, password) => {
                 <p><strong>Correo:</strong>${email}</p>
                 <p><strong>Contraseña:</strong>${password}</p>
                 
-                <p>Estimdo usuario, se solicita que ingrese a: ('Link') y actualize sus datos personales e inicie el entrenamiento facial: <p>
+                <p>Estimdo usuario, se solicita que ingrese a: (http://localhost:8100/login) y actualize sus datos personales e inicie el entrenamiento facial: <p>
                 
                 <p>Para ello dirijase a la seccion '<strog>Entrenamiento facial</strog>' e ingrese 5 fotografias(Se le especificara en el apartado como debe ingresar las fotografias) </p>
             </div>
