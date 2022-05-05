@@ -85,7 +85,7 @@ const getTemplateR = (numero) => {
                 <p>Al dar click en el siguiente botón lo redireccionara a una vista en la cual encontrara los campos para digitar el código y la nueva contraseña para su cuenta</p>
                 </br>
                 <p>click en el siguiente enlace:</p>
-                <p><a href="${front}/cambiocontrasena">Cambio de contraseña</a></p>
+                <p><a href="${front}/#/cambiocontrasena">Cambio de contraseña</a></p>
             </div>
         </div>
     `;
