@@ -740,6 +740,34 @@ const numerorostros= async (req, res) => {
 
 };
 
+//? Metodo para verificar el estado del token del usuario
+const checkToken = async(req,res,next) =>{
+    //? Condicion 
+    try{        
+        if (!req.headers.authorization) {
+            return res.json({
+                msg: 'NOT_TOKEN'
+            });
+        }
+        const token =req.headers.authorization.split(' ').pop();
+        // verificamos la data del token
+        const dataToken = await verifyToken(token) 
+        // indicamos condicion en caso de que no exista
+        if (dataToken === null) {
+            return res.json({
+                msg: "TOKEN_NULO"
+            });
+        }
+        next()
+        
+    }catch(e){
+      console.log(e);
+      return res.json({
+          msg: "ERROR_SESSION_TOKEN"
+      });
+    }
+}
+
 //! Exportaciones
 module.exports = {
   registerCtrl,
@@ -753,5 +781,6 @@ module.exports = {
   actualizarRol,
   renviarverfi,
   createExcel,
-  numerorostros
+  numerorostros,
+  checkToken
 };

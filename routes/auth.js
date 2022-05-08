@@ -8,7 +8,8 @@ const router = express.Router();
 const {loginCtrl, registerCtrl, confirmEmail, 
     forgotPassword, resetPassword, getUsers,
     desactivarUser, activarUser, actualizarRol,
-    renviarverfi, createExcel, numerorostros
+    renviarverfi, createExcel, numerorostros,
+    checkToken
 } = require ("../controllers/user")
 
 //* Importamos validacion CreateItem
@@ -63,6 +64,9 @@ router.post('/excel',authMiddleware, checkRol(['gestor']), uploadMiddleware.sing
 
 //? Ruta mostrar cuantas caras hay registradas en azure
 router.get("/numrostros", numerorostros);
+
+//? Ruta para verificar el estado del Token
+router.get("/token", checkToken);
 
 //! exportamos rutas
 module.exports = router;
