@@ -757,8 +757,11 @@ const checkToken = async(req,res,next) =>{
             return res.json({
                 msg: "TOKEN_NULO"
             });
+        }else{
+          return res.json({
+            msg: "TOKEN_VALIDO"
+          });
         }
-        next()
         
     }catch(e){
       console.log(e);
