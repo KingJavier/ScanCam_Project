@@ -185,7 +185,7 @@ const confirmEmail = async (req, res) => {
     const data = decodeSign(token);
 
     if(data === null){
-      return res.status(401).redirect(front + "/correoverifierror");
+      return res.status(401).redirect(front + "/#" + "/correoverifierror");
     }
 
     //? Obtener email de la data
@@ -196,12 +196,12 @@ const confirmEmail = async (req, res) => {
 
     //? En caso de que el usuario no exista arroje un error  
     if(user === null){
-      return res.status(404).redirect(front + "/correoverifierror");
+      return res.status(404).redirect(front + "/#" + "/correoverifierror");
     }
 
     //? verificar que el correo sea correcto.
     if(email !== user.email){
-      return res.status(404).redirect(front + "/correoverifierror");
+      return res.status(404).redirect(front + "/#" + "/correoverifierror");
     }
     
     //? Actualizar User 
@@ -209,7 +209,7 @@ const confirmEmail = async (req, res) => {
     await user.save();
 
     //? redireccionar a la Confirmación
-    return res.status(200).redirect(front + "/correoverifiexito");
+    return res.status(200).redirect(front + "/#" + "/correoverifiexito");
 
   }catch (e) {
     //? implementamos el manejador de errorres
