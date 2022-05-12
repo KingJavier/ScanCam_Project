@@ -189,7 +189,7 @@ const createItems = async (req, res) => {
                             var personId = response.data[0].candidates[0].personId;
                             var confidence = response.data[0].candidates[0].confidence; 
 
-                            //console.log(personId);
+                            console.log(personId);
 
                         } catch(e) {
                             //? En caso de error mostrar 
@@ -217,6 +217,8 @@ const createItems = async (req, res) => {
     
                                 //? Guardamos el nombre de la cara en una variable id
                                 const id = response.data.name;
+
+                                console.log(id);
     
                                 try {
                                     //? Buscamos en la base de datos que se encuentre un usuario existente  segun el id 
@@ -228,6 +230,12 @@ const createItems = async (req, res) => {
                                         msg: "ERROR_TRAYENDO_DATAUSER"
                                     });
                                 }
+
+                                if (userData == null) {
+                                    res.send({err: "ERROR PORQUE EL USUARIO ENCONTRADO NO EXISTE EN LA BASE DE DATOS"});
+                                }
+
+                                console.log(userData);
 
                                 if(userData.idRegistro != ''){
 
