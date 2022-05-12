@@ -241,7 +241,7 @@ const createItems = async (req, res) => {
 
                                     var confirmacion = regEnt.confirmacion;
                                 } catch (error) {
-                                    console.log(e);
+                                    console.log(error);
                                     return res.send("USUARIO NO TIENE REGISTRO DE ENTRADA");
                                 }
                                 try {
