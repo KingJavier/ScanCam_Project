@@ -263,11 +263,13 @@ const createItems = async (req, res) => {
                                             }).then( async function (response) {
                                                 //console.log('Status text: ' + response.status)
                                                 //console.log('Status text: ' + response.statusText)
-                                                //const dataUser = response.data;
+                                                const dataUser = response.data;
 
-                                                //const idRegSal = dataUser.data._id;
+                                                const idRegSal = dataUser.data._id;
 
-                                                // const regEntandSal = await registroModel.findByIdAndUpdate(idRegEntrada, {idregent: idRegSal});
+                                                const regEntandSal = await registroModel.findByIdAndUpdate(idRegEntrada, {idregent: idRegSal});
+
+                                                // console.log(regEntandSal);
 
                                                 const resData = {
                                                     dataUser: userData,
