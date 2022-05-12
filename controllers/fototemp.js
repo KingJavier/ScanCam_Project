@@ -1,7 +1,7 @@
 //* Importaciones
 const fs = require("fs");
 const { matchedData } = require("express-validator");
-const { fototempModel } = require("../models");
+const { fototempModel, registroModel } = require("../models");
 const { handleHttpError } = require("../utils/handleError");
 const { userModel } = require("../models");
 const axios = require('axios');
@@ -23,6 +23,7 @@ const subscriptionKey =  process.env.key;
 const endpoint = process.env.endpoint + "/face/v1.0/detect";
 const endpoint2 = process.env.endpoint +  '/face/v1.0/identify';
 const endpointRegEnt = process.env.PUBLIC_URL + "/api/registro";
+const endpointRegSal = process.env.PUBLIC_URL + "/api/regsalida";
 
 
 //TODO ../storage que es donde almacena los archivos enviados.
@@ -228,72 +229,164 @@ const createItems = async (req, res) => {
                                     });
                                 }
 
-                                //? Mostramos el usuario obtenido 
-                                //console.log("DATAUSER-->",userData);
+                                if(userData.idRegistro != ''){
 
-                                const doc = userData.documento;
-                                const name = userData.name;
-                                const ape = userData.apellido;
-                                const email = userData.email;
-                                const rol = userData.role[0];
+                                    try {
+                                        const idReg = userData.idRegistro;
+                                        const regEnt = await registroModel.findById(idReg);
+    
+                                        var idRegEntrada = regEnt._id;
+    
+                                        //console.log(idRegEntrada);
+    
+                                        var confirmacion = regEnt.confirmacion;
+                                    } catch (error) {
+                                        console.log(error);
+                                        return res.send("USUARIO NO TIENE REGISTRO DE ENTRADA");
+                                    }
 
-                                const mondoid ="626165b49fa5856403698805";
+                                    //? Mostramos el usuario obtenido 
+                                    //console.log("DATAUSER-->",userData);
 
-                                //? Creamos registro de entrada con los datos del usuario.
-                                try {
-                                    axios({
-                                        method: 'post',
-                                        url: endpointRegEnt,
-                                        data: {
-                                            name: name,
-                                            apellido: ape,
-                                            documento: doc,
-                                            email: email,
-                                            role: rol,
-                                            confirmacion: "true",
-                                            idregent: mondoid
-                                        },
-                                        headers: { Authorization: tokenUsuPet }
-                                    }).then(async function (response) {
-                                        //console.log('Status text: ' + response.status)
-                                        //console.log('Status text: ' + response.statusText)
-                                        const dataUser = response.data;
-                                        const idRegEn = response.data.data._id;
+                                    const doc = userData.documento;
+                                    const name = userData.name;
+                                    const ape = userData.apellido;
+                                    const email = userData.email;
+                                    const rol = userData.role[0];
+
+                                    try {
+                                        if (confirmacion == true) {
+                                            //? Creamos registro de entrada con los datos del usuario.
+                                            try {
+                                                axios({
+                                                    method: 'post',
+                                                    url: endpointRegSal,
+                                                    data: {
+                                                        name: name,
+                                                        apellido: ape,
+                                                        documento: doc,
+                                                        email: email,
+                                                        role: rol,
+                                                        confirmacion: "true",
+                                                    },
+                                                    headers: { Authorization: tokenUsuPet }
+                                                }).then( async function (response) {
+                                                    //console.log('Status text: ' + response.status)
+                                                    //console.log('Status text: ' + response.statusText)
+                                                    const dataUser = response.data;
+    
+                                                    const idRegSal = dataUser.data._id;
+    
+                                                    const regEntandSal = await registroModel.findByIdAndUpdate(idRegEntrada, {idregent: idRegSal});
+
+                                                    var vacio = await userModel.findByIdAndUpdate(id,{idRegistro: ""});
+    
+                                                    // console.log(regEntandSal);
+
+                                                    const tipo = {tipo : "SALIDA"}
+    
+                                                    const resData = {
+                                                        dataUser: userData,
+                                                        datosazure: datosazure,
+                                                        coordenadas: coordenadas,
+                                                        tipo: tipo,
+                                                    };
 
 
-                                        //console.log(dataUser);
-                                        
-                                        //? Combinamos los dos resultados para enviar solo una respuesta
-                                        const resData = {
-                                            dataUser: userData,
-                                            datosazure: datosazure,
-                                            coordenadas: coordenadas,
+                                                    //! ---------
+                                                    //? codigo de satisafaccion al enviar un archivo
+                                                    res.status(response.status);
+                                                    //? mostramos los datos que se quieren subir 
+                                                    res.send(resData);
+                                                    //! ---------
+                                                }).catch(function (error) {
+                                                    console.log(error);
+                                                    return res.send("ERROR_REG_SALIDA")
+                                                });
+    
+                                            } catch (e) {
+                                                console.log(e);
+                                                return res.send("ERROR_CREANDO_REGISTRO DE ENTRADA");
+                                            }
+                                        } else {
+                                            return res.send("USUARIO NO TIENE REGISTRO DE ENTRADA");
                                         };
+                                    } catch (e) {
+                                        console.log(e);
+                                        return res.send("ERROR_VRRIFICANDO_CONFIRMACIÓN")
+                                    };
 
-                                        try {
-                                            //? Buscamos en la base de datos que se encuentre un usuario existente  segun el id 
-                                            var dataUsu = await userModel.findByIdAndUpdate(id, {idRegistro : idRegEn});
-                                        } catch (e) {
-                                            //? En caso de error mostrar 
-                                            console.log(e);
-                                            return res.status(404).json({
-                                                msg: "ERROR_TRAYENDO_DATAUSER"
+                                }else{
+                                    //? Mostramos el usuario obtenido 
+                                    //console.log("DATAUSER-->",userData);
+
+                                    const doc = userData.documento;
+                                    const name = userData.name;
+                                    const ape = userData.apellido;
+                                    const email = userData.email;
+                                    const rol = userData.role[0];
+
+                                    const mongoid ="626165b49fa5856403698805";
+
+                                    //? Creamos registro de entrada con los datos del usuario.
+                                    try {
+                                        axios({
+                                            method: 'post',
+                                            url: endpointRegEnt,
+                                            data: {
+                                                name: name,
+                                                apellido: ape,
+                                                documento: doc,
+                                                email: email,
+                                                role: rol,
+                                                confirmacion: "true",
+                                                idregent: mongoid
+                                            },
+                                            headers: { Authorization: tokenUsuPet }
+                                        }).then(async function (response) {
+                                            //console.log('Status text: ' + response.status)
+                                            //console.log('Status text: ' + response.statusText)
+                                            const dataUser = response.data;
+                                            const idRegEn = response.data.data._id;
+
+
+                                            //console.log(dataUser);
+                                            
+                                            //? Combinamos los dos resultados para enviar solo una respuesta
+                                            const tipo = {tipo : "ENTRADA"}
+    
+                                            const resData = {
+                                                dataUser: userData,
+                                                datosazure: datosazure,
+                                                coordenadas: coordenadas,
+                                                tipo: tipo,
+                                            };
+
+                                            try {
+                                                //? Buscamos en la base de datos que se encuentre un usuario existente  segun el id 
+                                                var dataUsu = await userModel.findByIdAndUpdate(id, {idRegistro : idRegEn});
+                                            } catch (e) {
+                                                //? En caso de error mostrar 
+                                                console.log(e);
+                                                return res.status(404).json({
+                                                    msg: "ERROR_TRAYENDO_DATAUSER"
+                                                });
+                                            }
+                                            //! ---------
+                                            //? codigo de satisafaccion al enviar un archivo
+                                            res.status(response.status);
+                                            //? mostramos los datos que se quieren subir 
+                                            res.send(resData);
+                                            //! ---------
+                                            }).catch(function (error) {
+                                                console.log(error);
+                                                return res.send("ERROR_REG_ENTRADA_POSIBLEMENTE_NO_TIENE_ROL_INDICADO")
                                             });
-                                        }
-                                        //! ---------
-                                        //? codigo de satisafaccion al enviar un archivo
-                                        res.status(response.status);
-                                        //? mostramos los datos que se quieren subir 
-                                        res.send(resData);
-                                        //! ---------
-                                        }).catch(function (error) {
-                                            console.log(error);
-                                            return res.send("ERROR_REG_ENTRADA_POSIBLEMENTE_NO_TIENE_ROL_INDICADO")
-                                        });
 
-                                } catch (e) {
-                                    console.log(e);
-                                    return res.send("ERROR_CREANDO_REGISTRO DE ENTRADA")
+                                    } catch (e) {
+                                        console.log(e);
+                                        return res.send("ERROR_CREANDO_REGISTRO DE ENTRADA")
+                                    }
                                 }
                             
                             }).catch(function (error) {
