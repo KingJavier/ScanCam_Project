@@ -1,5 +1,5 @@
 const {userModel, registroModel} = require('../models');
-const {registerCtrl, loginCtrl} = require ('../controllers/user');
+const {loginSocket} = require ('../controllers/user');
 
 
 const sockets = (io) => {
@@ -34,6 +34,7 @@ const sockets = (io) => {
 
         socket.on('cliente:newlogin', async data => {
             try {
+
                 const login = await loginSocket(data)
 
                 const role = login.user.role
@@ -43,6 +44,7 @@ const sockets = (io) => {
                     role,
                     nombre
                 }
+
                 io.emit('server:newlogin', datos)
             } catch (error) {
                 return "ERROR_LOGIN_USER_SOCKET";
