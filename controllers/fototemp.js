@@ -295,6 +295,7 @@ const createItems = async (req, res) => {
     
                                                     const resData = {
                                                         dataUser: userData,
+                                                        idRegSal: idRegSal,
                                                         datosazure: datosazure,
                                                         coordenadas: coordenadas,
                                                         tipo: tipo,
@@ -365,6 +366,7 @@ const createItems = async (req, res) => {
     
                                             const resData = {
                                                 dataUser: userData,
+                                                regEnt: idRegEn,
                                                 datosazure: datosazure,
                                                 coordenadas: coordenadas,
                                                 tipo: tipo,
