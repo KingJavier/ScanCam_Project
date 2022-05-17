@@ -293,11 +293,9 @@ const createItems = async (req, res) => {
 
                                                     const tipo = {tipo : "SALIDA"}
                                                     
-                                                    const regSalImport = await registroModel.findOneData(idRegEntrada);
     
                                                     const resData = {
                                                         dataUser: userData,
-                                                        registro: regSalImport,
                                                         datosazure: datosazure,
                                                         coordenadas: coordenadas,
                                                         tipo: tipo,
@@ -360,8 +358,6 @@ const createItems = async (req, res) => {
                                             const dataUser = response.data;
                                             const idRegEn = response.data.data._id;
 
-                                            const regEntImport = await registroModel.findOneData(idRegEn);
-
                                             //console.log(dataUser);
                                             
                                             //? Combinamos los dos resultados para enviar solo una respuesta
@@ -369,7 +365,6 @@ const createItems = async (req, res) => {
     
                                             const resData = {
                                                 dataUser: userData,
-                                                registro: regEntImport,
                                                 datosazure: datosazure,
                                                 coordenadas: coordenadas,
                                                 tipo: tipo,
