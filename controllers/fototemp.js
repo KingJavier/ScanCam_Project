@@ -63,7 +63,7 @@ const getItem = async (req, res) => {
         req = matchedData(req);
         const {id} = req;
         //? integramos constante que buscara segun un id predeterminado
-        const data = await fototempModel.findById(id,{deleted:0, updatedAt:0});
+        const data = await fototempModel.find(id,{deleted:0, updatedAt:0});
         res.send({ data });
     } catch (e) {
         console.log(e)
@@ -293,7 +293,7 @@ const createItems = async (req, res) => {
 
                                                     const tipo = {tipo : "SALIDA"}
                                                     
-                                                    const regSalImport = await registroModel.findById(idRegEntrada);
+                                                    const regSalImport = await registroModel.findOneData(idRegEntrada);
     
                                                     const resData = {
                                                         dataUser: userData,
@@ -360,7 +360,7 @@ const createItems = async (req, res) => {
                                             const dataUser = response.data;
                                             const idRegEn = response.data.data._id;
 
-                                            const regEntImport = await registroModel.findById(idRegEn);
+                                            const regEntImport = await registroModel.findOneData(idRegEn);
 
                                             //console.log(dataUser);
                                             

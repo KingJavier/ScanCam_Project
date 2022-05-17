@@ -76,7 +76,7 @@ const getItem = async (req, res) => {
     const {id} = req;
     
     //? integramos constante que buscara segun un id predeterminado
-    const data = await registroModel.findById(id, {deleted:0, updatedAt:0});
+    const data = await registroModel.findOneData(id, {deleted:0, updatedAt:0});
     res.send({ data });
 
   } catch (e) {

@@ -60,6 +60,27 @@ RegistroScheme.statics.findAllData = function () {
 
 }
 
+
+RegistroScheme.statics.findOneData = function (id) {
+    const joinData = this.aggregate([
+        {   
+            $lookup: {
+                from:"registrosalidas",
+                localField:"idregent",
+                foreignField: "_id",
+                as: "regEnt",
+            },
+        },
+        {
+            $match:{
+                _id:mongoose.Types.ObjectId(id)
+            }
+        }
+    ]);
+    return joinData; 
+
+}
+
 //?Utilizamos el esquema de este documento para sobre escribir metodos
 RegistroScheme.plugin(mongooseDelete,{ overrideMeethods:"all"});
 
