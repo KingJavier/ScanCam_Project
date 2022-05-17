@@ -6,14 +6,42 @@ const cors = require('cors')
 
 //* Importamos conexion de mongo
 const dbConect = require('./config/mongo')
-//*Importamos el helper
-const loggerStream = require("./utils/handleLogger")
 //* Importaciones de morgan
 const morganBody = require("morgan-body")
 
+//!---------------------------------------------------------------------------------------------------------
+//* Importamos http para creación de un nuevo servidor
+const http = require('http');
+//* Inicializamos socket.io
+const {Server} = require('socket.io');
+//* Importamos helper donde se ejecutaran los sockets
+const {sockets} = require('./utils/handleSockets');
+
+//!---------------------------------------------------------------------------------------------------------
 
 //? estraemos los metodos de express y los asignamos a una constante
 const app = express();
+
+//!---------------------------------------------------------------------------------------------------------
+
+//? Creación de servidor
+const server = http.createServer(app);
+
+//? utilizamos puerto establecido en .env o el puerto 3000
+const port = process.env.PORT || 3000 || 3100
+
+//? Definimos el puerto por el qeu sera escucha la api
+const httpServer = server.listen(port,() => {
+    console.log(`Server en el puerto http://localhost:${port}`);
+});
+
+//? Creación de servidor de Socket io
+const io = new Server(httpServer);
+
+//? pasamos las funcionalidades de socket.io a el helperSocket
+sockets(io);
+
+//!---------------------------------------------------------------------------------------------------------
 
 //? utilizamos cors
 app.use(cors())
@@ -43,21 +71,13 @@ app.use((req, res, next) => {
 //!     }
 //! })
 
-//? utilizamos puerto establecido en .env o el puerto 3000
-const port = process.env.PORT || 3000 || 3100
-
 
 /**
  * Aquí invicamos a las rutas! 😎
  */
-
 // TODO http://localhost/api/ ____
 app.use("/api",require('./routes'))
 
-app.listen(port,() => {
-    console.log(`Server en el puerto http://localhost:${port}`);
-});
 
 // Invocamos la conexion de db
 dbConect()
-
