@@ -292,10 +292,12 @@ const createItems = async (req, res) => {
                                                     // console.log(regEntandSal);
 
                                                     const tipo = {tipo : "SALIDA"}
+                                                    
+                                                    const regSalImport = await registroModel.findById(idRegEntrada);
     
                                                     const resData = {
                                                         dataUser: userData,
-                                                        registro: dataUser,
+                                                        regEntandSal: regSalImport,
                                                         datosazure: datosazure,
                                                         coordenadas: coordenadas,
                                                         tipo: tipo,
@@ -358,6 +360,7 @@ const createItems = async (req, res) => {
                                             const dataUser = response.data;
                                             const idRegEn = response.data.data._id;
 
+                                            const regEntImport = await registroModel.findById(idRegEn);
 
                                             //console.log(dataUser);
                                             
@@ -366,7 +369,7 @@ const createItems = async (req, res) => {
     
                                             const resData = {
                                                 dataUser: userData,
-                                                registro: dataUser,
+                                                idRegEn: regEntImport,
                                                 datosazure: datosazure,
                                                 coordenadas: coordenadas,
                                                 tipo: tipo,
