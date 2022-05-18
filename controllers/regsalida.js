@@ -30,7 +30,7 @@ const getItems = async (req, res) => {
  * @param {*} res
  */
 //? método para obtener numero de registros de la base de datos.
-const getRegistros = async (req, res) => {
+const getRegistrosSal = async (req, res) => {
   try {
     //? integramos constante que buscara diversos datos
     const data1 = await registrosalidaModel.find().count();
@@ -50,7 +50,38 @@ const getRegistros = async (req, res) => {
     }
     res.send(uniondata); 
 
-    
+  } catch (e) {
+    //? implementamos el manejador de errorres
+    console.log(e);
+    return res.status(501).json({
+      msg: "ERROR_LIST_ITEMS"
+    });
+  }
+  
+};
+
+//? método para obtener numero de registros de la base de datos.
+const getRegistrosSalsocket = async (req, res) => {
+  try {
+    //? integramos constante que buscara diversos datos
+    const data1 = await registrosalidaModel.find().count();
+    const data2 = await registrosalidaModel.find({role: "seguridad"}).count();
+    const data3 = await registrosalidaModel.find({role: "gestor"}).count();
+    const data4 = await registrosalidaModel.find({role: "invitado"}).count();
+    const data5 = await registrosalidaModel.find({role: "aprendiz"}).count();
+    const data6 = await registrosalidaModel.find({role: "funcionario"}).count();
+
+    uniondata = {
+      total: data1,
+      seguridad: data2,
+      gestor:data3,
+      invitado:data4,
+      aprendiz:data5,
+      funcioanrio:data6,
+    }
+
+    return uniondata; 
+
   } catch (e) {
     //? implementamos el manejador de errorres
     console.log(e);
@@ -162,4 +193,4 @@ const deleteItems = async (req, res) => {
 };
 
 //! Exportaciones
-module.exports = { getItems, getItem, createItems, updateItems, deleteItems, getRegistros};
+module.exports = { getItems, getItem, createItems, updateItems, deleteItems, getRegistrosSal, getRegistrosSalsocket};

@@ -52,7 +52,6 @@ const getRegistros = async (req, res) => {
     }
     res.send(uniondata); 
 
-    
   } catch (e) {
     //? implementamos el manejador de errorres
     console.log(e);
@@ -62,6 +61,38 @@ const getRegistros = async (req, res) => {
   }
   
 };
+
+//? método para obtener cantidad de registros de la base de datos.
+const getRegistrossocket = async (req, res) => {
+  try {
+    //? integramos constante que buscara diversos datos
+    const data1 = await registroModel.find().count();
+    const data2 = await registroModel.find({role: "seguridad"}).count();
+    const data3 = await registroModel.find({role: "gestor"}).count();
+    const data4 = await registroModel.find({role: "invitado"}).count();
+    const data5 = await registroModel.find({role: "aprendiz"}).count();
+    const data6 = await registroModel.find({role: "funcionario"}).count();
+
+    uniondata = {
+      total: data1,
+      seguridad: data2,
+      gestor:data3,
+      invitado:data4,
+      aprendiz:data5,
+      funcioanrio:data6,
+    }
+    return uniondata; 
+
+  } catch (e) {
+    //? implementamos el manejador de errorres
+    console.log(e);
+    return res.status(501).json({
+      msg: "ERROR_LIST_ITEMS"
+    });
+  }
+  
+};
+
 
 /**
  * Obtener un detalle
@@ -165,4 +196,4 @@ const deleteItems = async (req, res) => {
 };
 
 //! Exportaciones
-module.exports = { getItems, getItem, createItems, updateItems, deleteItems, getRegistros};
+module.exports = { getItems, getItem, createItems, updateItems, deleteItems, getRegistros, getRegistrossocket};
