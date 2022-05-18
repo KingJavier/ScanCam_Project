@@ -181,7 +181,7 @@ const loginSocket = async (datos) => {
     //? Limpiamos los datos aplicando machedData 
     const req = datos;
     //? trae el correo y lo usa como metodo de logeo.
-    const user = await userModel.findOne({email:req.email}).select('password name role email telefono documento status idImgPerfil')
+    const user = await userModel.findOne({email:req.email}).select('password name apellido role email telefono documento status idImgPerfil')
 
     //? Condición donde en caso de ser falso emplea el manejador de errores 
     if(!user){
