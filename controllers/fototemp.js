@@ -131,6 +131,8 @@ const createItems = async (req, res) => {
         //? Guardamos la url de la imagen que se traera de la base de datos 
         const imageUrl = data.url;
 
+        var coordenadas = null;
+
         // const imageUrl = "https://cdn2.estamosrodando.com/biografias/2/13/chace-crawford-170117.jpg";
 
         try {
@@ -154,7 +156,7 @@ const createItems = async (req, res) => {
                 //? Buscamos mensaje luego de la ejecucion 
                 //console.log('Status text: ' + response.status)
                 //console.log('Status text: ' + response.statusText)
-                const coordenadas = response.data;
+                coordenadas = response.data;
 
                 //? Guardamos en un avariable el id que extraemos cuando se detecta una cara en la imagen
                 const faceId = response.data[0].faceId;
@@ -194,7 +196,13 @@ const createItems = async (req, res) => {
                         } catch(e) {
                             //? En caso de error mostrar 
                             console.log(e);
-                            return res.send("ERROR ROSTRO NO ENCONTRADO");
+                            // console.log(coordenadas);
+                            const tipoError = "ERROR ROSTRO NO ENCONTRADO";
+                            const devolver = {
+                                tipoError,
+                                coordenadas
+                            }
+                            return res.status(404).json(devolver)
                         }
                         //console.log(personId);
                         //console.log(confidence);
@@ -226,13 +234,23 @@ const createItems = async (req, res) => {
                                 } catch (e) {
                                      //? En caso de error mostrar 
                                     console.log(e);
-                                    return res.status(404).json({
-                                        msg: "ERROR_TRAYENDO_DATAUSER"
-                                    });
+                                    // console.log(coordenadas);
+                                    const tipoError = "ERROR_TRAYENDO_DATAUSER";
+                                    const devolver = {
+                                        tipoError,
+                                        coordenadas
+                                    }
+                                    return res.status(404).json(devolver)
                                 }
 
                                 if (userData == null) {
-                                    res.send({err: "ERROR PORQUE EL USUARIO ENCONTRADO NO EXISTE EN LA BASE DE DATOS"});
+                                    // console.log(coordenadas);
+                                    const tipoError = "ERROR PORQUE EL USUARIO ENCONTRADO NO EXISTE EN LA BASE DE DATOS";
+                                    const devolver = {
+                                        tipoError,
+                                        coordenadas
+                                    }
+                                    return res.status(404).json(devolver)
                                 }
 
                                 console.log(userData);
@@ -250,7 +268,13 @@ const createItems = async (req, res) => {
                                         var confirmacion = regEnt.confirmacion;
                                     } catch (error) {
                                         console.log(error);
-                                        return res.send("USUARIO NO TIENE REGISTRO DE ENTRADA");
+                                        // console.log(coordenadas);
+                                        const tipoError = "USUARIO NO TIENE REGISTRO DE ENTRADA";
+                                        const devolver = {
+                                            tipoError,
+                                            coordenadas
+                                        }
+                                        return res.status(404).json(devolver)
                                     }
 
                                     //? Mostramos el usuario obtenido 
@@ -310,19 +334,43 @@ const createItems = async (req, res) => {
                                                     //! ---------
                                                 }).catch(function (error) {
                                                     console.log(error);
-                                                    return res.send("ERROR_REG_SALIDA")
+                                                    // console.log(coordenadas);
+                                                    const tipoError = "ERROR_REG_SALIDA";
+                                                    const devolver = {
+                                                        tipoError,
+                                                        coordenadas
+                                                    }
+                                                    return res.status(404).json(devolver)
                                                 });
     
                                             } catch (e) {
                                                 console.log(e);
-                                                return res.send("ERROR_CREANDO_REGISTRO DE ENTRADA");
+                                                // console.log(coordenadas);
+                                                const tipoError = "ERROR_CREANDO_REGISTRO DE ENTRADA";
+                                                const devolver = {
+                                                    tipoError,
+                                                    coordenadas
+                                                }
+                                                return res.status(404).json(devolver)
                                             }
                                         } else {
-                                            return res.send("USUARIO NO TIENE REGISTRO DE ENTRADA");
+                                            // console.log(coordenadas);
+                                            const tipoError = "USUARIO NO TIENE REGISTRO DE ENTRADA";
+                                            const devolver = {
+                                                tipoError,
+                                                coordenadas
+                                            }
+                                            return res.status(404).json(devolver)
                                         };
                                     } catch (e) {
                                         console.log(e);
-                                        return res.send("ERROR_VRRIFICANDO_CONFIRMACIÓN")
+                                        // console.log(coordenadas);
+                                        const tipoError = "ERROR_VRRIFICANDO_CONFIRMACIÓN";
+                                        const devolver = {
+                                            tipoError,
+                                            coordenadas
+                                        }
+                                        return res.status(404).json(devolver)
                                     };
 
                                 }else{
@@ -376,9 +424,13 @@ const createItems = async (req, res) => {
                                             } catch (e) {
                                                 //? En caso de error mostrar 
                                                 console.log(e);
-                                                return res.status(404).json({
-                                                    msg: "ERROR_TRAYENDO_DATAUSER"
-                                                });
+                                                // console.log(coordenadas);
+                                                const tipoError = "ERROR_TRAYENDO_DATAUSER";
+                                                const devolver = {
+                                                    tipoError,
+                                                    coordenadas
+                                                }
+                                                return res.status(404).json(devolver)
                                             }
                                             //! ---------
                                             //? codigo de satisafaccion al enviar un archivo
@@ -388,34 +440,70 @@ const createItems = async (req, res) => {
                                             //! ---------
                                             }).catch(function (error) {
                                                 console.log(error);
-                                                return res.send("ERROR_REG_ENTRADA_POSIBLEMENTE_NO_TIENE_ROL_INDICADO")
+                                                // console.log(coordenadas);
+                                                const tipoError = "ERROR_REG_ENTRADA_POSIBLEMENTE_NO_TIENE_ROL_INDICADO";
+                                                const devolver = {
+                                                    tipoError,
+                                                    coordenadas
+                                                }
+                                                return res.status(404).json(devolver)
                                             });
 
                                     } catch (e) {
                                         console.log(e);
-                                        return res.send("ERROR_CREANDO_REGISTRO DE ENTRADA")
+                                        // console.log(coordenadas);
+                                        const tipoError = "ERROR_CREANDO_REGISTRO DE ENTRADA";
+                                        const devolver = {
+                                            tipoError,
+                                            coordenadas
+                                        }
+                                        return res.status(404).json(devolver)
                                     }
                                 }
                             
                             }).catch(function (error) {
                                 //? En caso de error mostrar 
                                 console.log(error);
-                                return res.send("ERROR_TRAYENDO_DATA_USER")
+                                // console.log(coordenadas);
+                                const tipoError = "ERROR_TRAYENDO_DATA_USER";
+                                const devolver = {
+                                    tipoError,
+                                    coordenadas
+                                }
+                                return res.status(404).json(devolver)
                             });
                         } catch (e) {
                              //? En caso de error mostrar 
                             console.log(e);
-                            return res.send("ERROR_GET_PERSON_ID")
+                            // console.log(coordenadas);
+                            const tipoError = "ERROR_GET_PERSON_ID";
+                            const devolver = {
+                                tipoError,
+                                coordenadas
+                            }
+                            return res.status(404).json(devolver)
                         }
                     }).catch(function (error) {
                          //? En caso de error mostrar
                         console.log(error);
-                        return res.send("Error para encontrar coincidencia ")
+                        // console.log(coordenadas);
+                        const tipoError = "Error para encontrar coincidencia";
+                        const devolver = {
+                            tipoError,
+                            coordenadas
+                        }
+                        return res.status(404).json(devolver)
                     });
                 } catch (e){
                      //? En caso de error mostrar 
                     console.log(e);
-                    return res.send("ERROR_ROSTRO NO ENCONTRADO")
+                    // console.log(coordenadas);
+                    const tipoError = "ERROR ROSTRO NO ENCONTRADO";
+                    const devolver = {
+                        tipoError,
+                        coordenadas
+                    }
+                    return res.status(404).json(devolver)
                 } 
             }).catch( function (error) {
                  //? En caso de error mostrar 

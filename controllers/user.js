@@ -779,6 +779,22 @@ const numerorostros= async (req, res) => {
 
 };
 
+//? método para obtener Lista de los usuarios.
+const rolctrl = async (req, res) => {
+
+  const user = req
+  try {
+    
+
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({
+      msg: "ERROR"
+    });
+  }
+
+};
+
 //? Metodo para verificar el estado del token del usuario
 const checkToken = async(req,res,next) =>{
     //? Condicion 
@@ -825,5 +841,6 @@ module.exports = {
   createExcel,
   numerorostros,
   checkToken,
-  loginSocket
+  loginSocket,
+  rolctrl
 };

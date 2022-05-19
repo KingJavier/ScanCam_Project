@@ -9,7 +9,7 @@ const {loginCtrl, registerCtrl, confirmEmail,
     forgotPassword, resetPassword, getUsers,
     desactivarUser, activarUser, actualizarRol,
     renviarverfi, createExcel, numerorostros,
-    checkToken
+    checkToken, rolctrl
 } = require ("../controllers/user")
 
 //* Importamos validacion CreateItem
@@ -64,6 +64,9 @@ router.post('/excel',authMiddleware, checkRol(['gestor']), uploadMiddleware.sing
 
 //? Ruta mostrar cuantas caras hay registradas en azure
 router.get("/numrostros", numerorostros);
+
+//? Ruta mostrar cuantas caras hay registradas en azure
+router.get("/rolusuario", rolctrl);
 
 //? Ruta para verificar el estado del Token
 router.get("/token", checkToken);
