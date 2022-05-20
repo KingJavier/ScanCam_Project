@@ -202,15 +202,14 @@ const deleteItems = async (req, res) => {
  * @param {*} res
  */
 const filtroctrl = async (req, res) =>{
-  const filtro = req.params;
-  const fecha = filtro.createdAt;
-  // console.log(filtro.createdAt);
+  const filtro = req.body;
+  const fecha = filtro.fecha;
+
+  console.log("Fecha",fecha);
+
   try {
     const guenas = await registroModel.aggregate(
       [  
-        {$match: 
-          {createdAt : {"$gt" : new Date(fecha)}}
-        },
         {  
           $lookup: {
               from:"registrosalidas",
@@ -218,12 +217,24 @@ const filtroctrl = async (req, res) =>{
               foreignField: "_id",
               as: "regEnt",
           }
+        },
+        {$match: 
+          { $and: 
+              [
+                  { "createdAt": 
+                      {$gte: new Date("2022-05-19")}
+                  }, 
+                  { "createdAt": 
+                      {$lte: new Date("2022-05-20")}
+                  }
+              ]
+          }
         }
       ]
     );
 
     res.send({guenas});
-  } catch (error) {
+  }catch(error) {
     console.log(error)
     //? implementamos el manejador de errorres
     return res.status(500).json({
