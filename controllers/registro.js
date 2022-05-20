@@ -204,9 +204,23 @@ const deleteItems = async (req, res) => {
 const filtroctrl = async (req, res) =>{
   const filtro = req.params;
   const fecha = filtro.createdAt;
-  console.log(filtro.createdAt);
+  // console.log(filtro.createdAt);
   try {
-    const guenas = await registroModel.findAllData(({createdAt : {"$gt" : new Date(fecha)}}));
+    const guenas = await registroModel.aggregate(
+      [  
+        {$match: 
+          {createdAt : {"$gt" : new Date(fecha)}}
+        },
+        {  
+          $lookup: {
+              from:"registrosalidas",
+              localField:"idregent",
+              foreignField: "_id",
+              as: "regEnt",
+          }
+        }
+      ]
+    );
 
     res.send({guenas});
   } catch (error) {
