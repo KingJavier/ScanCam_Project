@@ -201,16 +201,12 @@ const deleteItems = async (req, res) => {
  * @param {*} req
  * @param {*} res
  */
- const filtroctrl = async (req, res) =>{
-  
+const filtroctrl = async (req, res) =>{
   const filtro = req.params;
-
   const fecha = filtro.createdAt;
   console.log(filtro.createdAt);
-
   try {
-    const guenas = await registroModel.find(({createdAt : {"$gt" : new Date(fecha)}}));
-    // console.log(guenas);
+    const guenas = await registroModel.findAllData(({createdAt : {"$gt" : new Date(fecha)}}));
 
     res.send({guenas});
   } catch (error) {
@@ -221,5 +217,15 @@ const deleteItems = async (req, res) => {
     });
   }
 }
+
 //! Exportaciones
-module.exports = { getItems, getItem, createItems, updateItems, deleteItems, getRegistros, getRegistrossocket,filtroctrl};
+module.exports = { 
+  getItems, 
+  getItem, 
+  createItems, 
+  updateItems, 
+  deleteItems, 
+  getRegistros, 
+  getRegistrossocket,
+  filtroctrl
+};
