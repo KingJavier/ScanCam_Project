@@ -6,77 +6,124 @@ const { getRegistrosSalsocket } = require('../controllers/regsalida');
 const sockets = (io) => {
     io.on('connection', (socket) => {
         // console.log('New user connected!');
-
         //!------------------------------------CREACIÖN DE USUARIOS--------------------------------------- 
+        try {
+            socket.on('cliente:newuser', async data => {
+                const user = await userModel.findOne({email:data.res.data2.user.email}).select('apellido documento email estado idImgPerfil name role status telefono')
+                io.emit('server:newuser', user)
+            })
+        } catch (error) {
+            return res.status(500).json({
+                msg: "ERROR_SOCKETS"
+            }); 
+        }
+        
 
-        socket.on('cliente:newuser', async data => {
-            const user = await userModel.findOne({email:data.res.data2.user.email}).select('apellido documento email estado idImgPerfil name role status telefono')
-            io.emit('server:newuser', user)
-        })
-
-        socket.on('cliente:newuserseguridad', async data => {
-            const user = await userModel.findOne({email:data.res.data2.user.email}).select('apellido documento email estado idImgPerfil name role status telefono')
-            io.emit('server:newuserseguridad', user)
-        })
+        try {
+            socket.on('cliente:newuserseguridad', async data => {
+                const user = await userModel.findOne({email:data.res.data2.user.email}).select('apellido documento email estado idImgPerfil name role status telefono')
+                io.emit('server:newuserseguridad', user)
+            })
+        } catch (error) {
+            return res.status(500).json({
+                msg: "ERROR_SOCKETS"
+            }); 
+        }
+        
 
 
         //!------------------------------------LOGEO DE USUARIOS--------------------------------------- 
 
-        socket.on('cliente:newlogin', async data => {
-            try {
-
-                const login = await loginSocket(data)
-
-                const role = login.user.role
-                const nombre = login.user.name
-                
-                const datos = {
-                    role,
-                    nombre
+        try {
+            socket.on('cliente:newlogin', async data => {
+                try {
+    
+                    const login = await loginSocket(data)
+    
+                    const role = login.user.role
+                    const nombre = login.user.name
+                    
+                    const datos = {
+                        role,
+                        nombre
+                    }
+    
+                    io.emit('server:newlogin', datos)
+                } catch (error) {
+                    return "ERROR_LOGIN_USER_SOCKET";
                 }
-
-                io.emit('server:newlogin', datos)
-            } catch (error) {
-                return "ERROR_LOGIN_USER_SOCKET";
-            }
-        })
+            })
+        } catch (error) {
+            return res.status(500).json({
+                msg: "ERROR_SOCKETS"
+            }); 
+        }
+        
 
         //!------------------------------------REGISTROS DE ENTRADA Y SALIDA---------------------------------------
 
-        socket.on('cliente:fototemp', async data => {
-            // console.log(data.res);
-            const registro = await registroModel.findAllData({},{deleted:0, updatedAt:0});
-            io.emit('server:fototemp', registro)
-        })
+        try {
+            socket.on('cliente:fototemp', async data => {
+                // console.log(data.res);
+                const registro = await registroModel.findAllData({},{deleted:0, updatedAt:0});
+                io.emit('server:fototemp', registro)
+            })
+        } catch (error) {
+            return res.status(500).json({
+                msg: "ERROR_SOCKETS"
+            }); 
+        }
+        
 
-        socket.on('cliente:estadisticas', async data => {
-            // console.log(data.res);
-            const regEntrada = await getRegistrossocket();
-            const regSalida = await getRegistrosSalsocket();
-
-            const datos = {
-                regEntrada,
-                regSalida
-            }
-            io.emit('server:estadisticas', datos)
-        })
+        try {
+            socket.on('cliente:estadisticas', async data => {
+                // console.log(data.res);
+                const regEntrada = await getRegistrossocket();
+                const regSalida = await getRegistrosSalsocket();
+    
+                const datos = {
+                    regEntrada,
+                    regSalida
+                }
+                io.emit('server:estadisticas', datos)
+            })
+        } catch (error) {
+            return res.status(500).json({
+                msg: "ERROR_SOCKETS"
+            }); 
+        }
+        
 
         //!------------------------------------IMG PERFIL--------------------------------------- 
 
-        socket.on('cliente:enviar-id-img',async img_id =>{
-            //console.log(img_id);
-            const img_url = await perfilModel.findById(img_id, {deleted:0, createdAt:0, updatedAt:0});
-            // console.log(img_url.url);
-            socket.emit('server:url-img',img_url.url);
-        })
+        try {
+            socket.on('cliente:enviar-id-img',async img_id =>{
+                //console.log(img_id);
+                const img_url = await perfilModel.findById(img_id, {deleted:0, createdAt:0, updatedAt:0});
+                // console.log(img_url.url);
+                socket.emit('server:url-img',img_url.url);
+            })
+        } catch (error) {
+            return res.status(500).json({
+                msg: "ERROR_SOCKETS"
+            }); 
+        }
+        
 
         //!------------------------------------CAMBIO ROLE---------------------------------------
-        socket.on('cliente:cambiaractividad', async data=>{
-            // console.log('Esto es mucho',data)
-            const user = await userModel.find()
-            io.emit('server:cambiaracti', user)
-            // console.log(user);
-        })
+        try {
+            socket.on('cliente:cambiaractividad', async data=>{
+                // console.log('Esto es mucho',data)
+                const user = await userModel.find()
+                io.emit('server:cambiaracti', user)
+                // console.log(user);
+            })
+        } catch (error) {
+            return res.status(500).json({
+                msg: "ERROR_SOCKETS"
+            });
+        }
+        
 
         //!------------------------------------CREACIÓN USER EXCEL ---------------------------------------
 
