@@ -802,6 +802,5 @@ module.exports = {
   createExcel,
   numerorostros,
   checkToken,
-  loginSocket,
   rolctrl
 };

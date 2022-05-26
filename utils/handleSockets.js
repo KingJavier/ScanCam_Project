@@ -1,5 +1,4 @@
 const {userModel, registroModel, perfilModel} = require('../models');
-const {loginSocket} = require ('../controllers/user');
 const { getRegistrossocket } = require('../controllers/registro');
 const { getRegistrosSalsocket } = require('../controllers/regsalida');
 
