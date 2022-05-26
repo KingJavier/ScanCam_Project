@@ -36,11 +36,11 @@ const sockets = (io) => {
         try {
             socket.on('cliente:newlogin', async data => {
                 try {
-    
-                    const login = await loginSocket(data)
-    
-                    const role = login.user.role
-                    const nombre = login.user.name
+
+                    const datosUser = await userModel.findById(data._id, {role:1, name:1});
+
+                    const role = datosUser.role
+                    const nombre = datosUser.name
                     
                     const datos = {
                         role,
