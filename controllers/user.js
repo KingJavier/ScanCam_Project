@@ -175,45 +175,6 @@ const loginCtrl = async (req, res) => {
   }
 }
 
-//? Este controlador es el encargado de logear una persona desde los sockets
-const loginSocket = async (datos) => {
-  try{
-    //? Limpiamos los datos aplicando machedData 
-    const req = datos;
-    //? trae el correo y lo usa como metodo de logeo.
-    const user = await userModel.findOne({email:req.email}).select('password name apellido role email telefono documento status idImgPerfil')
-
-    //? Condición donde en caso de ser falso emplea el manejador de errores 
-    if(!user){
-      return "USER_NOT_EXISTS";
-    }
-
-    //? Extrae la contraseña en texto plano
-    const hashPassword = user.get('password');
-    //? validación de la contraseña en texto plano con la que ya se encripto
-    const check = await compare(req.password, hashPassword)
-
-    //? Condición donde en caso de ser falso se ejecuta emplea el manejador de errores
-    if(!check){
-      return "PASSWORD_INVALID";
-    }
-
-    //? Metodo para que NO aparezca en desntro de la data la contraseña por temas de seguridad
-    user.set('password', undefined, {strict:false})
-
-    //? Enviamos los datos para la creacion del token y lo concatenamos en el objeto con los datos del user
-    const data = {
-      token: await tokenSing(user),
-      user
-    }
-    //?mostarmos la data como respuesta
-    return data;
-  }catch(e){
-    console.log(e)
-    return "ERROR_LOGIN_USER";
-  }
-}
-
 //? Este controlador es el encargado de confirmar email
 const confirmEmail = async (req, res) => {
   try{
