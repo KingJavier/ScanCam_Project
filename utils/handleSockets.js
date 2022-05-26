@@ -37,18 +37,7 @@ const sockets = (io) => {
         try {
             socket.on('cliente:newlogin', async data => {
                 try {
-    
-                    const login = await loginSocket(data)
-    
-                    const role = login.user.role
-                    const nombre = login.user.name
-                    
-                    const datos = {
-                        role,
-                        nombre
-                    }
-    
-                    io.emit('server:newlogin', datos)
+                    io.emit('server:newlogin', data)
                 } catch (error) {
                     return "ERROR_LOGIN_USER_SOCKET";
                 }
