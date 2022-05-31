@@ -82,58 +82,10 @@ const getItem = async (req, res) => {
 //? metodo para subir guardar un item 
 const createItems = async (req, res) => {
     try {
-        const tokenUsuPet = req.headers.authorization
+        const tokenUsuPet = req.headers.authorization;
 
-        //? Traemos el base64 enviado desde el front
-        const { base } = req.body;
-        
-        try {
-        //?Creamso un nombre aleatorio dependiendo de la fecha y el tiempo actual
-        var fileName = new Date().getTime();
-        
-        //? Definimos la carpeta donde se almacenaran las imagenes temporalmente.
-        var path = './fototemp/';
-
-        //? Defiminos las el formato de imagen que se asiganara despues de codificar la base64
-        var optionalObj = {'fileName': fileName, 'type':'jpg'};
-
-        //? Se emplea una libreria para la conversión de la base64 tomada por la camara a una imagen jpg.
-        var imageInfo = base64ToImage(base,path,optionalObj);
-
-        //? Se establece la direccion con el path y el nombre del archivo
-        var direccion = path+imageInfo.fileName
-
-        }catch(e){
-        //? implementamos el manejador de errorres
-        console.log(e);
-        res.status(400).json("Base 64 Errorea")
-        }
-
-        try {
-        var result = await cloudinary.v2.uploader.upload(direccion);
-        } catch (e) {
-        //? implementamos el manejador de errorres
-        console.log(e);
-        res.status(500).json("Error subiendo imagen a cloudinary")
-        }
-
-        //? definimos el nombre y la Url del archivo enviado 
-        const fileData = {
-            url: result.url,
-            filename:imageInfo.fileName,
-            public_id: result.public_id,
-        };
-        //console.log(fileData);
-        
-        //? Se sube la imagen a la base de datos segun el modelo
-        const data = await fototempModel.create(fileData);
-
-        //? Guardamos la url de la imagen que se traera de la base de datos 
-        const imageUrl = data.url;
-
-        var coordenadas = null;
-
-        // const imageUrl = "https://cdn2.estamosrodando.com/biografias/2/13/chace-crawford-170117.jpg";
+        const img = req.body.base;
+        let buff = Buffer.from(img, 'base64');
 
         try {
             //! Integramos el reconocimiento facial de la api de microsoft azure por medio de axios
@@ -148,15 +100,15 @@ const createItems = async (req, res) => {
                     returnFaceId:true,
                     returnFaceAttributes:'headpose,mask',
                 },
-                data:{
-                    url: imageUrl,
-                },
-                headers: { 'Ocp-Apim-Subscription-Key': subscriptionKey }
+                data:buff,
+                headers: { 
+                    'Content-Type': 'application/octet-stream',
+                    'Ocp-Apim-Subscription-Key': subscriptionKey
+                }
             }).then(function(response) {
                 //? Buscamos mensaje luego de la ejecucion 
                 //console.log('Status text: ' + response.status)
                 //console.log('Status text: ' + response.statusText)
-                coordenadas = response.data;
 
                 //? Guardamos en un avariable el id que extraemos cuando se detecta una cara en la imagen
                 const faceId = response.data[0].faceId;
@@ -183,26 +135,16 @@ const createItems = async (req, res) => {
                         //console.log('Status text: ' + response.status)
                         //console.log('Status text: ' + response.statusText)
                         //console.log(response.data)
-                        var datosazure = response.data;
                         
                         //? Generamos un try catch con el cual traeremos el person y la coincidencia del resultado
                         try {
                             //? Instanciamos en variables el personId y la confianza del identificador 
                             var personId = response.data[0].candidates[0].personId;
                             var confidence = response.data[0].candidates[0].confidence; 
-
-                            console.log(personId);
-
                         } catch(e) {
                             //? En caso de error mostrar 
                             console.log(e);
-                            // console.log(coordenadas);
-                            const tipoError = "ERROR ROSTRO NO ENCONTRADO";
-                            const devolver = {
-                                tipoError,
-                                coordenadas
-                            }
-                            return res.status(404).json(devolver)
+                            return res.status(404).json('ERROR ROSTRO NO ENCONTRADO')
                         }
                         //console.log(personId);
                         //console.log(confidence);
@@ -225,8 +167,6 @@ const createItems = async (req, res) => {
     
                                 //? Guardamos el nombre de la cara en una variable id
                                 const id = response.data.name;
-
-                                console.log(id);
     
                                 try {
                                     //? Buscamos en la base de datos que se encuentre un usuario existente  segun el id 
@@ -234,26 +174,22 @@ const createItems = async (req, res) => {
                                 } catch (e) {
                                      //? En caso de error mostrar 
                                     console.log(e);
-                                    // console.log(coordenadas);
+                                    // console.log();
                                     const tipoError = "ERROR_TRAYENDO_DATAUSER";
                                     const devolver = {
                                         tipoError,
-                                        coordenadas
                                     }
                                     return res.status(404).json(devolver)
                                 }
 
                                 if (userData == null) {
-                                    // console.log(coordenadas);
+                                    // console.log();
                                     const tipoError = "ERROR PORQUE EL USUARIO ENCONTRADO NO EXISTE EN LA BASE DE DATOS";
                                     const devolver = {
                                         tipoError,
-                                        coordenadas
                                     }
                                     return res.status(404).json(devolver)
                                 }
-
-                                console.log(userData);
 
                                 if(userData.idRegistro != ''){
 
@@ -268,11 +204,11 @@ const createItems = async (req, res) => {
                                         var confirmacion = regEnt.confirmacion;
                                     } catch (error) {
                                         console.log(error);
-                                        // console.log(coordenadas);
+                                        // console.log();
                                         const tipoError = "USUARIO NO TIENE REGISTRO DE ENTRADA";
                                         const devolver = {
                                             tipoError,
-                                            coordenadas
+                                            
                                         }
                                         return res.status(404).json(devolver)
                                     }
@@ -317,14 +253,11 @@ const createItems = async (req, res) => {
 
                                                     const tipo = {tipo : "SALIDA"}
                                                     
-    
                                                     const resData = {
                                                         dataUser: userData,
-                                                        datosazure: datosazure,
-                                                        coordenadas: coordenadas,
                                                         tipo: tipo,
+                                                        coincidencia: confidence,
                                                     };
-
 
                                                     //! ---------
                                                     //? codigo de satisafaccion al enviar un archivo
@@ -334,41 +267,37 @@ const createItems = async (req, res) => {
                                                     //! ---------
                                                 }).catch(function (error) {
                                                     console.log(error);
-                                                    // console.log(coordenadas);
+                                                    // console.log();
                                                     const tipoError = "ERROR_REG_SALIDA";
                                                     const devolver = {
-                                                        tipoError,
-                                                        coordenadas
+                                                        tipoError
                                                     }
-                                                    return res.status(404).json(devolver)
+                                                    return res.status(404).json("ERROR_REG_SALIDA")
                                                 });
     
                                             } catch (e) {
                                                 console.log(e);
-                                                // console.log(coordenadas);
+                                                // console.log();
                                                 const tipoError = "ERROR_CREANDO_REGISTRO DE ENTRADA";
                                                 const devolver = {
                                                     tipoError,
-                                                    coordenadas
                                                 }
                                                 return res.status(404).json(devolver)
                                             }
                                         } else {
-                                            // console.log(coordenadas);
+                                            // console.log();
                                             const tipoError = "USUARIO NO TIENE REGISTRO DE ENTRADA";
                                             const devolver = {
                                                 tipoError,
-                                                coordenadas
                                             }
                                             return res.status(404).json(devolver)
                                         };
                                     } catch (e) {
                                         console.log(e);
-                                        // console.log(coordenadas);
+                                        // console.log();
                                         const tipoError = "ERROR_VRRIFICANDO_CONFIRMACIÓN";
                                         const devolver = {
                                             tipoError,
-                                            coordenadas
                                         }
                                         return res.status(404).json(devolver)
                                     };
@@ -376,7 +305,6 @@ const createItems = async (req, res) => {
                                 }else{
                                     //? Mostramos el usuario obtenido 
                                     //console.log("DATAUSER-->",userData);
-
                                     const doc = userData.documento;
                                     const name = userData.name;
                                     const ape = userData.apellido;
@@ -413,9 +341,8 @@ const createItems = async (req, res) => {
     
                                             const resData = {
                                                 dataUser: userData,
-                                                datosazure: datosazure,
-                                                coordenadas: coordenadas,
                                                 tipo: tipo,
+                                                coincidencia: confidence,
                                             };
 
                                             try {
@@ -424,11 +351,11 @@ const createItems = async (req, res) => {
                                             } catch (e) {
                                                 //? En caso de error mostrar 
                                                 console.log(e);
-                                                // console.log(coordenadas);
+                                                // console.log();
                                                 const tipoError = "ERROR_TRAYENDO_DATAUSER";
                                                 const devolver = {
                                                     tipoError,
-                                                    coordenadas
+                                                    
                                                 }
                                                 return res.status(404).json(devolver)
                                             }
@@ -440,22 +367,21 @@ const createItems = async (req, res) => {
                                             //! ---------
                                             }).catch(function (error) {
                                                 console.log(error);
-                                                // console.log(coordenadas);
+                                                // console.log();
                                                 const tipoError = "ERROR_REG_ENTRADA_POSIBLEMENTE_NO_TIENE_ROL_INDICADO";
                                                 const devolver = {
                                                     tipoError,
-                                                    coordenadas
                                                 }
                                                 return res.status(404).json(devolver)
                                             });
 
                                     } catch (e) {
                                         console.log(e);
-                                        // console.log(coordenadas);
+                                        // console.log();
                                         const tipoError = "ERROR_CREANDO_REGISTRO DE ENTRADA";
                                         const devolver = {
                                             tipoError,
-                                            coordenadas
+                                            
                                         }
                                         return res.status(404).json(devolver)
                                     }
@@ -464,44 +390,44 @@ const createItems = async (req, res) => {
                             }).catch(function (error) {
                                 //? En caso de error mostrar 
                                 console.log(error);
-                                // console.log(coordenadas);
+                                // console.log();
                                 const tipoError = "ERROR_TRAYENDO_DATA_USER";
                                 const devolver = {
                                     tipoError,
-                                    coordenadas
+                                    
                                 }
                                 return res.status(404).json(devolver)
                             });
                         } catch (e) {
                              //? En caso de error mostrar 
                             console.log(e);
-                            // console.log(coordenadas);
+                            // console.log();
                             const tipoError = "ERROR_GET_PERSON_ID";
                             const devolver = {
                                 tipoError,
-                                coordenadas
+                                
                             }
                             return res.status(404).json(devolver)
                         }
                     }).catch(function (error) {
                          //? En caso de error mostrar
                         console.log(error);
-                        // console.log(coordenadas);
+                        // console.log();
                         const tipoError = "Error para encontrar coincidencia";
                         const devolver = {
                             tipoError,
-                            coordenadas
+                            
                         }
                         return res.status(404).json(devolver)
                     });
                 } catch (e){
                      //? En caso de error mostrar 
                     console.log(e);
-                    // console.log(coordenadas);
+                    // console.log();
                     const tipoError = "ERROR ROSTRO NO ENCONTRADO";
                     const devolver = {
                         tipoError,
-                        coordenadas
+                        
                     }
                     return res.status(404).json(devolver)
                 } 
