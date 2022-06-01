@@ -259,6 +259,8 @@ const createItems = async (req, res) => {
                                     const ape = userData.apellido;
                                     const email = userData.email;
                                     const rol = userData.role[0];
+                                    const utc = new Date()+'UTC';
+                                    var fecha= new Date(utc).toISOString();
 
                                     try {
                                         if (confirmacion == true) {
@@ -273,6 +275,7 @@ const createItems = async (req, res) => {
                                                         documento: doc,
                                                         email: email,
                                                         role: rol,
+                                                        fecha: fecha,
                                                         confirmacion: "true",
                                                     },
                                                     headers: { Authorization: tokenUsuPet }
@@ -348,6 +351,10 @@ const createItems = async (req, res) => {
                                     const ape = userData.apellido;
                                     const email = userData.email;
                                     const rol = userData.role[0];
+                                    const utc = new Date()+'UTC';
+                                    var fecha= new Date(utc).toISOString();
+
+                                    console.log(fecha);
 
                                     const mongoid ="626165b49fa5856403698805";
 
@@ -362,6 +369,7 @@ const createItems = async (req, res) => {
                                                 documento: doc,
                                                 email: email,
                                                 role: rol,
+                                                fecha: fecha,
                                                 confirmacion: "true",
                                                 idregent: mongoid
                                             },
