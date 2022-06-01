@@ -19,11 +19,14 @@ const RegistroScheme = new mongoose.Schema(
         //? establecemos que email es string y unique con el fin de que no se repita
         email: {
             type: String,
-            },
+        },
         //? establecmos los roles y definimos que cuando se cree un usser aparezca por defecto Invitado
         role: {
             type: ['aprendiz', 'funcionario', 'gestor', 'seguridad', 'invitado'],
             default: 'invitado',
+        },
+        fecha: {
+            type: Date,
         },
         confirmacion:{
             type:Boolean

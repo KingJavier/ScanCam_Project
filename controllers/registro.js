@@ -197,51 +197,65 @@ const deleteItems = async (req, res) => {
 
 
 /**
- * Eliminar un registro
+ * FIltrar un registro
  * @param {*} req
  * @param {*} res
  */
-const filtroctrl = async (req, res) =>{
-  const filtro = req.body;
-  const fecha = filtro.fecha;
+const filtroctrl = async (req, res) => {
+  const filtro = req.params.createdAt;
+  const ISODate = new Date(filtro);
 
-  console.log("Fecha",fecha);
+  console.log('filtr -->', filtro);
+  console.log("ISODate Que llega el front  ---->", ISODate);
+
+  function sumarDias(fecha) {
+    fecha.setDate(fecha.getDate() + 2);
+    return fecha;
+  }
+
+  const fechaMasUno = sumarDias(ISODate);
+  console.log('fechaMasUno ---->', fechaMasUno);
+
+  const año2 = fechaMasUno.getFullYear();
+  const mes2 = fechaMasUno.getMonth() + 1;
+  const dia2 = fechaMasUno.getDate();
+  const union2 = año2 + "-" + mes2 + "-" + dia2;
+  const masuno = '"' + union2 + '"';
+
+  console.log('año2 -->',año2,'mes2 -->',mes2,'dia2 -->',dia2);
+  console.log("Y-m-d -> MAS UNO", masuno);
 
   try {
-    const guenas = await registroModel.aggregate(
-      [  
-        {  
-          $lookup: {
-              from:"registrosalidas",
-              localField:"idregent",
-              foreignField: "_id",
-              as: "regEnt",
-          }
+    const guenas = await registroModel.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gt: new Date(filtro),
+            $lt: new Date(union2),
+          },
         },
-        {$match: 
-          { $and: 
-              [
-                  { "createdAt": 
-                      {$gte: new Date("2022-05-19")}
-                  }, 
-                  { "createdAt": 
-                      {$lte: new Date("2022-05-20")}
-                  }
-              ]
-          }
-        }
-      ]
-    );
+      },
+      {
+        $lookup: {
+          from: "registrosalidas",
+          localField: "idregent",
+          foreignField: "_id",
+          as: "regEnt",
+        },
+      },
+    ]);
 
-    res.send({guenas});
-  }catch(error) {
-    console.log(error)
+    // console.log(guenas);
+
+    res.send({ guenas });
+  } catch (error) {
+    console.log(error);
     //? implementamos el manejador de errorres
     return res.status(500).json({
-      msg: "ERROR"
+      msg: "ERROR",
     });
   }
-}
+};
 
 //! Exportaciones
 module.exports = { 

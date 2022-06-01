@@ -193,13 +193,12 @@ const createItems = async (req, res) => {
 
                                 if(userData.idRegistro != ''){
 
+                                    const idReg = userData.idRegistro;
+
                                     try {
-                                        const idReg = userData.idRegistro;
+                                        
                                         const regEnt = await registroModel.findById(idReg);
-    
                                         var idRegEntrada = regEnt._id;
-    
-                                        //console.log(idRegEntrada);
     
                                         var confirmacion = regEnt.confirmacion;
                                     } catch (error) {
@@ -207,11 +206,50 @@ const createItems = async (req, res) => {
                                         // console.log();
                                         const tipoError = "USUARIO NO TIENE REGISTRO DE ENTRADA";
                                         const devolver = {
-                                            tipoError,
-                                            
+                                            tipoError
                                         }
                                         return res.status(404).json(devolver)
                                     }
+
+                                    // try {
+                                    //     const regEnt = await registroModel.findById(idReg);
+
+                                    //     const hoy = new Date()
+                                    //     const fechaRegEnt = regEnt.createdAt;
+                                    //     const año = hoy.getFullYear();
+                                    //     const mes = hoy.getMonth() ;
+                                    //     const dia = hoy.getDate();
+                                    //     const hora = hoy.getHours();
+                                    //     const minutos = hoy.getMinutes() + 1;
+                                    //     const segundos = hoy.getSeconds();
+
+                                    //     const es = new Date(año, mes, dia, hora,minutos, segundos)
+
+                                    //     console.log(hoy);
+                                    //     console.log(año);
+                                    //     console.log(mes);
+                                    //     console.log(dia);
+                                    //     console.log(hora);
+                                    //     console.log(minutos);
+                                    //     console.log(segundos);
+                                    //     console.log(es);
+
+                                    //     if (fechaRegEnt < es ) {
+                                    //         console.log('E E E E Epa Colombia ');
+                                    //     }
+
+                                    //     const min = RegEnt.getMinutes();
+                                    //     console.log(min);
+
+                                    // } catch (error) {
+                                    //     console.log(error);
+                                    //     const tipoError = "NO SE PERMITE SALIR HASTA NO PASAR UN MINUTO";
+                                    //     const devolver = {
+                                    //         tipoError
+                                    //     }
+                                    //     return res.status(404).json(devolver)
+                                    // }
+
 
                                     //? Mostramos el usuario obtenido 
                                     //console.log("DATAUSER-->",userData);
