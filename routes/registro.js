@@ -19,6 +19,9 @@ const {authMiddleware} = require("../middleware/session");
 const checkRol = require('../middleware/rol');
 
 
+// // ? Creamos sistema de rutas mediante el metodo get
+// router.get('/:id', authMiddleware, checkRol(['gestor', 'seguridad']), getItems);
+
 // ? Creamos sistema de rutas mediante el metodo get
 router.get('/', authMiddleware, checkRol(['gestor', 'seguridad']), getItems);
 
