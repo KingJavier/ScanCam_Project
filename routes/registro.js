@@ -20,13 +20,13 @@ const checkRol = require('../middleware/rol');
 
 
 // ? Creamos sistema de rutas mediante el metodo get
-router.get('/', authMiddleware, checkRol(['gestor', 'seguridad']), getItems);
+router.get('/:id', authMiddleware, checkRol(['gestor', 'seguridad']), getItems);
 
 // ? Creamos sistema de rutas mediante el metodo get
 router.get('/numeroregistros', authMiddleware, checkRol(['gestor', 'seguridad']), getRegistros);
 
 // ? Creamos sistema de rutas mediante el metodo get
-router.get('/filtro', authMiddleware, checkRol(['gestor', 'seguridad']), filtroctrl);
+router.get('/filtro/:createdAt', authMiddleware, checkRol(['gestor', 'seguridad']), filtroctrl);
 
 // ? Creamos ruta para crear un registro a la base de datos previamente validada
 router.post('/', authMiddleware, validatorCreateItem, createItems);
