@@ -25,9 +25,6 @@ const RegistroSalidaScheme = new mongoose.Schema(
             type: ['aprendiz', 'funcionario', 'gestor', 'seguridad', 'invitado'],
             default: 'invitado',
         },
-        fecha: {
-            type: Date,
-        },
         confirmacion:{
             type:Boolean
         },

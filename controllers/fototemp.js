@@ -211,56 +211,11 @@ const createItems = async (req, res) => {
                                         return res.status(404).json(devolver)
                                     }
 
-                                    // try {
-                                    //     const regEnt = await registroModel.findById(idReg);
-
-                                    //     const hoy = new Date()
-                                    //     const fechaRegEnt = regEnt.createdAt;
-                                    //     const año = hoy.getFullYear();
-                                    //     const mes = hoy.getMonth() ;
-                                    //     const dia = hoy.getDate();
-                                    //     const hora = hoy.getHours();
-                                    //     const minutos = hoy.getMinutes() + 1;
-                                    //     const segundos = hoy.getSeconds();
-
-                                    //     const es = new Date(año, mes, dia, hora,minutos, segundos)
-
-                                    //     console.log(hoy);
-                                    //     console.log(año);
-                                    //     console.log(mes);
-                                    //     console.log(dia);
-                                    //     console.log(hora);
-                                    //     console.log(minutos);
-                                    //     console.log(segundos);
-                                    //     console.log(es);
-
-                                    //     if (fechaRegEnt < es ) {
-                                    //         console.log('E E E E Epa Colombia ');
-                                    //     }
-
-                                    //     const min = RegEnt.getMinutes();
-                                    //     console.log(min);
-
-                                    // } catch (error) {
-                                    //     console.log(error);
-                                    //     const tipoError = "NO SE PERMITE SALIR HASTA NO PASAR UN MINUTO";
-                                    //     const devolver = {
-                                    //         tipoError
-                                    //     }
-                                    //     return res.status(404).json(devolver)
-                                    // }
-
-
-                                    //? Mostramos el usuario obtenido 
-                                    //console.log("DATAUSER-->",userData);
-
                                     const doc = userData.documento;
                                     const name = userData.name;
                                     const ape = userData.apellido;
                                     const email = userData.email;
                                     const rol = userData.role[0];
-                                    const utc = new Date()+'UTC';
-                                    var fecha= new Date(utc).toISOString();
 
                                     try {
                                         if (confirmacion == true) {
@@ -275,7 +230,6 @@ const createItems = async (req, res) => {
                                                         documento: doc,
                                                         email: email,
                                                         role: rol,
-                                                        fecha: fecha,
                                                         confirmacion: "true",
                                                     },
                                                     headers: { Authorization: tokenUsuPet }
@@ -351,10 +305,6 @@ const createItems = async (req, res) => {
                                     const ape = userData.apellido;
                                     const email = userData.email;
                                     const rol = userData.role[0];
-                                    const utc = new Date()+'UTC';
-                                    var fecha= new Date(utc).toISOString();
-
-                                    console.log(fecha);
 
                                     const mongoid ="626165b49fa5856403698805";
 
@@ -369,7 +319,6 @@ const createItems = async (req, res) => {
                                                 documento: doc,
                                                 email: email,
                                                 role: rol,
-                                                fecha: fecha,
                                                 confirmacion: "true",
                                                 idregent: mongoid
                                             },

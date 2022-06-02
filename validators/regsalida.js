@@ -20,8 +20,6 @@ const validatorCreateItem=[
     check("role")
     .exists()
     .notEmpty(),
-    check("fecha")
-    .exists(),
     check("confirmacion")
     .exists()
     .notEmpty(),

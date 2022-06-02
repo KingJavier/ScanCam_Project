@@ -11,10 +11,13 @@ const { handleHttpError } = require("../utils/handleError");
 //? método para obtener Lista de los archivos recividos de la base de datos.
 const getItems = async (req, res) => {
   try {
+    const num = parseFloat(req.params.id) || 1;
+
     //? integramos constante que buscara diversos datos
-    const data = await registroModel.findAllData({},{deleted:0, updatedAt:0});
-    //console.log(data);
+    const data = await registroModel.findAllData({},{deleted:0, updatedAt:0}).skip((15 * num)- 15).limit(15);
+    
     res.send({ data }); 
+
   } catch (e) {
     //? implementamos el manejador de errorres
     console.log(e);
@@ -202,36 +205,38 @@ const deleteItems = async (req, res) => {
  * @param {*} res
  */
 const filtroctrl = async (req, res) => {
+  //? Extreaemos la fecha a buscar
   const filtro = req.params.createdAt;
+
+  //? Convertimos Formato ISO
   const ISODate = new Date(filtro);
+  
+  //? Guardamos formato en una nueva variable
+  const Puerca = new Date(filtro);
 
-  console.log('filtr -->', filtro);
-  console.log("ISODate Que llega el front  ---->", ISODate);
-
-  function sumarDias(fecha) {
-    fecha.setDate(fecha.getDate() + 2);
+  //? Ejecutamos funcion y guardamos resultado en una variable
+  const daniel = (fecha) => {
+    fecha.setDate(fecha.getDate() + 1);
+    fecha.setHours(fecha.getHours()+ 5);
     return fecha;
-  }
+  };
 
-  const fechaMasUno = sumarDias(ISODate);
-  console.log('fechaMasUno ---->', fechaMasUno);
+  const fechaMasUno = daniel(ISODate);
 
-  const año2 = fechaMasUno.getFullYear();
-  const mes2 = fechaMasUno.getMonth() + 1;
-  const dia2 = fechaMasUno.getDate();
-  const union2 = año2 + "-" + mes2 + "-" + dia2;
-  const masuno = '"' + union2 + '"';
+  const javier = (DA) => {
+    DA.setHours(DA.getHours()+ 5);
+    return DA;
+  };
 
-  console.log('año2 -->',año2,'mes2 -->',mes2,'dia2 -->',dia2);
-  console.log("Y-m-d -> MAS UNO", masuno);
+  const sumaHora = javier(Puerca);
 
   try {
     const guenas = await registroModel.aggregate([
       {
         $match: {
           createdAt: {
-            $gt: new Date(filtro),
-            $lt: new Date(union2),
+            $gte: new Date(sumaHora),
+            $lt: new Date(fechaMasUno),
           },
         },
       },
@@ -244,8 +249,6 @@ const filtroctrl = async (req, res) => {
         },
       },
     ]);
-
-    // console.log(guenas);
 
     res.send({ guenas });
   } catch (error) {
