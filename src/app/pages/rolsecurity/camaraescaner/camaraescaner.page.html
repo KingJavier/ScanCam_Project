@@ -1,0 +1,93 @@
+<!--***************** SCAN CAM *****************-->
+<!--***************** ABRIL 2022 *****************-->
+<!--*************** DESARROLADORES ***************** -->
+<!--**************** CAMILA PARDO *****************-->
+<!--**************** YESETH REYES *****************-->
+
+<ion-toolbar color="light">
+  <ion-row>
+    <ion-col size="2">
+      <ion-buttons>
+        <ion-menu-button color="dark" menu="first"></ion-menu-button>
+        <!--Boton para llevar al Rol perfil seguridad -->
+          <ion-button routerLink="/perfilseguridad" expand="block" fill="clear" shape="round" color="dark">
+            <!--Funcion para llamado de Usuario-->
+          <h5 class="eltexto">{{this.nombre}}</h5>
+        </ion-button>
+      </ion-buttons>
+    </ion-col>
+    <ion-col size="9">
+    </ion-col>
+    <ion-col size="1">
+      <!--Boton salir de la camara escaner-->
+      <button class="salida" (click)="salir()">
+        <ion-icon name="log-out-outline" color="dark"></ion-icon>
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-toolbar>
+
+<ion-content class="fondo">
+  <ion-row >
+    <ion-col size="12" size-md="4" >
+      <ion-card class="lacard">
+        <ion-card-content class="eltexto">
+          <!--Mostrar datos traidos de la base de datos por medio de funciones-->
+          <ion-item>
+            <!--Llamado del tipo de rol-->
+            <h2 class="eltexto">TIPO: <strong>{{this.tipo}}</strong></h2>
+          </ion-item>
+
+          <ion-item class="ion-margin-vertical" >
+            <!--Llamado del nombre de la base de datos-->
+            <h4 class="eltexto">Nombre: {{this.name}}</h4>
+          </ion-item>
+
+          <ion-item class="ion-margin-vertical" >
+            <!--LLamdo del appelido de la base de datos-->
+            <h4 class="eltexto">Apellido: {{this.apellido}}</h4>
+          </ion-item>
+
+          <ion-item class="ion-margin-vertical">
+            <!--Llamado del documento de la base de datos-->
+            <h4 class="eltexto">Documento: {{this.documento}}</h4>
+          </ion-item>
+
+          <ion-item class="ion-margin-vertical">
+            <!--LLamdo del email de la base de datos-->
+            <h4 class="eltexto">Correo: {{this.email}}</h4>
+          </ion-item>
+
+          <ion-item class="ion-margin-vertical">
+            <!--Llamado del telefono de la base de datos-->
+            <h4 class="eltexto">Teléfono: {{this.telefono}}</h4>
+          </ion-item>
+
+          <ion-item class="ion-margin-vertical">
+            <!--Llamado del rol de la base de datos-->
+            <h4 class="eltexto">Rol: {{this.role}}</h4>
+          </ion-item>
+
+          <ion-item class="ion-margin-vertical">
+            <!--Llamado de coincidencias de concidencia-->
+            <h4 class="eltexto">Coincidencia: {{this.coincidencia}}%</h4>
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+
+    <ion-col>
+      <!-- Video Element & Canvas -->
+      <ion-col class="play-area-sub">
+        <video id="stream"></video>
+        <canvas id="capture"></canvas>
+      </ion-col>
+      <!-- The buttons to control the stream -->
+      <ion-row class="button-group">
+        <ion-button id="btn-start" type="button"   (click)="prender()" *ngIf="cameraStream === undefined "class="button"><ion-icon name="videocam-outline"></ion-icon></ion-button>
+        <ion-button id="btn-stop" type="button"  (click)="detener()" *ngIf="cameraStream !== undefined"  class="button"><ion-icon name="videocam-off-outline"></ion-icon></ion-button>
+        <ion-button id="btn-capture" type="button" (click)="capturar()" *ngIf="cameraStream !== undefined" class="button"><ion-icon name="camera-outline"></ion-icon></ion-button>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+</ion-content>

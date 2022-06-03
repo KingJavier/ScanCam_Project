@@ -1,0 +1,48 @@
+.salida{
+    font-size: 40px;
+    background-color: transparent;
+}
+.elicono{
+    font-size: 130px;
+}
+.lafoto{
+    padding: .5em;
+    height: 8vh;
+    filter: drop-shadow(3px 4px 4px #444);
+}
+ 
+.lacard{
+    border-radius: 1rem;
+    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.537);
+}
+.ion-avatar{
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.titulos{
+    text-align: center;
+    font-weight:bold;
+        font-size: 35px;
+        font-family: 'Nanum Gothic', sans-serif;
+  }
+  .titulo{
+    text-align: center;
+    font-weight:bold;
+        font-size: 35px;
+        font-family: 'Nanum Gothic', sans-serif;
+    margin: 20px;
+  }
+
+  #icono{
+      background-color: blue;
+  }
+
+  .eltexto{
+    font-family: 'Quicksand', sans-serif;
+  }
+  .eltextos{
+    font-family: 'Quicksand', sans-serif;
+    font-size: 25px;
+  }

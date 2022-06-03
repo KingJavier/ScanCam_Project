@@ -1,0 +1,53 @@
+<!--***************** SCAN CAM *****************-->
+<!--***************** ABRIL 2022 *****************-->
+<!--*************** DESARROLADORES ***************** -->
+<!--**************** CAMILA PARDO *****************-->
+<!--**************** YESETH REYES *****************-->
+
+<ion-toolbar color="light">
+  <ion-row>
+    <ion-col size="2">
+      <ion-buttons>
+        <ion-menu-button color="dark" menu="first"></ion-menu-button>
+        <!--redirección a perfil presionando el nombre del usuario-->
+        <ion-button routerLink="/perfilgestor" expand="block" fill="clear" shape="round" color="dark">
+          <!--nombre del usuario-->
+          <h5 class="eltexto">{{this.nombre}}</h5>
+        </ion-button>
+      </ion-buttons>
+    </ion-col>
+    <ion-col size="9">
+    </ion-col>
+    <ion-col size="1">
+      <!--botón de salida-->
+      <button class="salida" (click)="salir()">
+        <ion-icon name="log-out-outline" color="dark"></ion-icon>
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-toolbar>
+
+<ion-content class="fondo">
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" class="chart-container">
+        <ion-card class="lacard">
+          <!--Estadisticas de los ingresos y salidas de los usuarios-->
+          <ion-text color="primary" >
+            <h1 class="titulos">Estadisticas del ingreso y salida</h1>
+          </ion-text>
+          <canvas id="estadistica"></canvas>
+        </ion-card>
+        <ion-card class="lacard">
+          <!--Resgistros de los usuarios actualmente en la institución-->
+          <ion-text color="primary" >
+            <h1 class="titulos">Usuarios Actualmente en las Instalaciones</h1>
+          </ion-text>
+          <canvas id="especifico"></canvas>
+        </ion-card>
+      </ion-col>
+      <ion-col size="1"></ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

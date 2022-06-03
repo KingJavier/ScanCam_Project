@@ -1,0 +1,198 @@
+<!--***************** SCAN CAM *****************-->
+<!--***************** ABRIL 2022 *****************-->
+<!--*************** DESARROLADORES ***************** -->
+<!--**************** CAMILA PARDO *****************-->
+<!--**************** YESETH REYES *****************-->
+
+<ion-toolbar color="light">
+  <ion-row>
+    <ion-col size="2">
+      <ion-buttons>
+        <ion-menu-button color="dark" menu="first"></ion-menu-button>
+         <!--redirección a perfil presionando el nombre del usuario-->
+        <ion-button routerLink="/perfilinvitado" expand="block" fill="clear" shape="round" color="dark">
+          <!--nombre del usuario-->
+          <h5 class="eltexto">{{this.nombre}}</h5>
+        </ion-button>
+      </ion-buttons>
+    </ion-col>
+    <ion-col size="9">
+    </ion-col>
+    <ion-col size="1">
+       <!--botón de salida-->
+      <button class="salida" (click)="salir()">
+        <ion-icon name="log-out-outline" color="dark"></ion-icon>
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-toolbar>
+
+
+<ion-content id="texto" class="fondo">
+  <ion-grid fixed>
+    
+
+    <ion-col size="12">
+      <ion-text color="primary">
+        <!--Titulo de Bienvenida -->
+        <h1 class="titulos">¡Bienvenido a ScanCam!</h1>
+      </ion-text>
+    </ion-col>
+
+
+    <ion-col size="12">
+      <!--definición de acción a seguir-->
+      <div class="ion-text-center">
+        <h2 class="eltexto">En este apartado encontrara el instructivo para entrenar la identificación del reconocimiento facial.</h2>
+      </div>
+      <ion-row>
+          <ion-col size="collaps" size-lg="3"  sizeXs="collaps"></ion-col>
+          <ion-col ion-col size-sm="12"  size-lg="6">
+               <ion-card class="lacard">
+              <ion-card-header>
+                <!--nombre de ubicación-->
+              <ion-card-title class="ion-text-center"><h1 style="margin: 35px;" class="eltexto">Frontal</h1></ion-card-title>
+              <ion-card-subtitle class="ion-text-center"><h2 class="eltexto">Ubicación requerida para la foto</h2></ion-card-subtitle>
+            </ion-card-header>
+            <!--Explicación de posición para captura de -imagen-->
+            <ion-card-content>
+              <h3 class="eltexto">Ubiquese frente a la camara como se muestra en la imagen de ejemplo a continuacion.</h3>
+            </ion-card-content>
+            <!--imagenuno-->
+            <ion-col size="12" class="ion-avatar">
+              <img width="300rem" src="../../../../assets/Imagenes/costado.PNG" alt="cara_central" style="text-align: center">
+            </ion-col>
+
+          </ion-card>
+          </ion-col>
+        <ion-col size="collaps" size-lg="3" sizeXs="collaps"></ion-col>
+
+
+        <ion-col size-sm="12"  size-lg="3">
+          <ion-card class="lacard">
+            <ion-card-header>
+              <!--nombre de ubicación-->
+              <ion-card-title class="ion-text-center">
+                <h1 class="eltextos">Lateral Izquierdo</h1>
+              </ion-card-title>
+              <ion-card-subtitle class="ion-text-center">
+                <h2 class="eltexto">Ubicación requerida para la foto</h2>
+              </ion-card-subtitle>
+            </ion-card-header>
+             <!--Explicación de posición para captura de -imagen-->
+            <ion-card-content>
+              <h3 class="eltexto">
+                Ubique su lateral izquierdo frente a la camara como se muestra en la imagen de ejemplo a continuacion.
+              </h3>
+            </ion-card-content>
+            <!--imagendos-->
+            <ion-col size="12" class="ion-avatar">
+              <img width="300rem" src="../../../../assets/Imagenes/costado.PNG" alt="" style="text-align: center">
+            </ion-col>
+          </ion-card>
+        </ion-col>
+
+
+
+        <ion-col size-sm="12"  size-lg="3">
+          <ion-card class="lacard">
+            <ion-card-header>
+              <!--nombre de ubicación-->
+              <ion-card-title class="ion-text-center">
+                <h1 class="eltexto">Lateral Derecho</h1>
+              </ion-card-title>
+              <ion-card-subtitle class="ion-text-center">
+                <h2 class="eltexto">Ubicación requerida para la foto</h2>
+              </ion-card-subtitle>
+            </ion-card-header>
+            <!--Explicación de posición para captura de -imagen-->
+            <ion-card-content>
+              <h3 class="eltexto">
+                Ubique su lateral derecho frente a la camara como se muestra en la imagen de ejemplo a continuacion.
+              </h3>
+            </ion-card-content>
+            <!--imagentres-->
+            <ion-col size="12" class="ion-avatar">
+              <img width="300rem" src="../../../../assets/Imagenes/costado2.png" alt="" style="text-align: center">
+            </ion-col>
+          </ion-card>
+        </ion-col>
+
+        <ion-col size-sm="12" size-md="4" size-lg="3">
+          <ion-card class="lacard">
+            <ion-card-header>
+              <ion-card-title class="ion-text-center">
+                <h1 class="eltexto">3/4 Izquierdo</h1>
+              </ion-card-title>
+              <ion-card-subtitle class="ion-text-center">
+                <h2 class="eltexto">Ubicación requerida para la foto</h2>
+              </ion-card-subtitle>
+            </ion-card-header>
+
+            <ion-card-content>
+              <h3 class="eltexto">
+                Ubique su lado 3/4 izquierdo frente a la camara como se muestra en la imagen de ejemplo a continuacion.
+              </h3>
+            </ion-card-content>
+            <!--imagencuatro-->
+            <ion-col size="12" class="ion-avatar">
+              <img width="300rem" src="../../../../assets/Imagenes/mujertrescuartos1.PNG" alt=""
+                style="text-align: center">
+            </ion-col>
+          </ion-card>
+        </ion-col>
+
+
+        <ion-col size-sm="12" size-md="4" size-lg="3">
+          <ion-card class="lacard">
+            <ion-card-header>
+              <ion-card-title class="ion-text-center">
+                <h1 class="eltexto">3/4 Derecho</h1>
+              </ion-card-title>
+              <ion-card-subtitle class="ion-text-center">
+                <h2 class="eltexto">Ubicación requerida para la foto</h2>
+              </ion-card-subtitle>
+            </ion-card-header>
+
+            <ion-card-content>
+              <h3 class="eltexto">
+                Ubique su lado 3/4 derecho frente a la camara como se muestra en la imagen de ejemplo a continuacion.
+              </h3>
+            </ion-card-content>
+            <ion-col size="12" class="ion-avatar">
+              <img width="300rem" src="../../../../assets/Imagenes/mujertrescuartos2.png" alt=""
+                style="text-align: center">
+            </ion-col>
+            <!--imagencinco-->
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+ 
+
+    <!--boton para ir a entrenamiento-->
+
+    <div class="ion-text-center">
+      <h2 class="eltexto">Al dar click en el siguiente boton lo redireccionara a una vista para poder ejecutar el entrenamiento.</h2>
+    </div>
+
+  
+    <ion-col size="6">
+
+        <ion-row class="ion-text-center">
+          <ion-col size-lg="5" size-sm=""></ion-col>
+        <ion-col size-lg="2" size-md="6" size-sm="12">
+          <ion-card color="primary" class="lacard" >
+            <button   routerLink="/entrenmaquifuncionario">
+              <ion-icon name="camera" class="elicono"  > Siguiente</ion-icon>
+            </button>
+          </ion-card>
+        </ion-col>
+        
+        <ion-col size-lg="5" size-sm=""></ion-col>
+        </ion-row>
+        
+
+    </ion-col>
+    </ion-grid>
+</ion-content>

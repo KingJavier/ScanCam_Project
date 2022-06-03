@@ -1,0 +1,88 @@
+<!--***************** SCAN CAM *****************-->
+<!--***************** ABRIL 2022 *****************-->
+<!--*************** DESARROLADORES ***************** -->
+<!--**************** CAMILA PARDO *****************-->
+<!--**************** YESETH REYES *****************-->
+
+<ion-toolbar color="light">
+  <ion-row>
+    <ion-col size="2">
+      <ion-buttons>
+        <ion-menu-button color="dark" menu="first"></ion-menu-button>
+        <!--redirección a perfil presionando el nombre del usuario-->
+        <ion-button routerLink="/perfilgestor" expand="block" fill="clear" shape="round" color="dark">
+          <!--nombre del usuario-->
+          <h5 class="eltexto">{{this.nombre}}</h5>
+        </ion-button>
+      </ion-buttons>
+    </ion-col>
+    <ion-col size="9">
+    </ion-col>
+    <ion-col size="1">
+      <button class="salida" (click)="salir()">
+        <!--botón de salida-->
+        <ion-icon name="log-out-outline" color="dark"></ion-icon>
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-toolbar>
+
+
+<ion-content class="fondo">
+  <ion-grid>
+    <ion-row >
+      <ion-col sizeMd="4" offsetMd="4">
+        <ion-card class="lacard">
+          <ion-card-title>
+            <div  class="text-center" >
+            <h1 class="titulos" >Actualizar foto</h1>  
+            </div>
+          </ion-card-title>
+          <ion-col size="12"></ion-col>
+          <ion-col size="12"></ion-col>
+          <ion-col size="12" >
+            <div style="margin:30px;">
+            <h2 class="eltexto">En este apartado podra seleccionar una foto de perfil para su cuenta.</h2>
+            </div>
+          </ion-col>
+          <ion-card-content >
+            <ion-row>
+              <div class="ion-text-center">
+                <div class="row">
+                    <!--Traer foto del usuario-->
+                    <ion-col size="6" size-md="4" size-lg="3" *ngIf="previsualizacion">
+                      <!--Traer las imagenes de la base de datos y mostrarlas en una card-->
+                      <ion-card
+                      style="background-color: rgba(221, 221, 221, 0.707); box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.275); border-radius: 10px;">
+                      <ion-card-content style="padding: 0;">
+                        <img [src]="previsualizacion" alt="" style="object-fit: cover; height: 60vh;  border-radius: 10px; " id="foto"/> 
+                      </ion-card-content>
+                    </ion-card>
+                  </ion-col>
+                  <div class="col-lg-4 col-md-4 col-sm-12">
+                      <input (change)="capturarFoto($event)" type="file" id="boton2">
+                    </div>
+                    <ion-row>
+                      <ion-col size="6"></ion-col>
+                      <ion-col size="6" >
+                        <div class="text-center">
+  
+                          <!--aleta de Espera de actulizacion -->
+                          <div class="col-lg-4 col-md-4 col-sm-12" >
+                            <ion-button type="button" routerLink="/perfilgestor" [disabled]="loading" (click)="subirFoto()" color="primary" class="ion-margin-top" id="boton">
+                              {{(loading) ? 'Cargando...' : 'Actualizar'}}
+                            </ion-button>
+                          </div>
+                        </div>
+                    </ion-col>
+                    </ion-row>
+                    
+                </div>
+              </div>
+            </ion-row>
+          </ion-card-content>
+      </ion-card>
+       </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

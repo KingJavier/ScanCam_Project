@@ -1,0 +1,46 @@
+<!--***************** SCAN CAM *****************-->
+<!--***************** ABRIL 2022 *****************-->
+<!--*************** DESARROLADORES ***************** -->
+<!--**************** CAMILA PARDO *****************-->
+<!--**************** YESETH REYES *****************-->
+
+<ion-content class="fondo">
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10">
+        <ion-card class="lacard">
+          <ion-row>
+            <ion-col style="margin: 30px;">
+              <!--Verificacion de registro exitoso card para user-->
+              <ion-text color="primary" class="titulos">
+                <h2 class="ion-text-center" >¡Gracias por Registarse!</h2>
+              </ion-text>
+              <br>
+              <h3 class="eltexto">Hemos enviado un correo de verificacion </h3>
+              <br>
+              <h4 class="eltexto">Por favor revise su correo electrónico y haga clic en el enlace para verificar su dirección de correo
+                electrónico.</h4>
+            </ion-col>
+          </ion-row>
+
+          <br>
+          <ion-row>
+            <ion-col>
+              <div class="ion-text-center">
+                <!--Funcion que Reenvia correo electronico a la cuenta de google colocada -->
+                <ion-button type="submit" color="primary" (click)="enviarcorreo()" class="eltexto">Reenviar correo electrónico</ion-button>
+                <br>
+                <!--Boton para volver al inicio-->
+                <a style="font-size: 15px;" [routerLink]="['/login']" class="eltexto">Volver al inicio</a>
+              </div>
+            </ion-col>
+          </ion-row>
+          <br>
+          <br>
+        </ion-card>
+      </ion-col>
+      <ion-col size="1"></ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

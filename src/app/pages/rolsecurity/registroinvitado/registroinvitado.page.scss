@@ -1,0 +1,46 @@
+.salida{
+    font-size: 40px;
+    background-color: transparent;
+}
+.elicono{
+    font-size: 130px;
+}
+.lafoto{
+    max-width: 125px;
+    height: 125px;
+    padding: .5em;
+    height: 8vh;
+    filter: drop-shadow(3px 4px 4px #444);
+}
+.elboton{
+    filter: drop-shadow(3px 3px 3px #444);
+    margin-top: 250px;
+    border-radius: 1rem;
+}
+
+.lacardone{
+    border-radius: 1rem;
+    filter: drop-shadow(3px 3px 3px #444);
+    margin-top: 50px;
+}
+
+@media screen and (max-width:719px){
+  .elboton{
+      margin-top: 12px;
+  }
+}
+#verclave{
+    margin-top: auto;
+}
+
+.eltexto{
+    font-family: 'Quicksand', sans-serif;
+  }
+  .titulos{
+    font-size: 35px;
+    font-family: 'Nanum Gothic', sans-serif;
+  }
+
+
+
+

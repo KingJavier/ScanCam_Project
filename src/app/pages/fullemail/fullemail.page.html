@@ -1,0 +1,47 @@
+<!--***************** SCAN CAM *****************-->
+<!--***************** ABRIL 2022 *****************-->
+<!--*************** DESARROLADORES ***************** -->
+<!--**************** CAMILA PARDO *****************-->
+<!--**************** YESETH REYES *****************-->
+<ion-toolbar color="light">
+  <ion-buttons slot="start">
+    <ion-back-button defaultHref="/login"></ion-back-button>
+  </ion-buttons>
+</ion-toolbar>
+
+<ion-content class="fondo">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="3"></ion-col>
+     <ion-col size="6">
+      <ion-card class="lacard">
+        <ion-text  color="primary">
+          <!--Alerta con anuncio para restaurar contraseña-->
+          <h1 class="titulos">Verifica tu correo</h1>
+          </ion-text>
+        <ion-card-content>
+          <ion-row>
+            <!--Anuncio de continuacion para pasos a seguir para la restauración de contraseña-->
+            <ion-col size="12" class="eltexto">
+              <h2>Se acaba de enviar un mensaje a la dirección de correo electrónico digitado anteriormente, por favor seguir los pasos mencionados en este.</h2>
+              <h2>Al restaurar su contraseña podra ingresar exitosamente a la pagina</h2>
+              <br>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <!--botón de inicio-->
+              <div class="ion-text-center">
+              <ion-button class="eltexto"  [routerLink]="['/login']"  type="submit" shape="round">Inicio</ion-button>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+     </ion-col>
+     <ion-col size="3"></ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

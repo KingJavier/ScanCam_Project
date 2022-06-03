@@ -1,0 +1,84 @@
+<!--***************** SCAN CAM *****************-->
+<!--***************** ABRIL 2022 *****************-->
+<!--*************** DESARROLADORES ***************** -->
+<!--**************** CAMILA PARDO *****************-->
+<!--**************** YESETH REYES *****************-->
+
+<ion-toolbar color="light">
+  <ion-row>
+    <ion-col size="2">
+      <ion-buttons>
+        <ion-menu-button color="dark" menu="first"></ion-menu-button>
+        <!--redirección a perfil presionando el nombre del usuario-->
+        <ion-button routerLink="/perfilgestor" expand="block" fill="clear" shape="round" color="dark">
+           <!--nombre del usuario-->
+          <h5 class="eltexto">{{this.nombre}}</h5>
+        </ion-button>
+      </ion-buttons>
+    </ion-col>
+    <ion-col size="9">
+    </ion-col>
+    <ion-col size="1">
+      <!--botón de salida-->
+      <button class="salida" (click)="salir()">
+        <ion-icon name="log-out-outline" color="dark"></ion-icon>
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-toolbar>
+
+<ion-content class="fondo">
+  <ion-grid  fixed>
+    <ion-row >
+      <ion-col size="12">
+        <ion-card class="lacard">
+          <!--Listado que muestra el estado de activo o inactivo del usuario-->
+          <ion-text color="primary" >
+            <h1 class="titulos">Listado de estado del usuario</h1>
+          </ion-text>
+          <div style="margin: 30px;">
+            <table class="table" size="12" id="colorletra" >
+              <thead >
+                <tr >
+                  <!--Peticiones de la base de datos para mostrar-->
+                  <th scope="col" class="eltexto">Identificación</th>
+                  <th scope="col" class="eltexto">Nombre</th>
+                  <th scope="col" class="eltexto">Correo</th>
+                  <th scope="col" class="eltexto">Rol</th>
+                  <th scope="col" class="eltexto">Activo</th>
+                  <th scope="col" class="eltexto">Inactivo</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!--Llamado de los datos de usuario documento y nombre-->
+                <tr *ngFor="let usuario of usuarios">
+                <td class="eltexto">{{usuario.documento}}</td>
+                <td class="eltexto">{{usuario.name}}</td>
+                <td class="eltexto">{{usuario.email}}</td>
+                <td>
+                  <!--Llamado y peticiones de los datos para seleccional el rol de cada perfil -->
+                  <ion-select #p (ionChange)="cambiarrole(p.value, usuario._id)" [value]="usuario.role[0]" class="form-control" name="role" >
+                    <ion-select-option Value="invitado" class="eltexto">Invitado</ion-select-option>
+                    <ion-select-option Value="aprendiz" class="eltexto">Aprendiz</ion-select-option>
+                    <ion-select-option Value="funcionario" class="eltexto">Funcionario</ion-select-option>
+                    <ion-select-option Value="gestor" class="eltexto">Gestor</ion-select-option>
+                    <ion-select-option Value="seguridad" class="eltexto">Seguridad</ion-select-option>
+                  </ion-select>
+                </td>
+                <!--Estado activo o incactivo de los usuarios-->
+                <td class="activo">
+                  <ion-checkbox (ionChange)="deshabilitar(usuario._id)" color="primary" *ngIf="usuario.estado==='ACTIVO' " checked="true"></ion-checkbox>
+                </td>
+                <td class="activo">
+                  <ion-checkbox (ionChange)="activar(usuario._id)" color="primary" *ngIf="usuario.estado==='DESHABILITADO' " checked="true" ></ion-checkbox>
+                </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

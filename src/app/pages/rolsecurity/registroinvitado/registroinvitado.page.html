@@ -1,0 +1,117 @@
+<!--***************** SCAN CAM *****************-->
+<!--***************** ABRIL 2022 *****************-->
+<!--*************** DESARROLADORES ***************** -->
+<!--**************** CAMILA PARDO *****************-->
+<!--**************** YESETH REYES *****************-->
+
+<ion-toolbar color="light">
+  <ion-row>
+    <ion-col size="2">
+      <ion-buttons>
+        <ion-menu-button color="dark" menu="first"></ion-menu-button>
+        <!--Redirigir a perfil seguridad-->
+          <ion-button routerLink="/perfilseguridad" expand="block" fill="clear" shape="round" color="dark">
+            <!--Llamado del nombre almacenado en la base de datos -->
+          <h5 class="eltexto">{{this.nombre}}</h5>
+        </ion-button>
+      </ion-buttons>
+    </ion-col>
+    <ion-col size="9">
+    </ion-col>
+    <ion-col size="1">
+      <!--Salida de la sesion-->
+      <button class="salida" class="eltexto" (click)="salir()">
+        <ion-icon name="log-out-outline" color="dark"></ion-icon>
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-toolbar>
+
+<ion-content class="fondo">
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="12" >
+        <ion-card class="lacardone">
+
+          <ion-card-header>
+           
+            <ion-text color="primary" class="titulos">
+              <h1 class="titulos">REGISTRO</h1>
+            </ion-text>
+          </ion-card-header>
+
+          <ion-card-content>
+             <!--Formulario de registro para el rol invitado-->
+            <form [formGroup]="form" errorTailor>
+              <ion-item class="form-group">
+                <!--Documento de usuario-->
+                <ion-label position="floating" class="eltexto">Documento:</ion-label>
+                <!--Enviar Informacion a la base de datos-->
+                <ion-input class="form-control" formControlName="doc" type="number" placeholder="Documento" name="documento" [(ngModel)]="datos.documento"></ion-input>
+              </ion-item>
+
+              <ion-item class="form-group">
+                <!--Nombre del respectivo usuario-->
+                <ion-label position="floating" class="eltexto">Nombre:</ion-label>
+                <!--Enviar Informacion a la base de datos-->
+                <ion-input class="form-control" formControlName="name" type="text" placeholder="Nombre" name="nombre" [(ngModel)]="datos.nombre"></ion-input>
+              </ion-item>
+
+              <ion-item class="form-group">
+                <!--Apellido de usuario-->
+                <ion-label position="floating" class="eltexto">Apellido:</ion-label>
+                <!--Enviar Informacion a la base de datos-->
+                <ion-input class="form-control" formControlName="lastname" type="text" placeholder="Apellido" name="apellido" [(ngModel)]="datos.apellido" ></ion-input>
+              </ion-item>
+
+              <ion-item class="form-group">
+                <!--Teléfono vigente del usuario-->
+                <ion-label position="floating" class="eltexto">Telefono:</ion-label>
+                <!--Enviar Informacion a la base de datos-->
+                <ion-input class="form-control" formControlName="phone" type="number" placeholder="Telefono" name="telefono" [(ngModel)]="datos.telefono" ></ion-input>
+              </ion-item>
+
+              <ion-item class="form-group">
+                <!--correo del usuario-->
+                <ion-label position="floating" class="eltexto">Correo:</ion-label>
+                <!--Enviar Informacion a la base de datos-->
+                <ion-input class="form-control" formControlName="correo" type="email" placeholder="Correo" name="email" [(ngModel)]="datos.email" ></ion-input>
+              </ion-item>
+
+              <ion-item class="form-group">
+                <!--Contraseña seleccionada por el usuario-->
+                <ion-label position="floating" class="eltexto">Contraseña:</ion-label>
+                <!--Condicionales para la contraseña-->
+                <ion-input  class="form-control" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}" formControlName="contraseña" type="password" placeholder="Contraseña" [type]="showPassword ? 'text' : 'password' " name="password" [(ngModel)]="password" ></ion-input>
+                <ion-icon color="primary" (click)="togglePassword()" slot="end" [name]="passwordToggleIcon" id="verclave"></ion-icon>
+              </ion-item>
+
+              <ion-item class="form-group">
+                <!--Confirmación de contraseña ya diligenciada-->
+                <ion-label position="floating" class="eltexto">Confirmar contraseña:</ion-label>
+                <!--Condicionales-->
+                <ion-input class="form-control" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}" formControlName="confirmarcontraseña" [type]="showPassword ? 'text' : 'password' " type="password" placeholder="Confirmar contraseña" [(ngModel)]="confirmarpassword"></ion-input>
+              </ion-item>
+                <br>
+                
+                <!--Observación visual para que el usuario cree una contraseña factible-->
+              <ion-row>
+                <h4 class="eltexto">La Contraseña debe contener un carater en mayuscula, un numero, un carater especial y debe ser de 8 carateres.</h4>
+              </ion-row>
+
+            </form>
+            <br>
+            <!--Botón para registrar usuario-->
+            <div class="ion-text-center">
+              <ion-button color="primary"  class="ion-margin-top" class="eltexto" mode="ios" (click)="registrar()">
+                Registrar Usuario
+              </ion-button>
+            </div>
+
+          </ion-card-content>
+
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

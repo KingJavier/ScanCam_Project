@@ -1,0 +1,151 @@
+<!--***************** SCAN CAM *****************-->
+<!--***************** ABRIL 2022 *****************-->
+<!--*************** DESARROLADORES ***************** -->
+<!--**************** CAMILA PARDO *****************-->
+<!--**************** YESETH REYES *****************-->
+
+
+<!--Contenido principal para roles del sisitema -->
+<ion-menu side="start" menuId="first" contentId="principal">
+  <ion-content>
+    <div class="menu-header-bg"></div>
+    <div class="header-content">
+      <ion-row id="navbar">
+        <ion-col size="1"></ion-col>
+        <ion-col size="11">
+          <ion-row>
+            <ion-col size="1"></ion-col>
+            <ion-col size="11" style="display:block; margin-left: 40px;">
+              <div>
+                    <!--Mostrar foto del usuario de la base de datos por Url-->
+                    <div *ngIf="!this.url">
+                      <ion-icon name="person-outline" color="light"></ion-icon>
+                    </div>
+
+                    <!--Mostrar y traer la foto de la base de datos-->
+                    <div *ngIf="this.url ">
+                      <img [src]="this.url" class="lafoto">
+                    </div>
+              </div>
+            </ion-col>
+            <ion-col size="1"></ion-col>
+            <ion-col size="11">
+                <!--Condicion de nombre para llamar nombre de usuario a vista front-->
+                <ion-label>
+                  <h2 *ngIf="this.nombre !== null ">{{this.nombre}}</h2>
+                </ion-label>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <div class="action-button">
+      <!--condicionales rol aprendiz-->
+      <ion-list *ngIf="this.role==='aprendiz' ">
+        <!--Inicio para perfil aprendiz-->
+        <ion-item routerLink="/inicioapre">
+          <ion-icon name="home-outline"></ion-icon>Inicio
+        </ion-item>
+        <!--Perfil rol aprendiz-->
+        <ion-item routerLink="/perfilaprendiz">
+          <ion-icon name="person-outline"></ion-icon>Perfil
+        </ion-item>
+        <!--entrenamiento de maquina del aprendiz-->
+        <ion-item routerLink="/entrenmaquiaprendiz">
+          <ion-icon name="camera"></ion-icon>Entrenamiento Sistema
+        </ion-item>
+      </ion-list>
+
+      <!--condicionales rol invitado-->
+      <ion-list *ngIf="this.role==='invitado' ">
+        <!--Inicio para perfil invitado-->
+        <ion-item routerLink="/inicioinv">
+          <ion-icon name="home-outline"></ion-icon>Inicio
+        </ion-item>
+        <!--Perfil rol invitado-->
+        <ion-item routerLink="/perfilinvitado">
+          <ion-icon name="person-outline"></ion-icon>Perfil
+        </ion-item>
+        <!--entrenamiento de maquina del invitado-->
+        <ion-item routerLink="/entrenmaquiinvitado">
+          <ion-icon name="camera"></ion-icon>Entrenamiento Sistema
+        </ion-item>
+      </ion-list>
+
+      <!--condicionales rol funcionario-->
+      <ion-list *ngIf="this.role==='funcionario' ">
+        <!--Inicio para perfil funcionario-->
+        <ion-item routerLink="/iniciofun">
+          <ion-icon name="home-outline"></ion-icon>Inicio
+        </ion-item>
+        <!--Perfil rol funcionario-->
+        <ion-item routerLink="/perfilfuncionario">
+          <ion-icon name="person-outline"></ion-icon>Perfil
+        </ion-item>
+        <!--entrenamiento de maquina del invitado-->
+        <ion-item routerLink="/entrenmaquifuncionario">
+          <ion-icon name="camera"></ion-icon>Entrenamiento Sistema
+        </ion-item>
+      </ion-list>
+
+
+      <!--condicionales rol gestor-->
+      <ion-list *ngIf="this.role==='gestor' ">
+        <!--Inicio para perfil gestor-->
+        <ion-item routerLink="/inicioges">
+          <ion-icon name="home-outline"></ion-icon>Inicio
+        </ion-item>
+        <!--Perfil rol gestor-->
+        <ion-item routerLink="/perfilgestor">
+          <ion-icon name="person-outline"></ion-icon>Perfil
+        </ion-item>
+        <!--entrenamiento de maquina del invitado-->
+        <ion-item routerLink="/entrenmaquina">
+          <ion-icon name="camera"></ion-icon>Entrenamiento Sistema
+        </ion-item>
+        <!--vista base de datos rol gestor-->
+        <ion-item routerLink="/listado">
+          <ion-icon name="documents-outline"></ion-icon>Base de Datos
+        </ion-item>
+        <!--estadisticas de registro de entrada y salida-->
+        <ion-item routerLink="/estadisticas">
+          <ion-icon name="bar-chart-outline"></ion-icon>Estadisticas
+        </ion-item>
+        <!--creación de usuarios del rol gestor -->
+        <ion-item routerLink="/base-excel">
+          <ion-icon name="server-outline"></ion-icon>Crear Usuarios
+        </ion-item>
+      </ion-list>
+
+      <!--condicionales rol seguridad-->
+      <ion-list *ngIf="this.role==='seguridad' ">
+        <!--Inicio para perfil seguridad-->
+        <ion-item routerLink="/rolseguridad">
+          <ion-icon name="home-outline"></ion-icon>Inicio
+        </ion-item>
+        <!--Perfil rol seguridad-->
+        <ion-item routerLink="/perfilseguridad">
+          <ion-icon name="person-outline"></ion-icon>Perfil
+        </ion-item>
+        <!--entrenamiento de maquina del invitado-->
+        <ion-item routerLink="/entrenarmaquina">
+          <ion-icon name="camera"></ion-icon>Entrenamiento Sistema
+        </ion-item>
+        <!--registro de invitados-->
+        <ion-item routerLink="/registroinvitado">
+          <ion-icon name="person-add-outline"></ion-icon>Registrar Invitado
+        </ion-item>
+        <!--lista de los registros de ingresos-->
+        <ion-item routerLink="/listadoseguridad">
+          <ion-icon name="documents-outline"></ion-icon>Listado de Ingresos
+        </ion-item>
+        <!--Reconocimiento facial-->
+        <ion-item routerLink="/camaraescaner">
+          <ion-icon name="camera-reverse-outline"></ion-icon>Reconocimiento
+        </ion-item>
+      </ion-list>
+
+    </div>
+  </ion-content>
+</ion-menu>
