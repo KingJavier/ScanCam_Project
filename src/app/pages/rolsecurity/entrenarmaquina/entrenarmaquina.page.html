@@ -32,8 +32,8 @@
     <ion-row>
       <ion-col size="12">
         <ion-text color="primary">
-           <!--Titulo para indicar la foto-->
           <h1 class="titulos">Fotografía</h1>
+          <h4 id="numero">{{this.numero}} / 5</h4>
         </ion-text>
       </ion-col>
       <!--Explicacion para interaccion de usuario-->
@@ -42,7 +42,7 @@
       </div>
     </ion-row>
   </ion-grid>
-  
+
   <!-- Depliega el metodo de tomar una fotografia. -->
   <ion-fab vertical="bottom" horizontal="center" slot="fixed">
     <ion-fab-button (click)="addPhotoToGallery()">
@@ -52,21 +52,19 @@
 
   <!-- ORganiza la foto tomada en la pag -->
 
-
-    <ion-grid>
-      <ion-row>
-         <!--especificación de espacios para imagenes cargadas en la plataforma-->
-        <ion-col size="6" size-md="4" size-lg="3" *ngFor="let photo of photos; index as position">
-          <ion-card
-            style="background-color: rgba(221, 221, 221, 0.707); box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.275); border-radius: 10px;">
-              <ion-card-content style="padding: 0;">
-                <ion-img style="object-fit: cover; height: 30vh; max-width: 100%; border-radius: 10px; "
-                  [src]="photo.webviewPath" > </ion-img>
-              </ion-card-content>
-          </ion-card>
-        </ion-col>
-        
-      </ion-row>
-    </ion-grid>
+  <ion-grid>
+    <ion-row>
+      <!--especificación de espacios para imagenes cargadas en la plataforma-->
+      <ion-col size="6" size-md="4" size-lg="3" *ngFor="let photo of photos; index as position">
+        <ion-card
+          style="background-color: rgba(221, 221, 221, 0.707); box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.275); border-radius: 10px;">
+            <ion-card-content style="padding: 0;">
+              <ion-img style="object-fit: cover; height: 30vh; max-width: 100%; border-radius: 10px; "
+                [src]="photo.webviewPath" > </ion-img>
+            </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
 </ion-content>

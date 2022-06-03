@@ -52,13 +52,10 @@ export class InicioPage implements OnInit {
     const token = localStorage.getItem('token');
 
     this.usuarioServicio.totalfoto(token).subscribe((res: any)=>{
-
       const num = res;
-
       if(num < 5){
-        this.alert('POR FAVOR ENTRENAR LA MAQUINA', 4000);
+        this.alert('POR FAVOR ENTRENAR LA MAQUINA'+' ' +`${res}/5`, 4000);
       }
-
     });
   }
 

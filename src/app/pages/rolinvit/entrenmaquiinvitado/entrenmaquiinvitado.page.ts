@@ -27,6 +27,8 @@ export class EntrenmaquiinvitadoPage implements OnInit {
 
   nombre: string;
 
+  numero: number;
+
   constructor(
     private router: Router,
     private foto: TaskService,
@@ -59,7 +61,16 @@ export class EntrenmaquiinvitadoPage implements OnInit {
 
   ngOnInit() {
     //muestra la foto en la vista
-    //this.traerfotol();
+    this.numFotosAzure();
+  }
+
+  numFotosAzure(){
+    const token = localStorage.getItem('token');
+
+    this.foto.totalfoto(token).subscribe((res: any)=>{
+      const num = res;
+      this.numero = res;
+    });
   }
 
   salir(){

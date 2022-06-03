@@ -9,13 +9,8 @@ import { CheckRoleInvitadoGuard} from'./shared/guards/check-role-invitado.guard'
 
 const routes: Routes = [
   {
-    path: 'home',
-    loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule),
-    pathMatch: 'full'
-  },
-  {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
   {

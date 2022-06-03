@@ -23,6 +23,8 @@ export class EntrenmaquinaPage implements OnInit {
   url: string;
   nombre: string;
 
+  numero: number;
+
   //? Matriz que contendra uan referencia a cada foto.
   public photos: UserPhoto[] = [];
 
@@ -57,7 +59,16 @@ export class EntrenmaquinaPage implements OnInit {
 
   ngOnInit() {
     //muestra la foto en la vista
-    //this.traerfotol();
+    this.numFotosAzure();
+  }
+
+  numFotosAzure(){
+    const token = localStorage.getItem('token');
+
+    this.foto.totalfoto(token).subscribe((res: any)=>{
+      const num = res;
+      this.numero = res;
+    });
   }
 
   salir(){

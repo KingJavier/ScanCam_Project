@@ -16,8 +16,17 @@
 }
 .eltexto{
     font-family: 'Quicksand', sans-serif;
-  }
-  .titulos{
-    font-size: 35px;
-    font-family: 'Nanum Gothic', sans-serif;
-  }
+}
+
+.titulos{
+  font-size: 35px;
+  font-family: 'Nanum Gothic', sans-serif;
+}
+
+#numero{
+  // text-align: right;
+  font-family: 'Nanum Gothic', sans-serif;
+  float: right;
+  display: flex;
+  vertical-align: super;
+}

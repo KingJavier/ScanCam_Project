@@ -11,7 +11,6 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ComponentsModule } from './components/components.module';
 
-
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 // eslint-disable-next-line quote-props
 const config: SocketIoConfig = { url: 'https://apiscancam01.herokuapp.com/', options: {'transports' : ['websocket']} };
