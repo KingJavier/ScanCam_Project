@@ -14,7 +14,9 @@ const getItems = async (req, res) => {
     const num = parseFloat(req.params.id) || 1;
 
     //? integramos constante que buscara diversos datos
-    const data = await registroModel.findAllData({},{deleted:0, updatedAt:0}).skip((15 * num)- 15).limit(15);
+    const data = await registroModel.findAllData({},{deleted:0, updatedAt:0});
+    //const data = await registroModel.findAllData({},{deleted:0, updatedAt:0}).skip((15 * num)- 15).limit(15);
+
     
     res.send({ data }); 
 
