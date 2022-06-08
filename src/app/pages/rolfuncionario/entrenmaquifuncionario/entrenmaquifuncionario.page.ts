@@ -142,7 +142,7 @@ export class EntrenmaquifuncionarioPage implements OnInit {
       console.log(res);
 
       const correcto = res.dataImg;
-
+      this.numFotosAzure();
       if(correcto === res.dataImg){
       this.chec('SE ENTRENO LA MAQUINA SATISFACTORIAMENTE', 4000);
       }

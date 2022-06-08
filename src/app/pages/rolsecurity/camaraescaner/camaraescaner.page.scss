@@ -3,6 +3,10 @@
   background-color: transparent;
 }
 
+.todoCom{
+  height: 101%;
+
+}
 #capture{
 border: solid cadetblue 2px;
 display:none;
@@ -89,3 +93,46 @@ height: 240px;
 width: auto;
 height:100%;
 }
+#button {
+  padding: 0.5em;
+  margin-right: 1em;
+  }
+
+  #snapshot {
+  width: 320px;
+  height: 240px;
+  }
+  .stream{
+   width: auto;
+   height:110%;
+   margin-top: -1rem;
+   display: flex;
+  }
+
+  .centrar{
+    padding: -1%;
+    margin: -2%;
+    top: 1rem;
+    /* IMPORTANTE */
+    text-align: center;
+
+    }
+  .centrarbt{
+    text-align: center;
+    padding-top: -3rem;
+    margin-top:-40px;
+  }
+  .redondo{
+    border-radius: 9px;
+    -webkit-border-radius: 9px;
+    -moz-border-radius: 9px;
+    -ms-border-radius: 9px;
+    -o-border-radius: 9px;
+  }
+
+  .corIzq{
+    margin-left: 1%;
+    margin-bottom: -12px;
+  }
+
+

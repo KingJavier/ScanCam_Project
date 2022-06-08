@@ -5,11 +5,8 @@ import { Router } from '@angular/router';
 import { TaskService } from 'src/app/services/task.service';
 //importacion de toaskcontroller
 import { ToastController } from '@ionic/angular';
-
 import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera';
 import { Filesystem, Directory } from '@capacitor/filesystem';
-import { HttpClient } from '@angular/common/http';
-
 import { UserPhoto } from './../../../interfaces/task';
 
 @Component({
@@ -26,7 +23,6 @@ export class EntrenmaquiinvitadoPage implements OnInit {
   url: string;
 
   nombre: string;
-
   numero: number;
 
   constructor(
@@ -139,9 +135,8 @@ export class EntrenmaquiinvitadoPage implements OnInit {
 
     this.foto.enviarfoto(token, base64).subscribe((res: any) => {
       //console.log(res);
-
       const correcto = res.dataImg;
-
+      this.numFotosAzure();
       if(correcto === res.dataImg){
       this.chec('SE ENTRENO LA MAQUINA SATISFACTORIAMENTE', 4000);
       }

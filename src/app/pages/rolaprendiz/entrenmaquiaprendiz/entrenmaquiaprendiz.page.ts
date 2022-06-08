@@ -139,9 +139,8 @@ export class EntrenmaquiaprendizPage implements OnInit {
 
     this.foto.enviarfoto(token, base64).subscribe((res: any) => {
       //console.log(res);
-
       const correcto = res.dataImg;
-
+      this.numFotosAzure();
       if(correcto === res.dataImg){
       this.chec('SE ENTRENO LA MAQUINA SATISFACTORIAMENTE', 4000);
       }

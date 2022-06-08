@@ -28,9 +28,9 @@
 </ion-toolbar>
 
 <ion-content class="fondo">
-  <ion-row >
-    <ion-col size="12" size-md="4" >
-      <ion-card class="lacard">
+  <ion-row>
+    <ion-col  size="12" size-md="4" >
+      <ion-card class="lacard todoCom">
         <ion-card-content class="eltexto">
           <!--Mostrar datos traidos de la base de datos por medio de funciones-->
           <ion-item>
@@ -76,17 +76,19 @@
       </ion-card>
     </ion-col>
 
-    <ion-col>
+    <ion-col class="justify-center items-center corIzq">
       <!-- Video Element & Canvas -->
-      <ion-col class="play-area-sub">
-        <video id="stream"></video>
+      <ion-col class="play-area-sub" id="centrar">
+        <video class="redondo stream"id="stream"></video>
         <canvas id="capture"></canvas>
       </ion-col>
       <!-- The buttons to control the stream -->
-      <ion-row class="button-group">
-        <ion-button id="btn-start" type="button"   (click)="prender()" *ngIf="cameraStream === undefined "class="button"><ion-icon name="videocam-outline"></ion-icon></ion-button>
-        <ion-button id="btn-stop" type="button"  (click)="detener()" *ngIf="cameraStream !== undefined"  class="button"><ion-icon name="videocam-off-outline"></ion-icon></ion-button>
+      <ion-row class=" centrarbt button-group">
+        <ion-col class="centrarbt">
+          <ion-button id="btn-start" type="button" (click)="prender()" *ngIf="cameraStream === undefined "class="button"><ion-icon name="videocam-outline"></ion-icon></ion-button>
+        <ion-button id="btn-stop" type="button" (click)="detener()" *ngIf="cameraStream !== undefined" class="button"><ion-icon name="videocam-off-outline"></ion-icon></ion-button>
         <ion-button id="btn-capture" type="button" (click)="capturar()" *ngIf="cameraStream !== undefined" class="button"><ion-icon name="camera-outline"></ion-icon></ion-button>
+        </ion-col>
       </ion-row>
     </ion-col>
   </ion-row>

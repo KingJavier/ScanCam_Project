@@ -33,7 +33,6 @@ export class EntrenarmaquinaPage implements OnInit {
     private foto: TaskService,
     //inyecta la importación de tosatcontroller
     public toastController: ToastController,
-
   ) {
     //se llama eel nombre del perfil en locaslstorage
     this.nombre=localStorage.getItem('name');
@@ -141,9 +140,8 @@ export class EntrenarmaquinaPage implements OnInit {
 
     this.foto.enviarfoto(token, base64).subscribe((res: any) => {
       //console.log(res);
-
       const correcto = res.dataImg;
-
+      this.numFotosAzure();
       if(correcto === res.dataImg){
       this.chec('SE ENTRENO LA MAQUINA SATISFACTORIAMENTE', 4000);
       }
