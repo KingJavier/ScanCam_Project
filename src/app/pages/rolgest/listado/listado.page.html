@@ -11,7 +11,7 @@
         <ion-menu-button color="dark" menu="first"></ion-menu-button>
         <!--redirección a perfil presionando el nombre del usuario-->
         <ion-button routerLink="/perfilgestor" expand="block" fill="clear" shape="round" color="dark">
-           <!--nombre del usuario-->
+          <!--nombre del usuario-->
           <h5 class="eltexto">{{this.nombre}}</h5>
         </ion-button>
       </ion-buttons>
@@ -36,7 +36,7 @@
           <ion-text color="primary" >
             <h1 class="titulos">Listado de estado del usuario</h1>
           </ion-text>
-          <div style="margin: 30px;">
+          <div style="margin: 30px;" id="feo">
             <table class="table" size="12" id="colorletra" >
               <thead >
                 <tr >
@@ -80,5 +80,4 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-
 </ion-content>

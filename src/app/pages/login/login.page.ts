@@ -53,9 +53,7 @@ export class LoginPage implements OnInit {
   form: FormGroup;
   //se llaman los campos para validarlos y sean campos requeridos
   ngOnInit() {
-
     // this.socket.connect();
-
     this.form = this.builder.group({
       correo: [null, [Validators.required, Validators.pattern('[A-Za-z0-9._%+-]{2,}@[a-zA-Z-_.]{2,}[.]{1}[a-zA-Z]{2,}')]],
       contraseña: [null, Validators.required],

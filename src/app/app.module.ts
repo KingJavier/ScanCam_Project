@@ -30,10 +30,10 @@ defineCustomElements(window);
     AppRoutingModule,
     SocketIoModule.forRoot(config)
   ],
-    providers: [
-      BarcodeScanner,
-      { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
-    ],
-    bootstrap: [AppComponent],
+  providers: [
+    BarcodeScanner,
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+  ],
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

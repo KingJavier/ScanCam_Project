@@ -1,9 +1,9 @@
 "use strict";
 (self["webpackChunkapp"] = self["webpackChunkapp"] || []).push([["common"],{
 
-/***/ 19770:
+/***/ 73696:
 /*!*********************************************************************!*\
-  !*** ./node_modules/@ionic/core/dist/esm/button-active-80cd2e37.js ***!
+  !*** ./node_modules/@ionic/core/dist/esm/button-active-8937ead0.js ***!
   \*********************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -11,9 +11,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "c": () => (/* binding */ createButtonActiveGesture)
 /* harmony export */ });
-/* harmony import */ var _index_b3eecb14_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index-b3eecb14.js */ 81049);
-/* harmony import */ var _haptic_9a9aa7ec_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./haptic-9a9aa7ec.js */ 70475);
-/* harmony import */ var _index_41bf41f2_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./index-41bf41f2.js */ 77974);
+/* harmony import */ var _index_88bdeaae_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index-88bdeaae.js */ 39479);
+/* harmony import */ var _haptic_683b3b3c_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./haptic-683b3b3c.js */ 70634);
+/* harmony import */ var _index_3f1a7d95_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./index-3f1a7d95.js */ 82172);
 /*!
  * (C) Ionic http://ionicframework.com - MIT License
  */
@@ -44,7 +44,7 @@ const createButtonActiveGesture = (el, isButton) => {
       initialTouchedButton = currentTouchedButton;
     }
     const buttonToModify = currentTouchedButton;
-    (0,_index_b3eecb14_js__WEBPACK_IMPORTED_MODULE_0__.c)(() => buttonToModify.classList.add('ion-activated'));
+    (0,_index_88bdeaae_js__WEBPACK_IMPORTED_MODULE_0__.c)(() => buttonToModify.classList.add('ion-activated'));
     hapticFeedbackFn();
   };
   const clearActiveButton = (dispatchClick = false) => {
@@ -52,7 +52,7 @@ const createButtonActiveGesture = (el, isButton) => {
       return;
     }
     const buttonToModify = currentTouchedButton;
-    (0,_index_b3eecb14_js__WEBPACK_IMPORTED_MODULE_0__.c)(() => buttonToModify.classList.remove('ion-activated'));
+    (0,_index_88bdeaae_js__WEBPACK_IMPORTED_MODULE_0__.c)(() => buttonToModify.classList.remove('ion-activated'));
     /**
      * Clicking on one button, but releasing on another button
      * does not dispatch a click event in browsers, so we
@@ -66,17 +66,17 @@ const createButtonActiveGesture = (el, isButton) => {
     }
     currentTouchedButton = undefined;
   };
-  return (0,_index_41bf41f2_js__WEBPACK_IMPORTED_MODULE_2__.createGesture)({
+  return (0,_index_3f1a7d95_js__WEBPACK_IMPORTED_MODULE_2__.createGesture)({
     el,
     gestureName: 'buttonActiveDrag',
     threshold: 0,
-    onStart: ev => activateButtonAtPoint(ev.currentX, ev.currentY, _haptic_9a9aa7ec_js__WEBPACK_IMPORTED_MODULE_1__.a),
-    onMove: ev => activateButtonAtPoint(ev.currentX, ev.currentY, _haptic_9a9aa7ec_js__WEBPACK_IMPORTED_MODULE_1__.b),
+    onStart: (ev) => activateButtonAtPoint(ev.currentX, ev.currentY, _haptic_683b3b3c_js__WEBPACK_IMPORTED_MODULE_1__.a),
+    onMove: (ev) => activateButtonAtPoint(ev.currentX, ev.currentY, _haptic_683b3b3c_js__WEBPACK_IMPORTED_MODULE_1__.b),
     onEnd: () => {
       clearActiveButton(true);
-      (0,_haptic_9a9aa7ec_js__WEBPACK_IMPORTED_MODULE_1__.h)();
+      (0,_haptic_683b3b3c_js__WEBPACK_IMPORTED_MODULE_1__.h)();
       initialTouchedButton = undefined;
-    }
+    },
   });
 };
 
@@ -117,9 +117,9 @@ const isRTL = (hostEl) => {
 
 /***/ }),
 
-/***/ 71550:
+/***/ 69013:
 /*!*********************************************************************!*\
-  !*** ./node_modules/@ionic/core/dist/esm/focus-visible-02bf7a99.js ***!
+  !*** ./node_modules/@ionic/core/dist/esm/focus-visible-5ad6825d.js ***!
   \*********************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -132,15 +132,28 @@ __webpack_require__.r(__webpack_exports__);
  */
 const ION_FOCUSED = 'ion-focused';
 const ION_FOCUSABLE = 'ion-focusable';
-const FOCUS_KEYS = ['Tab', 'ArrowDown', 'Space', 'Escape', ' ', 'Shift', 'Enter', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'Home', 'End'];
+const FOCUS_KEYS = [
+  'Tab',
+  'ArrowDown',
+  'Space',
+  'Escape',
+  ' ',
+  'Shift',
+  'Enter',
+  'ArrowLeft',
+  'ArrowRight',
+  'ArrowUp',
+  'Home',
+  'End',
+];
 const startFocusVisible = (rootEl) => {
   let currentFocus = [];
   let keyboardMode = true;
-  const ref = (rootEl) ? rootEl.shadowRoot : document;
-  const root = (rootEl) ? rootEl : document.body;
+  const ref = rootEl ? rootEl.shadowRoot : document;
+  const root = rootEl ? rootEl : document.body;
   const setFocus = (elements) => {
-    currentFocus.forEach(el => el.classList.remove(ION_FOCUSED));
-    elements.forEach(el => el.classList.add(ION_FOCUSED));
+    currentFocus.forEach((el) => el.classList.remove(ION_FOCUSED));
+    elements.forEach((el) => el.classList.add(ION_FOCUSED));
     currentFocus = elements;
   };
   const pointerDown = () => {
@@ -183,7 +196,7 @@ const startFocusVisible = (rootEl) => {
   };
   return {
     destroy,
-    setFocus
+    setFocus,
   };
 };
 
@@ -192,9 +205,9 @@ const startFocusVisible = (rootEl) => {
 
 /***/ }),
 
-/***/ 82673:
+/***/ 92668:
 /*!**************************************************************************!*\
-  !*** ./node_modules/@ionic/core/dist/esm/framework-delegate-0e9f0224.js ***!
+  !*** ./node_modules/@ionic/core/dist/esm/framework-delegate-ce4f806c.js ***!
   \**************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -204,8 +217,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "a": () => (/* binding */ attachComponent),
 /* harmony export */   "d": () => (/* binding */ detachComponent)
 /* harmony export */ });
-/* harmony import */ var C_Users_reyca_Escritorio_Actualmente_scan_cam_front_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
-/* harmony import */ var _helpers_6e1e5b65_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helpers-6e1e5b65.js */ 88345);
+/* harmony import */ var C_SENA_ADSI_heroku_scan_cam_front_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _helpers_4d272360_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helpers-4d272360.js */ 59158);
 
 
 /*!
@@ -214,7 +227,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const attachComponent = /*#__PURE__*/function () {
-  var _ref = (0,C_Users_reyca_Escritorio_Actualmente_scan_cam_front_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (delegate, container, component, cssClasses, componentProps, inline) {
+  var _ref = (0,C_SENA_ADSI_heroku_scan_cam_front_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (delegate, container, component, cssClasses, componentProps, inline) {
+    var _a;
+
     if (delegate) {
       return delegate.attachViewToDom(container, component, componentProps, cssClasses);
     }
@@ -223,7 +238,7 @@ const attachComponent = /*#__PURE__*/function () {
       throw new Error('framework delegate is missing');
     }
 
-    const el = typeof component === 'string' ? container.ownerDocument && container.ownerDocument.createElement(component) : component;
+    const el = typeof component === 'string' ? (_a = container.ownerDocument) === null || _a === void 0 ? void 0 : _a.createElement(component) : component;
 
     if (cssClasses) {
       cssClasses.forEach(c => el.classList.add(c));
@@ -234,7 +249,7 @@ const attachComponent = /*#__PURE__*/function () {
     }
 
     container.appendChild(el);
-    yield new Promise(resolve => (0,_helpers_6e1e5b65_js__WEBPACK_IMPORTED_MODULE_1__.c)(el, resolve));
+    yield new Promise(resolve => (0,_helpers_4d272360_js__WEBPACK_IMPORTED_MODULE_1__.c)(el, resolve));
     return el;
   });
 
@@ -261,7 +276,9 @@ const CoreDelegate = () => {
   let Reference;
 
   const attachViewToDom = /*#__PURE__*/function () {
-    var _ref2 = (0,C_Users_reyca_Escritorio_Actualmente_scan_cam_front_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (parentElement, userComponent, userComponentProps = {}, cssClasses = []) {
+    var _ref2 = (0,C_SENA_ADSI_heroku_scan_cam_front_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (parentElement, userComponent, userComponentProps = {}, cssClasses = []) {
+      var _a, _b;
+
       BaseComponent = parentElement;
       /**
        * If passing in a component via the `component` props
@@ -274,7 +291,7 @@ const CoreDelegate = () => {
          * the element otherwise just get a reference
          * to the component.
          */
-        const el = typeof userComponent === 'string' ? BaseComponent.ownerDocument && BaseComponent.ownerDocument.createElement(userComponent) : userComponent;
+        const el = typeof userComponent === 'string' ? (_a = BaseComponent.ownerDocument) === null || _a === void 0 ? void 0 : _a.createElement(userComponent) : userComponent;
         /**
          * Add any css classes passed in
          * via the cssClasses prop on the overlay.
@@ -293,11 +310,11 @@ const CoreDelegate = () => {
          */
 
         BaseComponent.appendChild(el);
-        yield new Promise(resolve => (0,_helpers_6e1e5b65_js__WEBPACK_IMPORTED_MODULE_1__.c)(el, resolve));
+        yield new Promise(resolve => (0,_helpers_4d272360_js__WEBPACK_IMPORTED_MODULE_1__.c)(el, resolve));
       } else if (BaseComponent.children.length > 0) {
         // If there is no component, then we need to create a new parent
         // element to apply the css classes to.
-        const el = BaseComponent.ownerDocument && BaseComponent.ownerDocument.createElement('div');
+        const el = (_b = BaseComponent.ownerDocument) === null || _b === void 0 ? void 0 : _b.createElement('div');
         cssClasses.forEach(c => el.classList.add(c)); // Move each child from the original template to the new parent element.
 
         el.append(...BaseComponent.children); // Append the new parent element to the original parent element.
@@ -350,9 +367,9 @@ const CoreDelegate = () => {
 
 /***/ }),
 
-/***/ 70475:
+/***/ 70634:
 /*!**************************************************************!*\
-  !*** ./node_modules/@ionic/core/dist/esm/haptic-9a9aa7ec.js ***!
+  !*** ./node_modules/@ionic/core/dist/esm/haptic-683b3b3c.js ***!
   \**************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -369,8 +386,9 @@ __webpack_require__.r(__webpack_exports__);
  */
 const HapticEngine = {
   getEngine() {
+    var _a;
     const win = window;
-    return (win.TapticEngine) || (win.Capacitor && win.Capacitor.isPluginAvailable('Haptics') && win.Capacitor.Plugins.Haptics);
+    return win.TapticEngine || (((_a = win.Capacitor) === null || _a === void 0 ? void 0 : _a.isPluginAvailable('Haptics')) && win.Capacitor.Plugins.Haptics);
   },
   available() {
     return !!this.getEngine();
@@ -436,7 +454,7 @@ const HapticEngine = {
     else {
       engine.gestureSelectionEnd();
     }
-  }
+  },
 };
 /**
  * Trigger a selection changed haptic event. Good for one-time events
@@ -477,9 +495,241 @@ const hapticImpact = (options) => {
 
 /***/ }),
 
-/***/ 60341:
+/***/ 61314:
 /*!*************************************************************!*\
-  !*** ./node_modules/@ionic/core/dist/esm/index-e3f61316.js ***!
+  !*** ./node_modules/@ionic/core/dist/esm/index-8bf9b0cd.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "I": () => (/* binding */ ION_CONTENT_ELEMENT_SELECTOR),
+/* harmony export */   "a": () => (/* binding */ findIonContent),
+/* harmony export */   "b": () => (/* binding */ ION_CONTENT_CLASS_SELECTOR),
+/* harmony export */   "c": () => (/* binding */ scrollByPoint),
+/* harmony export */   "d": () => (/* binding */ disableContentScrollY),
+/* harmony export */   "f": () => (/* binding */ findClosestIonContent),
+/* harmony export */   "g": () => (/* binding */ getScrollElement),
+/* harmony export */   "i": () => (/* binding */ isIonContent),
+/* harmony export */   "p": () => (/* binding */ printIonContentErrorMsg),
+/* harmony export */   "r": () => (/* binding */ resetContentScrollY),
+/* harmony export */   "s": () => (/* binding */ scrollToTop)
+/* harmony export */ });
+/* harmony import */ var C_SENA_ADSI_heroku_scan_cam_front_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _helpers_4d272360_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helpers-4d272360.js */ 59158);
+/* harmony import */ var _index_9ac92660_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./index-9ac92660.js */ 2141);
+
+
+/*!
+ * (C) Ionic http://ionicframework.com - MIT License
+ */
+
+
+const ION_CONTENT_TAG_NAME = 'ION-CONTENT';
+const ION_CONTENT_ELEMENT_SELECTOR = 'ion-content';
+const ION_CONTENT_CLASS_SELECTOR = '.ion-content-scroll-host';
+/**
+ * Selector used for implementations reliant on `<ion-content>` for scroll event changes.
+ *
+ * Developers should use the `.ion-content-scroll-host` selector to target the element emitting
+ * scroll events. With virtual scroll implementations this will be the host element for
+ * the scroll viewport.
+ */
+
+const ION_CONTENT_SELECTOR = `${ION_CONTENT_ELEMENT_SELECTOR}, ${ION_CONTENT_CLASS_SELECTOR}`;
+
+const isIonContent = el => el && el.tagName === ION_CONTENT_TAG_NAME;
+/**
+ * Waits for the element host fully initialize before
+ * returning the inner scroll element.
+ *
+ * For `ion-content` the scroll target will be the result
+ * of the `getScrollElement` function.
+ *
+ * For custom implementations it will be the element host
+ * or a selector within the host, if supplied through `scrollTarget`.
+ */
+
+
+const getScrollElement = /*#__PURE__*/function () {
+  var _ref = (0,C_SENA_ADSI_heroku_scan_cam_front_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (el) {
+    if (isIonContent(el)) {
+      yield new Promise(resolve => (0,_helpers_4d272360_js__WEBPACK_IMPORTED_MODULE_1__.c)(el, resolve));
+      return el.getScrollElement();
+    }
+
+    return el;
+  });
+
+  return function getScrollElement(_x) {
+    return _ref.apply(this, arguments);
+  };
+}();
+/**
+ * Queries the element matching the selector for IonContent.
+ * See ION_CONTENT_SELECTOR for the selector used.
+ */
+
+
+const findIonContent = el => {
+  /**
+   * First we try to query the custom scroll host selector in cases where
+   * the implementation is using an outer `ion-content` with an inner custom
+   * scroll container.
+   */
+  const customContentHost = el.querySelector(ION_CONTENT_CLASS_SELECTOR);
+
+  if (customContentHost) {
+    return customContentHost;
+  }
+
+  return el.querySelector(ION_CONTENT_SELECTOR);
+};
+/**
+ * Queries the closest element matching the selector for IonContent.
+ */
+
+
+const findClosestIonContent = el => {
+  return el.closest(ION_CONTENT_SELECTOR);
+};
+/**
+ * Scrolls to the top of the element. If an `ion-content` is found, it will scroll
+ * using the public API `scrollToTop` with a duration.
+ */
+
+
+const scrollToTop = (el, durationMs) => {
+  if (isIonContent(el)) {
+    const content = el;
+    return content.scrollToTop(durationMs);
+  }
+
+  return Promise.resolve(el.scrollTo({
+    top: 0,
+    left: 0,
+    behavior: durationMs > 0 ? 'smooth' : 'auto'
+  }));
+};
+/**
+ * Scrolls by a specified X/Y distance in the component. If an `ion-content` is found, it will scroll
+ * using the public API `scrollByPoint` with a duration.
+ */
+
+
+const scrollByPoint = (el, x, y, durationMs) => {
+  if (isIonContent(el)) {
+    const content = el;
+    return content.scrollByPoint(x, y, durationMs);
+  }
+
+  return Promise.resolve(el.scrollBy({
+    top: y,
+    left: x,
+    behavior: durationMs > 0 ? 'smooth' : 'auto'
+  }));
+};
+/**
+ * Prints an error informing developers that an implementation requires an element to be used
+ * within either the `ion-content` selector or the `.ion-content-scroll-host` class.
+ */
+
+
+const printIonContentErrorMsg = el => {
+  return (0,_index_9ac92660_js__WEBPACK_IMPORTED_MODULE_2__.a)(el, ION_CONTENT_ELEMENT_SELECTOR);
+};
+/**
+ * Several components in Ionic need to prevent scrolling
+ * during a gesture (card modal, range, item sliding, etc).
+ * Use this utility to account for ion-content and custom content hosts.
+ */
+
+
+const disableContentScrollY = contentEl => {
+  if (isIonContent(contentEl)) {
+    const ionContent = contentEl;
+    const initialScrollY = ionContent.scrollY;
+    ionContent.scrollY = false;
+    /**
+     * This should be passed into resetContentScrollY
+     * so that we can revert ion-content's scrollY to the
+     * correct state. For example, if scrollY = false
+     * initially, we do not want to enable scrolling
+     * when we call resetContentScrollY.
+     */
+
+    return initialScrollY;
+  } else {
+    contentEl.style.setProperty('overflow', 'hidden');
+    return true;
+  }
+};
+
+const resetContentScrollY = (contentEl, initialScrollY) => {
+  if (isIonContent(contentEl)) {
+    contentEl.scrollY = initialScrollY;
+  } else {
+    contentEl.style.removeProperty('overflow');
+  }
+};
+
+
+
+/***/ }),
+
+/***/ 2141:
+/*!*************************************************************!*\
+  !*** ./node_modules/@ionic/core/dist/esm/index-9ac92660.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "a": () => (/* binding */ printRequiredElementError),
+/* harmony export */   "b": () => (/* binding */ printIonError),
+/* harmony export */   "p": () => (/* binding */ printIonWarning)
+/* harmony export */ });
+/*!
+ * (C) Ionic http://ionicframework.com - MIT License
+ */
+/**
+ * Logs a warning to the console with an Ionic prefix
+ * to indicate the library that is warning the developer.
+ *
+ * @param message - The string message to be logged to the console.
+ */
+const printIonWarning = (message) => {
+  return console.warn(`[Ionic Warning]: ${message}`);
+};
+/*
+ * Logs an error to the console with an Ionic prefix
+ * to indicate the library that is warning the developer.
+ *
+ * @param message - The string message to be logged to the console.
+ * @param params - Additional arguments to supply to the console.error.
+ */
+const printIonError = (message, ...params) => {
+  return console.error(`[Ionic Error]: ${message}`, ...params);
+};
+/**
+ * Prints an error informing developers that an implementation requires an element to be used
+ * within a specific selector.
+ *
+ * @param el The web component element this is requiring the element.
+ * @param targetSelectors The selector or selectors that were not found.
+ */
+const printRequiredElementError = (el, ...targetSelectors) => {
+  return console.error(`<${el.tagName.toLowerCase()}> must be used inside ${targetSelectors.join(' or ')}.`);
+};
+
+
+
+
+/***/ }),
+
+/***/ 43814:
+/*!*************************************************************!*\
+  !*** ./node_modules/@ionic/core/dist/esm/index-d74f4afc.js ***!
   \*************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -508,7 +758,7 @@ __webpack_require__.r(__webpack_exports__);
 /*!
  * (C) Ionic http://ionicframework.com - MIT License
  */
-/* Ionicons v6.0.0, ES Modules */
+/* Ionicons v6.0.2, ES Modules */
 const arrowBackSharp = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Arrow Back</title><path stroke-linecap='square' stroke-miterlimit='10' stroke-width='48' d='M244 400L100 256l144-144M120 256h292' class='ionicon-fill-none'/></svg>";
 const arrowDown = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Arrow Down</title><path stroke-linecap='round' stroke-linejoin='round' stroke-width='48' d='M112 268l144 144 144-144M256 392V100' class='ionicon-fill-none'/></svg>";
 const caretBackSharp = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Caret Back</title><path d='M368 64L144 256l224 192V64z'/></svg>";
@@ -534,9 +784,9 @@ const searchSharp = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/
 
 /***/ }),
 
-/***/ 18022:
+/***/ 96524:
 /*!****************************************************************!*\
-  !*** ./node_modules/@ionic/core/dist/esm/keyboard-808e4e15.js ***!
+  !*** ./node_modules/@ionic/core/dist/esm/keyboard-4d5544a0.js ***!
   \****************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -593,7 +843,7 @@ const startKeyboardAssist = (win) => {
  * in one place.
  */
 const startNativeListeners = (win) => {
-  win.addEventListener('keyboardDidShow', ev => setKeyboardOpen(win, ev));
+  win.addEventListener('keyboardDidShow', (ev) => setKeyboardOpen(win, ev));
   win.addEventListener('keyboardDidHide', () => setKeyboardClose(win));
 };
 const setKeyboardOpen = (win, ev) => {
@@ -644,7 +894,7 @@ const keyboardDidClose = (win) => {
 const fireKeyboardOpenEvent = (win, nativeEv) => {
   const keyboardHeight = nativeEv ? nativeEv.keyboardHeight : win.innerHeight - currentVisualViewport.height;
   const ev = new CustomEvent(KEYBOARD_DID_OPEN, {
-    detail: { keyboardHeight }
+    detail: { keyboardHeight },
   });
   win.dispatchEvent(ev);
 };
@@ -677,7 +927,7 @@ const copyVisualViewport = (visualViewport) => {
     offsetLeft: visualViewport.offsetLeft,
     pageTop: visualViewport.pageTop,
     pageLeft: visualViewport.pageLeft,
-    scale: visualViewport.scale
+    scale: visualViewport.scale,
   };
 };
 
@@ -686,9 +936,9 @@ const copyVisualViewport = (visualViewport) => {
 
 /***/ }),
 
-/***/ 23966:
+/***/ 43844:
 /*!***********************************************************************!*\
-  !*** ./node_modules/@ionic/core/dist/esm/spinner-configs-163ed7fb.js ***!
+  !*** ./node_modules/@ionic/core/dist/esm/spinner-configs-5d6b6fe7.js ***!
   \***********************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -700,40 +950,40 @@ __webpack_require__.r(__webpack_exports__);
  * (C) Ionic http://ionicframework.com - MIT License
  */
 const spinners = {
-  'bubbles': {
+  bubbles: {
     dur: 1000,
     circles: 9,
     fn: (dur, index, total) => {
-      const animationDelay = `${(dur * index / total) - dur}ms`;
-      const angle = 2 * Math.PI * index / total;
+      const animationDelay = `${(dur * index) / total - dur}ms`;
+      const angle = (2 * Math.PI * index) / total;
       return {
         r: 5,
         style: {
-          'top': `${9 * Math.sin(angle)}px`,
-          'left': `${9 * Math.cos(angle)}px`,
+          top: `${9 * Math.sin(angle)}px`,
+          left: `${9 * Math.cos(angle)}px`,
           'animation-delay': animationDelay,
-        }
+        },
       };
-    }
+    },
   },
-  'circles': {
+  circles: {
     dur: 1000,
     circles: 8,
     fn: (dur, index, total) => {
       const step = index / total;
-      const animationDelay = `${(dur * step) - dur}ms`;
+      const animationDelay = `${dur * step - dur}ms`;
       const angle = 2 * Math.PI * step;
       return {
         r: 5,
         style: {
-          'top': `${9 * Math.sin(angle)}px`,
-          'left': `${9 * Math.cos(angle)}px`,
+          top: `${9 * Math.sin(angle)}px`,
+          left: `${9 * Math.cos(angle)}px`,
           'animation-delay': animationDelay,
-        }
+        },
       };
-    }
+    },
   },
-  'circular': {
+  circular: {
     dur: 1400,
     elmDuration: true,
     circles: 1,
@@ -745,21 +995,21 @@ const spinners = {
         fill: 'none',
         viewBox: '24 24 48 48',
         transform: 'translate(0,0)',
-        style: {}
+        style: {},
       };
-    }
+    },
   },
-  'crescent': {
+  crescent: {
     dur: 750,
     circles: 1,
     fn: () => {
       return {
         r: 26,
-        style: {}
+        style: {},
       };
-    }
+    },
   },
-  'dots': {
+  dots: {
     dur: 750,
     circles: 3,
     fn: (_, index) => {
@@ -767,76 +1017,76 @@ const spinners = {
       return {
         r: 6,
         style: {
-          'left': `${9 - (9 * index)}px`,
+          left: `${9 - 9 * index}px`,
           'animation-delay': animationDelay,
-        }
+        },
       };
-    }
+    },
   },
-  'lines': {
+  lines: {
     dur: 1000,
     lines: 8,
     fn: (dur, index, total) => {
-      const transform = `rotate(${(360 / total) * index + (index < (total / 2) ? 180 : -180)}deg)`;
-      const animationDelay = `${(dur * index / total) - dur}ms`;
+      const transform = `rotate(${(360 / total) * index + (index < total / 2 ? 180 : -180)}deg)`;
+      const animationDelay = `${(dur * index) / total - dur}ms`;
       return {
         y1: 14,
         y2: 26,
         style: {
-          'transform': transform,
+          transform: transform,
           'animation-delay': animationDelay,
-        }
+        },
       };
-    }
+    },
   },
   'lines-small': {
     dur: 1000,
     lines: 8,
     fn: (dur, index, total) => {
-      const transform = `rotate(${(360 / total) * index + (index < (total / 2) ? 180 : -180)}deg)`;
-      const animationDelay = `${(dur * index / total) - dur}ms`;
+      const transform = `rotate(${(360 / total) * index + (index < total / 2 ? 180 : -180)}deg)`;
+      const animationDelay = `${(dur * index) / total - dur}ms`;
       return {
         y1: 12,
         y2: 20,
         style: {
-          'transform': transform,
+          transform: transform,
           'animation-delay': animationDelay,
-        }
+        },
       };
-    }
+    },
   },
   'lines-sharp': {
     dur: 1000,
     lines: 12,
     fn: (dur, index, total) => {
       const transform = `rotate(${30 * index + (index < 6 ? 180 : -180)}deg)`;
-      const animationDelay = `${(dur * index / total) - dur}ms`;
+      const animationDelay = `${(dur * index) / total - dur}ms`;
       return {
         y1: 17,
         y2: 29,
         style: {
-          'transform': transform,
+          transform: transform,
           'animation-delay': animationDelay,
-        }
+        },
       };
-    }
+    },
   },
   'lines-sharp-small': {
     dur: 1000,
     lines: 12,
     fn: (dur, index, total) => {
       const transform = `rotate(${30 * index + (index < 6 ? 180 : -180)}deg)`;
-      const animationDelay = `${(dur * index / total) - dur}ms`;
+      const animationDelay = `${(dur * index) / total - dur}ms`;
       return {
         y1: 12,
         y2: 20,
         style: {
-          'transform': transform,
+          transform: transform,
           'animation-delay': animationDelay,
-        }
+        },
       };
-    }
-  }
+    },
+  },
 };
 const SPINNERS = spinners;
 
@@ -845,9 +1095,9 @@ const SPINNERS = spinners;
 
 /***/ }),
 
-/***/ 26718:
+/***/ 21812:
 /*!******************************************************************!*\
-  !*** ./node_modules/@ionic/core/dist/esm/swipe-back-f65c5686.js ***!
+  !*** ./node_modules/@ionic/core/dist/esm/swipe-back-fa30a130.js ***!
   \******************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -855,10 +1105,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "createSwipeBackGesture": () => (/* binding */ createSwipeBackGesture)
 /* harmony export */ });
-/* harmony import */ var _helpers_6e1e5b65_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./helpers-6e1e5b65.js */ 88345);
+/* harmony import */ var _helpers_4d272360_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./helpers-4d272360.js */ 59158);
 /* harmony import */ var _dir_e8b767a8_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dir-e8b767a8.js */ 17481);
-/* harmony import */ var _index_41bf41f2_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./index-41bf41f2.js */ 77974);
-/* harmony import */ var _gesture_controller_68c023a4_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./gesture-controller-68c023a4.js */ 65627);
+/* harmony import */ var _index_3f1a7d95_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./index-3f1a7d95.js */ 82172);
+/* harmony import */ var _gesture_controller_17e82006_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./gesture-controller-17e82006.js */ 70607);
 /*!
  * (C) Ionic http://ionicframework.com - MIT License
  */
@@ -918,9 +1168,9 @@ const createSwipeBackGesture = (el, canStartHandler, onStartHandler, onMoveHandl
      * or values greater than 1 which should not be possible.
      * Need to investigate more to find where the issue is.
      */
-    onEndHandler(shouldComplete, (stepValue <= 0) ? 0.01 : (0,_helpers_6e1e5b65_js__WEBPACK_IMPORTED_MODULE_0__.k)(0, stepValue, 0.9999), realDur);
+    onEndHandler(shouldComplete, stepValue <= 0 ? 0.01 : (0,_helpers_4d272360_js__WEBPACK_IMPORTED_MODULE_0__.l)(0, stepValue, 0.9999), realDur);
   };
-  return (0,_index_41bf41f2_js__WEBPACK_IMPORTED_MODULE_2__.createGesture)({
+  return (0,_index_3f1a7d95_js__WEBPACK_IMPORTED_MODULE_2__.createGesture)({
     el,
     gestureName: 'goback-swipe',
     gesturePriority: 40,
@@ -928,7 +1178,7 @@ const createSwipeBackGesture = (el, canStartHandler, onStartHandler, onMoveHandl
     canStart,
     onStart: onStartHandler,
     onMove,
-    onEnd
+    onEnd,
   });
 };
 
@@ -937,9 +1187,9 @@ const createSwipeBackGesture = (el, canStartHandler, onStartHandler, onMoveHandl
 
 /***/ }),
 
-/***/ 24596:
+/***/ 50320:
 /*!*************************************************************!*\
-  !*** ./node_modules/@ionic/core/dist/esm/theme-a24ff1ad.js ***!
+  !*** ./node_modules/@ionic/core/dist/esm/theme-7670341c.js ***!
   \*************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -950,7 +1200,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "h": () => (/* binding */ hostContext),
 /* harmony export */   "o": () => (/* binding */ openURL)
 /* harmony export */ });
-/* harmony import */ var C_Users_reyca_Escritorio_Actualmente_scan_cam_front_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var C_SENA_ADSI_heroku_scan_cam_front_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 
 
 /*!
@@ -989,7 +1239,7 @@ const getClassMap = classes => {
 const SCHEME = /^[a-z][a-z0-9+\-.]*:/;
 
 const openURL = /*#__PURE__*/function () {
-  var _ref = (0,C_Users_reyca_Escritorio_Actualmente_scan_cam_front_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (url, ev, direction, animation) {
+  var _ref = (0,C_SENA_ADSI_heroku_scan_cam_front_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (url, ev, direction, animation) {
     if (url != null && url[0] !== '#' && !SCHEME.test(url)) {
       const router = document.querySelector('ion-router');
 

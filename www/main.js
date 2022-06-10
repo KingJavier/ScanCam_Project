@@ -30,13 +30,8 @@ __webpack_require__.r(__webpack_exports__);
 
 const routes = [
     {
-        path: 'home',
-        loadChildren: () => __webpack_require__.e(/*! import() */ "src_app_pages_home_home_module_ts").then(__webpack_require__.bind(__webpack_require__, /*! ./pages/home/home.module */ 57994)).then(m => m.HomePageModule),
-        pathMatch: 'full'
-    },
-    {
         path: '',
-        redirectTo: 'home',
+        redirectTo: 'login',
         pathMatch: 'full'
     },
     {
@@ -354,7 +349,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/platform-browser */ 50318);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/router */ 52816);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/common/http */ 28784);
-/* harmony import */ var ng2_charts__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ng2-charts */ 53808);
+/* harmony import */ var ng2_charts__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ng2-charts */ 44195);
 /* harmony import */ var _awesome_cordova_plugins_barcode_scanner_ngx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @awesome-cordova-plugins/barcode-scanner/ngx */ 38283);
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @ionic/angular */ 93819);
 /* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./app.component */ 55041);
@@ -516,7 +511,7 @@ let MenuapreComponent = class MenuapreComponent {
         this.socket.on('server:url-img', (dat) => (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__awaiter)(this, void 0, void 0, function* () {
             // console.log('esto es la url', dat);
             this.url = dat;
-            //console.log(this.url);
+            // console.log(this.url);
         }));
         if (localStorage.getItem('role')) {
             const role = localStorage.getItem('role');
@@ -669,6 +664,18 @@ let TaskService = class TaskService {
     //? Metodo para traer numeor de registros de entrada
     verifiToken(token) {
         return this.http.get(`https://apiscancam01.herokuapp.com/api/auth/token`, { headers: { authorization: `${token}` } });
+    }
+    //? Metodo para enviar fecha
+    filtro(token, fecha) {
+        return this.http.get(`https://apiscancam01.herokuapp.com/api/registro/filtro/${fecha}`, { headers: { authorization: `${token}` } });
+    }
+    //? Metodo para enviar fecha
+    next(token, numero) {
+        return this.http.get(`https://apiscancam01.herokuapp.com/api/registro/${numero}`, { headers: { authorization: `${token}` } });
+    }
+    //? Metodo para enviar fecha
+    back(token, numero) {
+        return this.http.get(`https://apiscancam01.herokuapp.com/api/registro/${numero}`, { headers: { authorization: `${token}` } });
     }
 };
 TaskService.ctorParameters = () => [
@@ -1079,6 +1086,7 @@ var map = {
 	],
 	"./ion-infinite-scroll_2.entry.js": [
 		69667,
+		"common",
 		"node_modules_ionic_core_dist_esm_ion-infinite-scroll_2_entry_js"
 	],
 	"./ion-input.entry.js": [

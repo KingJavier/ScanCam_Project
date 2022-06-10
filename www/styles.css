@@ -2,7 +2,7 @@
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].rules[0].oneOf[0].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].rules[0].oneOf[0].use[2]!./node_modules/resolve-url-loader/index.js??ruleSet[1].rules[6].rules[1].use[0]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].rules[1].use[1]!./src/theme/variables.scss ***!
   \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*
-! tailwindcss v3.0.23 | MIT License | https://tailwindcss.com
+! tailwindcss v3.0.24 | MIT License | https://tailwindcss.com
 *//*
 1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
 2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
@@ -415,14 +415,14 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-backdrop-saturate:  ;
   --tw-backdrop-sepia:  ;
 }
+.static {
+  position: static;
+}
 .fixed {
   position: fixed;
 }
 .block {
   display: block;
-}
-.flex {
-  display: flex;
 }
 .table {
   display: table;
@@ -496,14 +496,14 @@ Ensure the default browser behavior of the `hidden` attribute.
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
 }
-@media only screen and (min-width: 901px) {
+@media only screen and (min-width: 900px) {
   .fondo {
-    --background: url(https://static.vecteezy.com/system/resources/previews/004/782/979/large_2x/blue-watercolor-splash-web-page-screen-size-background-vector.jpg) 0 0/100% 100% no-repeat;
+    --background: url(https://media.istockphoto.com/vectors/abstract-vector-background-blue-waved-lines-for-brochure-website-vector-id1132026866?b=1&k=20&m=1132026866&s=170667a&w=0&h=hY-lbTKTaRznzGf-0VEnPGEvZ6vWsS57POjszWlXjys=) 0 0/100% 100% no-repeat;
   }
 }
 @media only screen and (max-width: 900px) {
   .fondo {
-    --background: url(https://static.vecteezy.com/system/resources/previews/004/782/979/large_2x/blue-watercolor-splash-web-page-screen-size-background-vector.jpg) 0 0/100% 100% no-repeat;
+    --background: url(https://media.istockphoto.com/vectors/abstract-vector-background-blue-waved-lines-for-brochure-website-vector-id1132026866?b=1&k=20&m=1132026866&s=170667a&w=0&h=hY-lbTKTaRznzGf-0VEnPGEvZ6vWsS57POjszWlXjys=) 0 0/100% 100% no-repeat;
   }
 }
 .card {

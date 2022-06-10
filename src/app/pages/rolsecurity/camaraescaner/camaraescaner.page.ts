@@ -129,11 +129,11 @@ export class CamaraescanerPage implements OnInit {
         }
       },error => {
         console.log(error);
-        const err = error.error.tipoError;
-        if(err === 'ERROR DETECTANDO ROSTRO'){
-          this.errorl('DEBE APARECER UN ROSTRO PARA REGISTRAR LA ENTRADA', 5000);
-        }else if(err === 'ERROR ROSTRO NO ENCONTRADO'){
+        const err = error.error;
+        console.log(err);
+        if(err === 'ERROR ROSTRO NO ENCONTRADO'){
           this.errorl('ROSTRO NO ENCONTRADO EN LA BASE DE DATOS', 5000);
+          this.socket.emit('prenderRojo');
         }
       });
     }

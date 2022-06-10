@@ -212,8 +212,9 @@ let CamaraescanerPage = class CamaraescanerPage {
                 directory: _capacitor_filesystem__WEBPACK_IMPORTED_MODULE_4__.Directory.Data,
             });
             //console.log('Chingada',savedFile);
+            const base64simple = base64Data.split(',').pop();
             const base64 = {
-                base: base64Data,
+                base: base64simple,
             };
             const token = localStorage.getItem('token');
             this.foto.enviarfototemp(token, base64).subscribe((res) => {
@@ -224,7 +225,7 @@ let CamaraescanerPage = class CamaraescanerPage {
                 this.telefono = res.dataUser.telefono;
                 this.email = res.dataUser.email;
                 this.role = res.dataUser.role[0];
-                this.coincidencia = 100 * res.datosazure[0].candidates[0].confidence.toFixed(1);
+                this.coincidencia = 100 * res.coincidencia;
                 this.tipo = res.tipo.tipo;
                 this.socket.emit('cliente:fototemp', {
                     res
@@ -239,13 +240,11 @@ let CamaraescanerPage = class CamaraescanerPage {
                     this.chec(res.dataUser.name, 4000);
                 }
             }, error => {
-                console.log(error);
-                const err = error.error.tipoError;
-                if (err === 'ERROR DETECTANDO ROSTRO') {
-                    this.errorl('DEBE APARECER UN ROSTRO PARA REGISTRAR LA ENTRADA', 5000);
-                }
-                else if (err === 'ERROR ROSTRO NO ENCONTRADO') {
+                const err = error.error;
+                console.log(err);
+                if (err === 'ERROR ROSTRO NO ENCONTRADO') {
                     this.errorl('ROSTRO NO ENCONTRADO EN LA BASE DE DATOS', 5000);
+                    this.socket.emit('prenderRojo');
                 }
             });
             //? Use webPath para mostrar la nueva imagen en lugar de base64, ya que ya está cargada en la memoria.

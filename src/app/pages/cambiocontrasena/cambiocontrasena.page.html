@@ -27,7 +27,7 @@
           <ion-label position="floating">Código</ion-label>
           <ion-input class="form-control" formControlName="codigo" #codigo errorTailor></ion-input>
         </ion-item>
-        
+
         <ion-item class="form-group">
           <!--Digitar nueva contraseña-->
           <h5 class="eltexto">Ingrese su nueva contraseña</h5>
@@ -38,10 +38,10 @@
         </ion-item>
         <ion-item class="form-group">
           <!--confirmación de la nueva contraseña anteriormente establecida-->
-          <ion-label position="floating" class="eltexto">Confirmar contraseña</ion-label>
+          <ion-label position="floating" class="eltexto" id="label">Confirmar contraseña</ion-label>
           <ion-input class="form-control" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}" formControlName="contrasena" #contrasena [type]="showPassword ? 'text' : 'password' " errorTailor ></ion-input>
         </ion-item>
-        
+
         <ion-row>
           <!--condicion de numero de digitos de la contrasena del usuario a digitar -->
           <ion-col size="12">
@@ -49,7 +49,7 @@
               carateres. </p>
           </ion-col>
         </ion-row>
-        
+
       </form>
 
       <div class="ion-text-center">
