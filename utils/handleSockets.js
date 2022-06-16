@@ -1,6 +1,11 @@
 const {userModel, registroModel, perfilModel} = require('../models');
 const { getRegistrossocket } = require('../controllers/registro');
 const { getRegistrosSalsocket } = require('../controllers/regsalida');
+var five = require('johnny-five');
+
+// var board = new five.Board({
+//     repl:false
+// });
 
 const sockets = (io) => {
     io.on('connection', (socket) => {
@@ -92,8 +97,7 @@ const sockets = (io) => {
             }); 
         }
         
-
-        //!------------------------------------IMG PERFIL--------------------------------------- 
+        //!------------------------------------IMG PERFIL --------------------------------------- 
 
         try {
             socket.on('cliente:enviar-id-img',async img_id =>{
@@ -109,7 +113,7 @@ const sockets = (io) => {
         }
         
 
-        //!------------------------------------CAMBIO ROLE---------------------------------------
+        //!------------------------------------ CAMBIO ROLE ---------------------------------------
         try {
             socket.on('cliente:cambiaractividad', async data=>{
                 // console.log('Esto es mucho',data)
@@ -122,16 +126,54 @@ const sockets = (io) => {
                 msg: "ERROR_SOCKETS"
             });
         }
-        
 
-        //!------------------------------------CREACIÓN USER EXCEL ---------------------------------------
-
-        // socket.on('cliente:excel', async data => {
-        //     console.log(data);
-        // })
-        //! Enviar datos desde 
+        //!------------------------------------ CREACION DE SOKETS
     });
+
+    // try{
+    //     board.on("fail", function(event) {
+    //         console.log(event.class, event.message);
+    //     });
+    // }catch(error){
+    //     console.log("ARDUINO DESCONECTADO");
+    // }
+
+    // try {
+    //     board.on("ready", function() {
+    //         var leds = new five.Leds([9, 10]);
+    //         io.on('connection', function (socket) {
+                
+    //             console.log("CONEXION EXITOSA");
+            
+    //             socket.on('apagar', function (){
+    //                 leds.stop().off();
+    //                 console.log("APAGAR");
+    //             });
+                
+    //             socket.on('prenderVerde', function (){
+    //                 leds[0].blink()
+    //                 board.wait(3000, ()=> {
+    //                     leds[0].stop().off();
+    //                 })
+    //                 console.log("PRENDER VERDE");
+    //             });
+
+    //             socket.on('prenderRojo', function (){
+    //                 leds[1].blink()
+
+    //                 board.wait(3000, ()=> {
+    //                     leds[1].stop().off();
+    //                     })
+    //                 console.log("PRENDER ROJO");
+    //             });
+    //         });
+    //     });
+    // } catch (error) {
+    //     console.log("FALLO DE SOCKETS ARDUINO");
+    // }
+
 };
+
 
 module.exports = {
     sockets
