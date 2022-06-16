@@ -120,6 +120,8 @@ export class CamaraescanerPage implements OnInit {
           res
         });
 
+        this.socket.emit('prenderVerde');
+
         //this.datosUser = res.datosUser;
         //this.datosazure = res.datosazure;
         const correcto = res.dataUser;
@@ -133,6 +135,10 @@ export class CamaraescanerPage implements OnInit {
         console.log(err);
         if(err === 'ERROR ROSTRO NO ENCONTRADO'){
           this.errorl('ROSTRO NO ENCONTRADO EN LA BASE DE DATOS', 5000);
+          this.socket.emit('prenderRojo');
+        }
+        if(err === 'NO SE PERMITE SALIR HASTA NO PASAR UN MINUTO'){
+          this.errorl('NO SE PERMITE SALIR HASTA NO PASAR UN MINUTO', 5000);
           this.socket.emit('prenderRojo');
         }
       });
