@@ -23,9 +23,6 @@ _Tener instalado Node.js, npm, un editor de código, tener una cuenta en mongo A
  * https://cloudinary.com/
  * https://developers.google.com/oauthplayground/
 ```
-## Despliegue 📦
-
-_Agrega notas adicionales sobre como hacer deploy_
 
 ## Construido con 🛠️
 
